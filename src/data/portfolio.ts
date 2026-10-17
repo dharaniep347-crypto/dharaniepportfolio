@@ -1,3 +1,5 @@
+import portraitAsset from "@/assets/dharani-portrait.jpg.asset.json";
+import resumeAsset from "@/assets/Dharani_EP_Resume.pdf.asset.json";
 // Edit all personal content here.
 export const profile = {
   name: "Dharani E P",
@@ -15,9 +17,9 @@ export const profile = {
   github: "https://github.com/dharaniep347-crypto",
   education:
     "B.Tech in Artificial Intelligence and Data Science (third year), PGP College of Engineering and Technology",
-  resume: "/Dharani_EP_Resume.pdf",
+  resume: resumeAsset.url,
   // Set to an image URL (e.g. imported from src/assets) to show your portrait.
-  portrait: "" as string,
+  portrait: portraitAsset.url as string,
 };
 
 export const skillCategories = [
