@@ -12,4 +12,10 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    // Pre-bundle 3D/animation deps with React so they share one React copy.
+    optimizeDeps: {
+      include: ["framer-motion", "three", "@react-three/fiber"],
+    },
+  },
 });
