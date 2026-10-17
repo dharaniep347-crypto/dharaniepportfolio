@@ -391,8 +391,9 @@ function Contact() {
           {field("subject", "Subject")}
           {field("message", "Message")}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
-          <Button type="submit" size="lg">Send message</Button>
-          {sent && <p role="status" className="mt-3 rounded-md bg-accent px-3 py-2 text-sm font-semibold">Thanks! Your message is ready. I'll get back to you soon.</p>}
+          <Button type="submit" size="lg" disabled={sending}>{sending ? "Sending…" : "Send message"}</Button>
+          {sent && <p role="status" className="mt-3 rounded-md bg-accent px-3 py-2 text-sm font-semibold">Thanks! Your message was sent. I'll get back to you soon.</p>}
+          {failure && <p role="alert" className="mt-3 text-sm font-semibold text-destructive">{failure}</p>}
         </form>
       </div>
     </section>
