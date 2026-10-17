@@ -3,19 +3,23 @@ import { ClientOnly } from "@tanstack/react-router";
 import { Component, lazy, Suspense, useMemo, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { Github, Linkedin, Mail, MapPin, Phone, GraduationCap, ArrowRight, Download } from "lucide-react";
-import { z } from "zod";
-import {
-  profile,
-  skills,
-  skillCategories,
-  projects,
-  type Project,
-} from "@/data/portfolio";
+import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import DOMPurify from "dompurify";
+import { profile as staticProfile } from "@/data/portfolio";
+import { skillCategories, type SiteProject as Project } from "@/lib/content";
+import { getSiteContent, submitMessage } from "@/lib/content.functions";
+import { contactSchema as schema, type ContactFields as Fields } from "@/lib/contact-schema";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const HeroScene = lazy(() => import("@/components/HeroScene"));
 
+const contentQuery = queryOptions({ queryKey: ["site-content"], queryFn: () => getSiteContent() });
+function useContent() {
+  const { data } = useSuspenseQuery(contentQuery);
+  return data;
+}
+const profile = staticProfile;
 const title = `${profile.name} | ${profile.title}`;
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -44,7 +48,9 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(contentQuery),
   component: Index,
+  errorComponent: () => <div className="p-10">This page didn't load. Please refresh.</div>,
 });
 
 class GLBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
@@ -68,6 +74,8 @@ const nav = [
 ] as const;
 
 function Index() {
+  const { profile, skills, projects } = useContent();
+  void skills; void projects;
   return (
     <div className="min-h-screen">
       <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur">
@@ -103,12 +111,14 @@ function Index() {
 }
 
 function Hero() {
+  const { profile, skills, projects } = useContent();
+  void skills; void projects;
   return (
     <section className="mx-auto grid max-w-6xl items-center gap-6 px-5 pb-16 pt-12 md:grid-cols-[1.2fr_1fr] md:pt-20">
       <div>
         <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">{profile.title}</p>
         <h1 className="font-wide leading-[0.88]" style={{ fontSize: "clamp(3rem, 10vw, 9rem)" }}>
-          {profile.nameLines.map((line, i) => (
+          {[profile.name.split(" ")[0], profile.name.split(" ").slice(1).join(" ")].filter(Boolean).map((line, i) => (
             <span key={line} className="block overflow-hidden pb-1">
               <motion.span
                 className="block"
@@ -161,6 +171,8 @@ function SectionTitle({ n, children }: { n: string; children: ReactNode }) {
 }
 
 function About() {
+  const { profile, skills, projects } = useContent();
+  void skills; void projects;
   const facts = [
     [MapPin, "Location", profile.location],
     [Mail, "Email", profile.email],
@@ -215,13 +227,15 @@ function Chips<T extends string>({ items, value, onChange, label }: { items: rea
 }
 
 function Skills() {
-  const [cat, setCat] = useState<"All" | (typeof skillCategories)[number]>("All");
+  const { profile, skills, projects } = useContent();
+  void skills; void projects;
+  const [cat, setCat] = useState("All");
   const list = skills.filter((s) => cat === "All" || s.category === cat);
   return (
     <section id="skills" className="scroll-mt-20 border-t bg-card py-20">
       <div className="mx-auto max-w-6xl px-5">
         <SectionTitle n="02">Skills</SectionTitle>
-        <Chips label="Filter skills" items={["All", ...skillCategories] as const} value={cat} onChange={setCat} />
+        <Chips label="Filter skills" items={["All", ...skillCategories]} value={cat} onChange={setCat} />
         <ul className="grid gap-x-10 gap-y-6 md:grid-cols-2">
           {list.map((s) => (
             <li key={s.name}>
@@ -247,8 +261,11 @@ function Skills() {
 }
 
 function Projects() {
+  const { profile, skills, projects } = useContent();
+  void skills; void projects;
   const [q, setQ] = useState("");
-  const [cat, setCat] = useState<"All" | "AI" | "Web">("All");
+  const [cat, setCat] = useState("All");
+  const cats = ["All", ...Array.from(new Set(projects.map((p) => p.category)))];
   const [open, setOpen] = useState<Project | null>(null);
   const list = useMemo(() => {
     const t = q.toLowerCase();
@@ -257,13 +274,13 @@ function Projects() {
         (cat === "All" || p.category === cat) &&
         (p.title + p.summary + p.tags.join(" ")).toLowerCase().includes(t),
     );
-  }, [q, cat]);
+  }, [q, cat, projects]);
   return (
     <section id="projects" className="scroll-mt-20 border-t py-20">
       <div className="mx-auto max-w-6xl px-5">
         <SectionTitle n="03">Projects</SectionTitle>
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <Chips label="Filter projects" items={["All", "AI", "Web"] as const} value={cat} onChange={setCat} />
+          <Chips label="Filter projects" items={cats} value={cat} onChange={setCat} />
           <label className="mb-8 block md:w-72">
             <span className="sr-only">Search projects</span>
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search projects" className="w-full rounded-md border-2 bg-card px-3 py-2 text-sm" />
@@ -292,8 +309,10 @@ function Projects() {
             <>
               <DialogHeader>
                 <DialogTitle className="font-display text-2xl">{open.title}</DialogTitle>
-                <DialogDescription>{open.description}</DialogDescription>
+                <DialogDescription className="sr-only">{open.summary}</DialogDescription>
               </DialogHeader>
+              {open.image && <img src={open.image} alt={`${open.title} screenshot`} className="aspect-video w-full rounded-md object-cover" />}
+              <div className="prose-sm space-y-2 text-sm text-muted-foreground [&_a]:text-primary [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(open.description) }} />
               <div className="flex flex-wrap gap-2">
                 {open.tags.map((t) => <span key={t} className="rounded-sm bg-muted px-2 py-1 text-xs font-semibold">{t}</span>)}
               </div>
@@ -311,15 +330,10 @@ function Projects() {
   );
 }
 
-const schema = z.object({
-  name: z.string().trim().min(2, "Enter your name").max(100),
-  email: z.string().trim().email("Enter a valid email").max(255),
-  subject: z.string().trim().min(3, "Add a subject").max(150),
-  message: z.string().trim().min(10, "Write at least 10 characters").max(2000),
-});
-type Fields = z.infer<typeof schema>;
 
 function Contact() {
+  const { profile, skills, projects } = useContent();
+  void skills; void projects;
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
   const [sent, setSent] = useState(false);
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
