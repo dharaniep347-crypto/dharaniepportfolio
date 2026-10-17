@@ -15,7 +15,7 @@ export default defineConfig({
   vite: {
     // Pre-bundle 3D/animation deps with React so they share one React copy.
     optimizeDeps: {
-      include: ["framer-motion", "three", "@react-three/fiber"],
+      include: ["framer-motion", "three", "@react-three/fiber", "@tiptap/react", "@tiptap/starter-kit", "recharts"],
     },
   },
 });
