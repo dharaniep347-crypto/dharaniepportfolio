@@ -6,6 +6,7 @@ export const profile = {
   nameLines: ["Dharani", "E P"],
   title: "AI and Full Stack Developer",
   bio: "Third-year AI and Data Science student building AI-powered full-stack web apps.",
+  synopsis: "I build AI-powered full-stack web apps with React, Spring Boot and Node.js.",
   about: [
     "I'm a third-year B.Tech student in Artificial Intelligence and Data Science at PGP College of Engineering and Technology. I'm interested in AI-powered full-stack development and in building useful applications that combine web technologies with AI.",
     "I work with React, Spring Boot, Node.js and Express, with MySQL and MongoDB for data and AWS for deployment. I'm eager to strengthen my practical skills through projects and collaborative learning.",
@@ -80,9 +81,9 @@ export const projects: Project[] = [
   {
     title: "My Portfolio",
     category: "Web",
-    summary: "A 3D animated personal portfolio website.",
+    summary: "A 3D, streaming-style personal portfolio presenting my profile and projects.",
     description:
-      "A 3D animated personal portfolio website presenting my profile and projects.",
+      "A 3D, streaming-style personal portfolio presenting my profile and projects.",
     tags: ["React", "Three.js", "Tailwind CSS"],
     demo: "",
     source: "",
@@ -96,5 +97,24 @@ export const projects: Project[] = [
     tags: ["Python", "Data Science"],
     demo: "",
     source: "",
+  },
+];
+
+/** "Continue watching"-style journey cards. */
+export const journey = [
+  {
+    title: "B.Tech in Artificial Intelligence and Data Science",
+    subtitle: "PGP College of Engineering and Technology · Year 3 of 4",
+    progress: 75,
+  },
+  {
+    title: "Learning AWS (EC2, S3, IAM)",
+    subtitle: "Cloud deployment fundamentals",
+    progress: 40,
+  },
+  {
+    title: "Learning Spring Boot security",
+    subtitle: "Authentication and authorization",
+    progress: 50,
   },
 ];
