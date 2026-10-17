@@ -33,33 +33,36 @@
   --color-ink: var(--ink);
   --color-paper: var(--paper);
   --color-signal: var(--signal);
+  --color-raised: var(--raised);
 }
 
 :root {
   --radius: 0.375rem;
-  --ink: oklch(0.2 0.06 274);
-  --paper: oklch(0.975 0.006 270);
-  --cobalt: oklch(0.47 0.27 268);
-  --signal: oklch(0.88 0.17 90);
-  --background: var(--paper);
-  --foreground: var(--ink);
-  --card: oklch(1 0 0);
-  --card-foreground: var(--ink);
-  --popover: oklch(1 0 0);
-  --popover-foreground: var(--ink);
-  --primary: var(--cobalt);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: var(--ink);
-  --secondary-foreground: var(--paper);
-  --muted: oklch(0.94 0.01 270);
-  --muted-foreground: oklch(0.47 0.04 272);
-  --accent: var(--signal);
-  --accent-foreground: var(--ink);
-  --destructive: oklch(0.55 0.22 27);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.88 0.015 270);
-  --input: oklch(0.85 0.02 270);
-  --ring: var(--cobalt);
+  /* Streaming-style dark palette */
+  --ink: #07091a;
+  --paper: #f3f4fb;
+  --cobalt: #2b3bff;
+  --signal: #ffd23f;
+  --raised: #1a1f42;
+  --background: #07091a;
+  --foreground: #f3f4fb;
+  --card: #11152e;
+  --card-foreground: #f3f4fb;
+  --popover: #1a1f42;
+  --popover-foreground: #f3f4fb;
+  --primary: #2b3bff;
+  --primary-foreground: #f3f4fb;
+  --secondary: #1a1f42;
+  --secondary-foreground: #f3f4fb;
+  --muted: #11152e;
+  --muted-foreground: #9aa0c3;
+  --accent: #1a1f42;
+  --accent-foreground: #f3f4fb;
+  --destructive: #e5484d;
+  --destructive-foreground: #f3f4fb;
+  --border: #232a52;
+  --input: #232a52;
+  --ring: #2b3bff;
 }
 
 @layer base {
@@ -97,6 +100,28 @@
 }
 @utility page-fade {
   animation: page-fade 220ms ease-out both;
+}
+
+/* Horizontal rows: hidden scrollbar, scroll-snap */
+@utility row-scroll {
+  display: flex;
+  gap: 0.75rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar { display: none; }
+  & > * { scroll-snap-align: start; }
+}
+
+/* Huge outlined ranking numbers */
+@utility rank-number {
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 3px var(--signal);
+  line-height: 0.8;
 }
 
 @media (prefers-reduced-motion: reduce) {
