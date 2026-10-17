@@ -117,7 +117,7 @@ export default function HeroScene() {
 
   useEffect(() => {
     setReduced(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
-    const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting));
+    const io = new IntersectionObserver(([e]) => setVisible(!!e?.isIntersecting));
     if (wrap.current) io.observe(wrap.current);
     return () => io.disconnect();
   }, []);
