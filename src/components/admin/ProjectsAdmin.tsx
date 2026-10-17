@@ -112,15 +112,15 @@ function ProjectForm({ initial, onDone }: { initial: Draft; onDone: () => void }
 
   const save = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!d.title.trim()) return toast.error("Add a title");
-    if (d.title.length > 200 || d.short_description.length > 300) return toast.error("Title or short description is too long");
+    if (!d.title.trim()) { toast.error("Add a title"); return; }
+    if (d.title.length > 200 || d.short_description.length > 300) { toast.error("Title or short description is too long"); return; }
     setBusy(true);
     const { id, ...row } = { ...d, technologies: tech.split(",").map((t) => t.trim()).filter(Boolean) };
     const { error } = id
       ? await supabase.from("projects").update(row).eq("id", id)
       : await supabase.from("projects").insert(row);
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Project saved");
     onDone();
   };

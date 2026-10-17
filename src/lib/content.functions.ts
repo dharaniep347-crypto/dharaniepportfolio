@@ -53,8 +53,8 @@ export const getSiteContent = createServerFn({ method: "GET" }).handler(async ()
             phone: prof.phone,
             location: prof.location,
             education: prof.education,
-            github: socials.github ?? "",
-            linkedin: socials.linkedin ?? "",
+            github: socials["github"] ?? "",
+            linkedin: socials["linkedin"] ?? "",
             portrait: resolve(prof.avatar_url),
             resume: resolve(prof.resume_url),
           }

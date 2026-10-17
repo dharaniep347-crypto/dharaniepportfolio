@@ -33,7 +33,7 @@ export function ProfileAdmin() {
       name: data?.name ?? "", title: data?.title ?? "", bio: data?.bio ?? "", about: data?.about ?? "",
       email: data?.email ?? "", phone: data?.phone ?? "", location: data?.location ?? "", education: data?.education ?? "",
       avatar_url: data?.avatar_url ?? null, resume_url: data?.resume_url ?? null,
-      github: s.github ?? "", linkedin: s.linkedin ?? "",
+      github: s["github"] ?? "", linkedin: s["linkedin"] ?? "",
       skills: Array.isArray(data?.skills) ? (data!.skills as Skill[]) : [],
     });
     viewUrl(data?.avatar_url).then(setAvatar);
