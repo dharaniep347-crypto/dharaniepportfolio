@@ -81,3 +81,29 @@
   font-weight: 900;
   letter-spacing: -0.04em;
 }
+
+/* Project row 3D tilt (values set from pointer position, max 6deg) */
+@utility tilt-row {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform 200ms ease-out;
+  will-change: transform;
+}
+
+/* Short fade between pages */
+@keyframes page-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@utility page-fade {
+  animation: page-fade 220ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .tilt-row { transform: none !important; }
+}
