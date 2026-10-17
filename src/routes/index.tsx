@@ -1,4 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type { MouseEvent } from "react";
+
+const MAX_TILT = 6;
+function tilt(e: MouseEvent<HTMLElement>) {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const el = e.currentTarget;
+  const r = el.getBoundingClientRect();
+  const x = (e.clientX - r.left) / r.width - 0.5;
+  const y = (e.clientY - r.top) / r.height - 0.5;
+  el.style.setProperty("--ry", `${(x * 2 * MAX_TILT).toFixed(2)}deg`);
+  el.style.setProperty("--rx", `${(-y * 2 * MAX_TILT).toFixed(2)}deg`);
+}
+function untilt(e: MouseEvent<HTMLElement>) {
+  e.currentTarget.style.removeProperty("--rx");
+  e.currentTarget.style.removeProperty("--ry");
+}
+const SkillsScene = lazy(() => import("@/components/SkillsScene"));
 import { ClientOnly } from "@tanstack/react-router";
 import { Component, lazy, Suspense, useMemo, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
@@ -236,6 +253,15 @@ function Skills() {
       <div className="mx-auto max-w-6xl px-5">
         <SectionTitle n="02">Skills</SectionTitle>
         <Chips label="Filter skills" items={["All", ...skillCategories]} value={cat} onChange={setCat} />
+        <div className="mb-10 h-[340px] rounded-md bg-muted/50 md:h-[420px]">
+          <ClientOnly fallback={null}>
+            {hasWebGL() ? (
+              <GLBoundary>
+                <Suspense fallback={null}><SkillsScene skills={list} /></Suspense>
+              </GLBoundary>
+            ) : null}
+          </ClientOnly>
+        </div>
         <ul className="grid gap-x-10 gap-y-6 md:grid-cols-2">
           {list.map((s) => (
             <li key={s.name}>
@@ -289,7 +315,7 @@ function Projects() {
         <ul className="border-t-2 border-ink">
           {list.map((p, i) => (
             <li key={p.title} className="border-b">
-              <button onClick={() => setOpen(p)} className="group grid w-full gap-2 py-6 text-left transition-transform duration-300 hover:translate-x-3 md:grid-cols-[3rem_1fr_auto] md:items-center">
+              <button onClick={() => setOpen(p)} onMouseMove={tilt} onMouseLeave={untilt} className="tilt-row group grid w-full gap-2 py-6 text-left md:grid-cols-[3rem_1fr_auto] md:items-center">
                 <span className="font-wide text-sm text-primary">{String(i + 1).padStart(2, "0")}</span>
                 <span>
                   <span className="block font-display text-xl font-extrabold group-hover:text-primary md:text-2xl">{p.title}</span>
