@@ -336,10 +336,16 @@ function Contact() {
   void skills; void projects;
   const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
   const [sent, setSent] = useState(false);
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [sending, setSending] = useState(false);
+  const [failure, setFailure] = useState("");
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
-    if (fd.get("company")) return; // honeypot
+    const form = e.currentTarget;
+    const fd = new FormData(form);
+    setSent(false);
+    setFailure("");
+    if (fd.get("company")) { setSent(true); form.reset(); return; } // honeypot: pretend success
+    fd.delete("company");
     const r = schema.safeParse(Object.fromEntries(fd));
     if (!r.success) {
       const errs: typeof errors = {};
@@ -348,8 +354,15 @@ function Contact() {
       return;
     }
     setErrors({});
-    setSent(true);
-    e.currentTarget.reset();
+    setSending(true);
+    try {
+      const res = await submitMessage({ data: r.data });
+      if (res.ok) { setSent(true); form.reset(); } else setFailure(res.error);
+    } catch {
+      setFailure("Your message couldn't be sent. Please check your entries and try again.");
+    } finally {
+      setSending(false);
+    }
   };
   const field = (name: keyof Fields, label: string, type = "text") => (
     <div>
