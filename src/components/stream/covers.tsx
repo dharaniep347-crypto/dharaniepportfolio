@@ -19,7 +19,7 @@ export function ProjectCover({
   className?: string;
   iconClass?: string;
 }) {
-  const style = coverStyles[index % coverStyles.length];
+  const style = coverStyles[index % coverStyles.length]!;
   const Icon = style.icon;
   return (
     <div className={`relative overflow-hidden ${className}`} style={{ background: style.gradient }} role="img" aria-label={`${title} cover artwork`}>

@@ -1,50 +1,32 @@
 import { createFileRoute } from "@tanstack/react-router";
-import type { MouseEvent } from "react";
-
-const MAX_TILT = 6;
-function tilt(e: MouseEvent<HTMLElement>) {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const el = e.currentTarget;
-  const r = el.getBoundingClientRect();
-  const x = (e.clientX - r.left) / r.width - 0.5;
-  const y = (e.clientY - r.top) / r.height - 0.5;
-  el.style.setProperty("--ry", `${(x * 2 * MAX_TILT).toFixed(2)}deg`);
-  el.style.setProperty("--rx", `${(-y * 2 * MAX_TILT).toFixed(2)}deg`);
-}
-function untilt(e: MouseEvent<HTMLElement>) {
-  e.currentTarget.style.removeProperty("--rx");
-  e.currentTarget.style.removeProperty("--ry");
-}
-const SkillsScene = lazy(() => import("@/components/SkillsScene"));
-import { ClientOnly } from "@tanstack/react-router";
-import { Component, lazy, Suspense, useMemo, useState, type ReactNode } from "react";
-import { motion } from "framer-motion";
-import { Github, Linkedin, Mail, MapPin, Phone, GraduationCap, ArrowRight, Download } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import DOMPurify from "dompurify";
 import { profile as staticProfile } from "@/data/portfolio";
-import { skillCategories, type SiteProject as Project } from "@/lib/content";
-import { getSiteContent, submitMessage } from "@/lib/content.functions";
-import { contactSchema as schema, type ContactFields as Fields } from "@/lib/contact-schema";
-import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-
-const HeroScene = lazy(() => import("@/components/HeroScene"));
+import { getSiteContent } from "@/lib/content.functions";
+import type { SiteProject } from "@/lib/content";
+import { ViewerProvider, useViewer, profileRows, prefersReducedMotion } from "@/components/stream/state";
+import Intro from "@/components/stream/Intro";
+import ProfileGate from "@/components/stream/ProfileGate";
+import Navbar from "@/components/stream/Navbar";
+import Billboard from "@/components/stream/Billboard";
+import DetailModal, { type ModalItem } from "@/components/stream/DetailModal";
+import ContactModal from "@/components/stream/ContactModal";
+import { FeaturedRow, Top10Row, TechStackRow, JourneyRow, SummaryRow, ContactRow, MyListRow } from "@/components/stream/rows";
 
 const contentQuery = queryOptions({ queryKey: ["site-content"], queryFn: () => getSiteContent() });
 function useContent() {
   const { data } = useSuspenseQuery(contentQuery);
   return data;
 }
-const profile = staticProfile;
-const title = `${profile.name} | ${profile.title}`;
+
+const title = `${staticProfile.name} | ${staticProfile.title}`;
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title },
-      { name: "description", content: profile.bio },
+      { name: "description", content: staticProfile.bio },
       { property: "og:title", content: title },
-      { property: "og:description", content: profile.bio },
+      { property: "og:description", content: staticProfile.bio },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -54,13 +36,13 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Person",
-          name: profile.name,
-          jobTitle: profile.title,
-          email: `mailto:${profile.email}`,
-          telephone: profile.phone,
+          name: staticProfile.name,
+          jobTitle: staticProfile.title,
+          email: `mailto:${staticProfile.email}`,
+          telephone: staticProfile.phone,
           address: { "@type": "PostalAddress", addressLocality: "Karur", addressRegion: "Tamil Nadu", addressCountry: "IN" },
           alumniOf: "PGP College of Engineering and Technology",
-          sameAs: [profile.linkedin, profile.github],
+          sameAs: [staticProfile.linkedin, staticProfile.github],
         }),
       },
     ],
@@ -70,358 +52,97 @@ export const Route = createFileRoute("/")({
   errorComponent: () => <div className="p-10">This page didn't load. Please refresh.</div>,
 });
 
-class GLBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
-  override state = { failed: false };
-  static getDerivedStateFromError() { return { failed: true }; }
-  override render() { return this.state.failed ? null : this.props.children; }
-}
-
-function hasWebGL() {
-  try {
-    const c = document.createElement("canvas");
-    return !!(c.getContext("webgl2") || c.getContext("webgl"));
-  } catch { return false; }
-}
-
-const nav = [
-  ["About", "#about"],
-  ["Skills", "#skills"],
-  ["Projects", "#projects"],
-  ["Contact", "#contact"],
-] as const;
+const INTRO_KEY = "pf-intro-seen";
 
 function Index() {
-  const { profile, skills, projects } = useContent();
-  void skills; void projects;
   return (
-    <div className="min-h-screen">
-      <header className="sticky top-0 z-40 border-b bg-background/90 backdrop-blur">
-        <nav aria-label="Main" className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-          <a href="#top" className="font-wide text-lg">D<span className="text-primary">.</span>EP</a>
-          <ul className="flex gap-4 text-sm font-semibold sm:gap-7">
-            {nav.map(([l, h]) => (
-              <li key={h}><a href={h} className="hover:text-primary">{l}</a></li>
-            ))}
-          </ul>
-        </nav>
-      </header>
-      <main id="top">
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Contact />
-      </main>
-      <footer className="bg-ink text-paper">
-        <div className="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-wide text-xl">{profile.name}</p>
-          <div className="flex gap-5 text-sm">
-            <a href={profile.github} target="_blank" rel="noreferrer" className="hover:text-signal">GitHub</a>
-            <a href={profile.linkedin} target="_blank" rel="noreferrer" className="hover:text-signal">LinkedIn</a>
-            <a href={`mailto:${profile.email}`} className="hover:text-signal">Email</a>
-          </div>
-          <p className="text-sm opacity-70">© {new Date().getFullYear()} {profile.name}</p>
-        </div>
-      </footer>
-    </div>
+    <ViewerProvider>
+      <Gate />
+    </ViewerProvider>
   );
 }
 
-function Hero() {
-  const { profile, skills, projects } = useContent();
-  void skills; void projects;
-  return (
-    <section className="mx-auto grid max-w-6xl items-center gap-6 px-5 pb-16 pt-12 md:grid-cols-[1.2fr_1fr] md:pt-20">
-      <div>
-        <p className="mb-4 text-sm font-bold uppercase tracking-widest text-primary">{profile.title}</p>
-        <h1 className="font-wide leading-[0.88]" style={{ fontSize: "clamp(3rem, 10vw, 9rem)" }}>
-          {[profile.name.split(" ")[0], profile.name.split(" ").slice(1).join(" ")].filter(Boolean).map((line, i) => (
-            <span key={line} className="block overflow-hidden pb-1">
-              <motion.span
-                className="block"
-                initial={{ y: "110%" }}
-                animate={{ y: 0 }}
-                transition={{ duration: 0.8, delay: i * 0.15, ease: [0.2, 0.8, 0.2, 1] }}
-              >
-                {line}
-              </motion.span>
-            </span>
-          ))}
-        </h1>
-        <motion.div
-          className="mt-4 h-3 w-48 origin-left bg-accent"
-          initial={{ scaleX: 0 }}
-          animate={{ scaleX: 1 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-        />
-        <p className="mt-6 max-w-md text-lg text-muted-foreground">{profile.bio}</p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button asChild size="lg"><a href="#projects">See my projects <ArrowRight /></a></Button>
-          <Button asChild size="lg" variant="outline"><a href={profile.resume} download><Download /> Download resume</a></Button>
-          <Button asChild size="lg" variant="ghost"><a href="#contact">Get in touch</a></Button>
-        </div>
-        <div className="mt-6 flex gap-3">
-          <a href={profile.github} target="_blank" rel="noreferrer" aria-label="GitHub profile" className="rounded-md border p-2 hover:bg-accent"><Github className="size-5" /></a>
-          <a href={profile.linkedin} target="_blank" rel="noreferrer" aria-label="LinkedIn profile" className="rounded-md border p-2 hover:bg-accent"><Linkedin className="size-5" /></a>
-        </div>
-      </div>
-      <div className="h-[360px] md:h-[520px]">
-        <ClientOnly fallback={null}>
-          {hasWebGL() ? (
-            <GLBoundary>
-              <Suspense fallback={null}><HeroScene /></Suspense>
-            </GLBoundary>
-          ) : null}
-        </ClientOnly>
-      </div>
-    </section>
-  );
+function Gate() {
+  const { profile, pickProfile, hydrated } = useViewer();
+  const [introDone, setIntroDone] = useState(true); // SSR-safe default: no intro until hydrated
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let seen = false;
+    try { seen = sessionStorage.getItem(INTRO_KEY) === "1"; } catch { /* ignore */ }
+    setIntroDone(seen || prefersReducedMotion());
+    setReady(true);
+  }, []);
+
+  const finishIntro = useCallback(() => {
+    setIntroDone(true);
+    try { sessionStorage.setItem(INTRO_KEY, "1"); } catch { /* ignore */ }
+  }, []);
+
+  if (!ready || !hydrated) return <div className="min-h-screen bg-[#07091a]" />;
+  if (!introDone) return <Intro onDone={finishIntro} />;
+  if (!profile) return <ProfileGate onPick={pickProfile} />;
+  return <Home />;
 }
 
-function SectionTitle({ n, children }: { n: string; children: ReactNode }) {
-  return (
-    <div className="mb-10 flex items-baseline gap-4">
-      <span className="font-wide text-sm text-primary">{n}</span>
-      <h2 className="font-wide text-4xl md:text-6xl">{children}</h2>
-    </div>
-  );
-}
+function Home() {
+  const content = useContent();
+  const { profile } = useViewer();
+  const [modal, setModal] = useState<ModalItem | null>(null);
+  const [contactOpen, setContactOpen] = useState(false);
 
-function About() {
-  const { profile, skills, projects } = useContent();
-  void skills; void projects;
-  const facts = [
-    [MapPin, "Location", profile.location],
-    [Mail, "Email", profile.email],
-    [Phone, "Phone", profile.phone],
-    [GraduationCap, "Education", profile.education],
-  ] as const;
-  return (
-    <section id="about" className="scroll-mt-20 border-t py-20">
-      <div className="mx-auto max-w-6xl px-5">
-        <SectionTitle n="01">About</SectionTitle>
-        <div className="grid gap-10 md:grid-cols-[320px_1fr]">
-          <div className="relative aspect-[4/5] overflow-hidden rounded-md bg-ink">
-            {profile.portrait ? (
-              <img src={profile.portrait} alt={`Portrait of ${profile.name}`} className="h-full w-full object-cover object-center" />
-            ) : (
-              <div className="flex h-full items-center justify-center font-wide text-8xl text-signal" role="img" aria-label={`${profile.name} initials`}>DEP</div>
-            )}
-            <div className="absolute bottom-0 left-0 h-2 w-full bg-accent" />
-          </div>
-          <div>
-            {profile.about.map((p) => <p key={p.slice(0, 20)} className="mb-5 text-lg leading-relaxed">{p}</p>)}
-            <dl className="mt-8 grid gap-4 sm:grid-cols-2">
-              {facts.map(([Icon, k, v]) => (
-                <div key={k} className="flex gap-3 border-l-4 border-primary pl-3">
-                  <Icon className="mt-1 size-4 shrink-0 text-primary" aria-hidden />
-                  <div><dt className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{k}</dt><dd className="text-sm">{v}</dd></div>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+  const openProject = useCallback((p: SiteProject, i: number) => setModal({ kind: "project", project: p, index: i }), []);
+  const openAbout = useCallback(() => setModal({ kind: "about" }), []);
 
-function Chips<T extends string>({ items, value, onChange, label }: { items: readonly T[]; value: T; onChange: (v: T) => void; label: string }) {
-  return (
-    <div role="group" aria-label={label} className="mb-8 flex flex-wrap gap-2">
-      {items.map((c) => (
-        <button
-          key={c}
-          aria-pressed={value === c}
-          onClick={() => onChange(c)}
-          className={`rounded-full border-2 px-4 py-1.5 text-sm font-semibold transition-colors ${value === c ? "border-ink bg-ink text-paper" : "border-border hover:border-ink"}`}
-        >
-          {c}
-        </button>
-      ))}
-    </div>
-  );
-}
-
-function Skills() {
-  const { profile, skills, projects } = useContent();
-  void skills; void projects;
-  const [cat, setCat] = useState("All");
-  const list = skills.filter((s) => cat === "All" || s.category === cat);
-  return (
-    <section id="skills" className="scroll-mt-20 border-t bg-card py-20">
-      <div className="mx-auto max-w-6xl px-5">
-        <SectionTitle n="02">Skills</SectionTitle>
-        <Chips label="Filter skills" items={["All", ...skillCategories]} value={cat} onChange={setCat} />
-        <div className="mb-10 h-[340px] rounded-md bg-muted/50 md:h-[420px]">
-          <ClientOnly fallback={null}>
-            {hasWebGL() ? (
-              <GLBoundary>
-                <Suspense fallback={null}><SkillsScene skills={list} /></Suspense>
-              </GLBoundary>
-            ) : null}
-          </ClientOnly>
-        </div>
-        <ul className="grid gap-x-10 gap-y-6 md:grid-cols-2">
-          {list.map((s) => (
-            <li key={s.name}>
-              <div className="mb-2 flex justify-between text-sm">
-                <span className="font-bold">{s.name} <span className="font-normal text-muted-foreground">· {s.category}</span></span>
-                <span className="font-mono">{s.level}%</span>
-              </div>
-              <div className="h-2.5 overflow-hidden rounded-full bg-muted" role="progressbar" aria-valuenow={s.level} aria-valuemin={0} aria-valuemax={100} aria-label={s.name}>
-                <motion.div
-                  className="h-full bg-primary"
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${s.level}%` }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1, ease: "easeOut" }}
-                />
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-  );
-}
-
-function Projects() {
-  const { profile, skills, projects } = useContent();
-  void skills; void projects;
-  const [q, setQ] = useState("");
-  const [cat, setCat] = useState("All");
-  const cats = ["All", ...Array.from(new Set(projects.map((p) => p.category)))];
-  const [open, setOpen] = useState<Project | null>(null);
-  const list = useMemo(() => {
-    const t = q.toLowerCase();
-    return projects.filter(
-      (p) =>
-        (cat === "All" || p.category === cat) &&
-        (p.title + p.summary + p.tags.join(" ")).toLowerCase().includes(t),
-    );
-  }, [q, cat, projects]);
-  return (
-    <section id="projects" className="scroll-mt-20 border-t py-20">
-      <div className="mx-auto max-w-6xl px-5">
-        <SectionTitle n="03">Projects</SectionTitle>
-        <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-          <Chips label="Filter projects" items={cats} value={cat} onChange={setCat} />
-          <label className="mb-8 block md:w-72">
-            <span className="sr-only">Search projects</span>
-            <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search projects" className="w-full rounded-md border-2 bg-card px-3 py-2 text-sm" />
-          </label>
-        </div>
-        <ul className="border-t-2 border-ink">
-          {list.map((p, i) => (
-            <li key={p.title} className="border-b">
-              <button onClick={() => setOpen(p)} onMouseMove={tilt} onMouseLeave={untilt} className="tilt-row group grid w-full gap-2 py-6 text-left md:grid-cols-[3rem_1fr_auto] md:items-center">
-                <span className="font-wide text-sm text-primary">{String(i + 1).padStart(2, "0")}</span>
-                <span>
-                  <span className="block font-display text-xl font-extrabold group-hover:text-primary md:text-2xl">{p.title}</span>
-                  <span className="block text-muted-foreground">{p.summary}</span>
-                  <span className="mt-1 block text-xs font-semibold uppercase tracking-wider">{p.tags.join(" · ")}</span>
-                </span>
-                <span className="w-fit rounded-sm bg-accent px-2 py-0.5 text-xs font-bold">{p.category}</span>
-              </button>
-            </li>
-          ))}
-          {list.length === 0 && <li className="py-6 text-muted-foreground">No projects match your search.</li>}
-        </ul>
-      </div>
-      <Dialog open={!!open} onOpenChange={(o) => !o && setOpen(null)}>
-        <DialogContent>
-          {open && (
-            <>
-              <DialogHeader>
-                <DialogTitle className="font-display text-2xl">{open.title}</DialogTitle>
-                <DialogDescription className="sr-only">{open.summary}</DialogDescription>
-              </DialogHeader>
-              {open.image && <img src={open.image} alt={`${open.title} screenshot`} className="aspect-video w-full rounded-md object-cover" />}
-              <div className="prose-sm space-y-2 text-sm text-muted-foreground [&_a]:text-primary [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(open.description) }} />
-              <div className="flex flex-wrap gap-2">
-                {open.tags.map((t) => <span key={t} className="rounded-sm bg-muted px-2 py-1 text-xs font-semibold">{t}</span>)}
-              </div>
-              {(open.demo || open.source) && (
-                <div className="flex gap-3">
-                  {open.demo && <Button asChild><a href={open.demo} target="_blank" rel="noreferrer">Live demo</a></Button>}
-                  {open.source && <Button asChild variant="outline"><a href={open.source} target="_blank" rel="noreferrer">Source</a></Button>}
-                </div>
-              )}
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
-    </section>
-  );
-}
-
-
-function Contact() {
-  const { profile, skills, projects } = useContent();
-  void skills; void projects;
-  const [errors, setErrors] = useState<Partial<Record<keyof Fields, string>>>({});
-  const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [failure, setFailure] = useState("");
-  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const fd = new FormData(form);
-    setSent(false);
-    setFailure("");
-    if (fd.get("company")) { setSent(true); form.reset(); return; } // honeypot: pretend success
-    fd.delete("company");
-    const r = schema.safeParse(Object.fromEntries(fd));
-    if (!r.success) {
-      const errs: typeof errors = {};
-      r.error.issues.forEach((i) => { errs[i.path[0] as keyof Fields] ??= i.message; });
-      setErrors(errs);
-      return;
-    }
-    setErrors({});
-    setSending(true);
-    try {
-      const res = await submitMessage({ data: r.data });
-      if (res.ok) { setSent(true); form.reset(); } else setFailure(res.error);
-    } catch {
-      setFailure("Your message couldn't be sent. Please check your entries and try again.");
-    } finally {
-      setSending(false);
+  const order = profileRows[profile ?? "explorer"];
+  const rowFor = (id: string) => {
+    switch (id) {
+      case "summary": return <SummaryRow key={id} content={content} onMoreInfo={openAbout} />;
+      case "education": return <JourneyRow key={id} title="Journey" />;
+      case "learning": return <JourneyRow key={id} title="Currently learning" />;
+      case "top10": return <Top10Row key={id} content={content} />;
+      case "projects": return <FeaturedRow key={id} content={content} onOpenProject={openProject} />;
+      case "techstack": return <TechStackRow key={id} content={content} />;
+      case "contact": return <ContactRow key={id} content={content} onMessage={() => setContactOpen(true)} />;
+      default: return null;
     }
   };
-  const field = (name: keyof Fields, label: string, type = "text") => (
-    <div>
-      <label htmlFor={name} className="mb-1 block text-sm font-bold">{label}</label>
-      {name === "message" ? (
-        <textarea id={name} name={name} rows={5} aria-invalid={!!errors[name]} aria-describedby={`${name}-err`} className="w-full rounded-md border-2 bg-card px-3 py-2 aria-[invalid=true]:border-destructive" />
-      ) : (
-        <input id={name} name={name} type={type} aria-invalid={!!errors[name]} aria-describedby={`${name}-err`} className="w-full rounded-md border-2 bg-card px-3 py-2 aria-[invalid=true]:border-destructive" />
-      )}
-      <p id={`${name}-err`} className="mt-1 min-h-5 text-sm text-destructive">{errors[name]}</p>
-    </div>
-  );
+
   return (
-    <section id="contact" className="scroll-mt-20 border-t bg-card py-20">
-      <div className="mx-auto grid max-w-6xl gap-10 px-5 md:grid-cols-2">
-        <div>
-          <SectionTitle n="04">Contact</SectionTitle>
-          <p className="text-lg text-muted-foreground">Have a project, internship or idea? Send me a message.</p>
-          <a href={`mailto:${profile.email}`} className="mt-6 inline-block font-display text-xl font-extrabold underline decoration-accent decoration-4 underline-offset-4">{profile.email}</a>
+    <div className="min-h-screen bg-[#07091a]">
+      <Navbar content={content} onOpenProject={(p) => openProject(p, content.projects.indexOf(p))} />
+      <main>
+        <Billboard content={content} with3D={profile === "explorer"} onMoreInfo={openAbout} />
+        {/* Rows overlap the bottom 80px of the billboard */}
+        <div className="relative z-20 -mt-20 space-y-10 pb-16">
+          {order.map(rowFor)}
+          <MyListRow content={content} onOpenProject={openProject} />
         </div>
-        <form onSubmit={onSubmit} noValidate className="space-y-2">
-          <div className="grid gap-x-4 sm:grid-cols-2">
-            {field("name", "Name")}
-            {field("email", "Email", "email")}
+      </main>
+      <footer className="border-t border-[#232a52] py-10">
+        <div className="mx-auto grid max-w-7xl gap-8 px-5 text-sm text-muted-foreground sm:grid-cols-4">
+          <div>
+            <p className="font-wide mb-3 text-base text-[#2b3bff]">DHARANI</p>
+            <p>© {new Date().getFullYear()} {content.profile.name}</p>
           </div>
-          {field("subject", "Subject")}
-          {field("message", "Message")}
-          <input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
-          <Button type="submit" size="lg" disabled={sending}>{sending ? "Sending…" : "Send message"}</Button>
-          {sent && <p role="status" className="mt-3 rounded-md bg-accent px-3 py-2 text-sm font-semibold">Thanks! Your message was sent. I'll get back to you soon.</p>}
-          {failure && <p role="alert" className="mt-3 text-sm font-semibold text-destructive">{failure}</p>}
-        </form>
-      </div>
-    </section>
+          <ul className="space-y-2">
+            <li><a href="#top" className="hover:text-[#f3f4fb]">Home</a></li>
+            <li><a href="#projects" className="hover:text-[#f3f4fb]">Projects</a></li>
+            <li><a href="#skills" className="hover:text-[#f3f4fb]">Skills</a></li>
+            <li><a href="#contact" className="hover:text-[#f3f4fb]">Contact</a></li>
+          </ul>
+          <ul className="space-y-2">
+            <li><a href={content.profile.github} target="_blank" rel="noreferrer" className="hover:text-[#f3f4fb]">GitHub</a></li>
+            <li><a href={content.profile.linkedin} target="_blank" rel="noreferrer" className="hover:text-[#f3f4fb]">LinkedIn</a></li>
+          </ul>
+          <ul className="space-y-2">
+            <li><a href={content.profile.resume} download className="hover:text-[#f3f4fb]">Resume</a></li>
+            <li><a href={`mailto:${content.profile.email}`} className="hover:text-[#f3f4fb]">{content.profile.email}</a></li>
+          </ul>
+        </div>
+      </footer>
+      {modal && <DetailModal item={modal} content={content} onClose={() => setModal(null)} onOpenProject={openProject} />}
+      {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
+    </div>
   );
 }

@@ -33,8 +33,8 @@ export default function DetailModal({
       if (e.key === "Tab" && root) {
         const focusables = Array.from(root.querySelectorAll<HTMLElement>("button, a[href], [tabindex]:not([tabindex='-1'])"));
         if (!focusables.length) return;
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
+        const first = focusables[0]!;
+        const last = focusables[focusables.length - 1]!;
         if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
         else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
       }

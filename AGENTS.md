@@ -11,3 +11,5 @@
 - Public site content comes from the database via getSiteContent (src/lib/content.functions.ts); src/data/portfolio.ts is only the fallback when the database is empty or unreachable.
 - Files live in the private "portfolio-files" bucket (public buckets are blocked); DB stores storage paths and the site resolves them to signed URLs. Paths starting with "/" or "http" are used as-is.
 - First signup becomes admin via an auth.users trigger; a second trigger rejects signups once an admin exists. Admin access is enforced by RLS with has_role().
+
+- Frontend is a streaming-service-style UI: all homepage components live in src/components/stream/ (state.tsx holds viewer-profile + My List localStorage state); content still comes from getSiteContent with src/data/portfolio.ts as fallback.

@@ -11,6 +11,7 @@ import {
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 import { MotionConfig } from "framer-motion";
+import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -129,6 +130,7 @@ function RootComponent() {
         <div key={pathname} className="page-fade">
           <Outlet />
         </div>
+        <Toaster theme="dark" position="bottom-right" />
       </MotionConfig>
     </QueryClientProvider>
   );
