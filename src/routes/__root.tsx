@@ -130,6 +130,7 @@ function RootComponent() {
         <div key={pathname} className="page-fade">
           <Outlet />
         </div>
+        <Toaster theme="dark" position="bottom-right" />
       </MotionConfig>
     </QueryClientProvider>
   );
