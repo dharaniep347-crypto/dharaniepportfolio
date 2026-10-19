@@ -32,6 +32,23 @@ export const skillCategories = [
 ] as const;
 export type SkillCategory = (typeof skillCategories)[number];
 
+export const skillDetails: Record<string, string> = {
+  "React.js": "Hooks, Context API, Protected Routes",
+  "Spring Boot": "REST APIs, JPA, JWT Authentication, Role-Based Access",
+  AWS: "EC2, S3, IAM basics",
+  Languages: "Python, JavaScript, SQL",
+  Databases: "MySQL, MongoDB",
+  Tools: "Git, GitHub",
+  "Git and GitHub": "Git, GitHub",
+};
+
+export const projectCategories = ["All", "AI and Full Stack", "AI and Data Science", "Web"] as const;
+export type ProjectCategoryFilter = (typeof projectCategories)[number];
+
+export function filterProjects<T extends { category: string }>(items: T[], category: ProjectCategoryFilter): T[] {
+  return category === "All" ? items : items.filter((p) => p.category === category);
+}
+
 export const skills: { name: string; level: number; category: SkillCategory }[] = [
   { name: "Python", level: 80, category: "Languages" },
   { name: "JavaScript", level: 85, category: "Languages" },

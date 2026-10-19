@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Play, Plus, Check, ChevronDown, Mail, Phone, Linkedin, Github, Download, Send, Copy } from "lucide-react";
 import { toast } from "sonner";
 import type { SiteContent, SiteProject } from "@/lib/content";
-import { journey } from "@/data/portfolio";
+import { journey, skillDetails, projectCategories, filterProjects, type ProjectCategoryFilter } from "@/data/portfolio";
+import { Button } from "@/components/ui/button";
 import Row from "./Row";
 import { ProjectCover } from "./covers";
 import { useViewer, prefersReducedMotion } from "./state";
@@ -50,6 +51,7 @@ function FeaturedCard({
         ) : (
           <ProjectCover index={index} title={p.title} className="aspect-video w-full" />
         )}
+        <p className="px-3 py-2 text-xs leading-relaxed text-muted-foreground">{p.summary}</p>
       </button>
       {expanded && (
         <div className="absolute inset-x-0 top-full rounded-b-md bg-[#1a1f42] p-3 shadow-2xl">
@@ -73,11 +75,20 @@ function FeaturedCard({
 }
 
 export function FeaturedRow({ content, onOpenProject }: { content: SiteContent; onOpenProject: (p: SiteProject, i: number) => void }) {
+  const [category, setCategory] = useState<ProjectCategoryFilter>("All");
+  const visible = filterProjects(content.projects, category);
   return (
-    <Row id="projects" title="Featured projects">
-      {content.projects.map((p, i) => (
-        <FeaturedCard key={p.id} p={p} index={i} onOpen={() => onOpenProject(p, i)} />
+    <Row id="projects" title="Featured projects" headerContent={
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Project categories">
+        {projectCategories.map((c) => (
+          <Button key={c} size="sm" variant={category === c ? "secondary" : "outline"} aria-pressed={category === c} onClick={() => setCategory(c)}>{c}</Button>
+        ))}
+      </div>
+    }>
+      {visible.map((p) => (
+        <FeaturedCard key={p.id} p={p} index={content.projects.indexOf(p)} onOpen={() => onOpenProject(p, content.projects.indexOf(p))} />
       ))}
+      {!visible.length && <p className="text-sm text-muted-foreground">No projects in this category.</p>}
     </Row>
   );
 }
@@ -93,6 +104,7 @@ export function Top10Row({ content }: { content: SiteContent }) {
           <span aria-hidden className="rank-number -mr-6 text-[7rem] md:text-[9rem]">{i + 1}</span>
           <div className="relative flex h-56 w-36 flex-col justify-end rounded-md border border-[#232a52] bg-gradient-to-b from-[#1a1f42] to-[#11152e] p-3 md:h-64 md:w-40">
             <span className="font-display text-lg font-extrabold leading-tight">{s.name}</span>
+            {skillDetails[s.name] && <span className="mt-1 text-[10px] leading-relaxed text-muted-foreground">{skillDetails[s.name]}</span>}
             <span className="mt-1 text-sm font-bold text-[#ffd23f]">{s.level}%</span>
             <span className="mt-1 w-fit rounded-sm bg-[#07091a] px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{s.category}</span>
           </div>
@@ -111,9 +123,10 @@ export function TechStackRow({ content }: { content: SiteContent }) {
       {cats.map((c) => (
         <div key={c} className="w-64 shrink-0 rounded-md border border-[#232a52] bg-[#11152e] p-4">
           <h3 className="font-display text-base font-extrabold text-[#ffd23f]">{c}</h3>
+          {skillDetails[c] && <p className="mt-1 text-xs text-muted-foreground">{skillDetails[c]}</p>}
           <ul className="mt-3 flex flex-wrap gap-1.5">
             {content.skills.filter((s) => s.category === c).map((s) => (
-              <li key={s.name} className="rounded-full bg-[#1a1f42] px-2.5 py-1 text-xs font-semibold">{s.name}</li>
+              <li key={s.name} title={skillDetails[s.name]} className="rounded-full bg-[#1a1f42] px-2.5 py-1 text-xs font-semibold">{s.name}</li>
             ))}
           </ul>
         </div>

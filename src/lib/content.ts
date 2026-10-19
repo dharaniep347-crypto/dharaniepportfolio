@@ -34,8 +34,6 @@ export type SiteContent = {
 
 export const skillCategories = ["Languages", "Frontend", "Backend", "Databases", "Cloud and Tools"];
 
-const escape = (s: string) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]!);
-
 /** Content from src/data/portfolio.ts, used when the database is empty or unreachable. */
 export function fallbackContent(): SiteContent {
   return {
@@ -59,7 +57,7 @@ export function fallbackContent(): SiteContent {
       title: p.title,
       category: p.category,
       summary: p.summary,
-      description: `<p>${escape(p.description)}</p>`,
+      description: p.description,
       tags: p.tags,
       image: "",
       demo: p.demo,

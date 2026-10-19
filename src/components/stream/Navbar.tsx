@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Search, Menu, X, Download, Github, Linkedin, RefreshCw } from "lucide-react";
 import type { SiteContent, SiteProject } from "@/lib/content";
+import { skillDetails } from "@/data/portfolio";
 import { useViewer, viewerProfiles } from "./state";
 
 const links = [
@@ -48,10 +49,10 @@ export default function Navbar({
 
   const t = q.trim().toLowerCase();
   const projectHits = t
-    ? content.projects.filter((p) => (p.title + p.summary + p.tags.join(" ")).toLowerCase().includes(t))
+    ? content.projects.filter((p) => [p.title, p.summary, p.category, p.description.replace(/<[^>]*>/g, " "), p.tags.join(" ")].join(" ").toLowerCase().includes(t))
     : [];
   const skillHits = t
-    ? content.skills.filter((s) => (s.name + s.category).toLowerCase().includes(t))
+    ? content.skills.filter((s) => [s.name, s.category, skillDetails[s.name] ?? "", skillDetails[s.category] ?? ""].join(" ").toLowerCase().includes(t))
     : [];
   const avatar = viewerProfiles.find((v) => v.id === profile);
 
@@ -86,7 +87,7 @@ export default function Navbar({
                 onKeyDown={(e) => e.key === "Escape" && (setSearchOpen(false), setQ(""))}
                 placeholder="Search projects and skills"
                 aria-label="Search projects and skills"
-                className="w-48 rounded-l-md border border-r-0 border-[#232a52] bg-[#07091a] px-3 py-1.5 text-sm sm:w-64"
+                className="w-32 rounded-l-md border border-r-0 border-[#232a52] bg-[#07091a] px-3 py-1.5 text-sm min-[400px]:w-48 sm:w-64"
               />
             )}
             <button
@@ -183,6 +184,7 @@ export default function Navbar({
                   {skillHits.map((s) => (
                     <li key={s.name} className="rounded-full border border-[#232a52] bg-[#11152e] px-3 py-1.5 text-sm">
                       {s.name} <span className="text-[#ffd23f]">{s.level}%</span>
+                      {skillDetails[s.name] && <span className="block text-xs text-muted-foreground">{skillDetails[s.name]}</span>}
                     </li>
                   ))}
                 </ul>
