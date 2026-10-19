@@ -1,5 +1,5 @@
 import portraitAsset from "@/assets/dharani-portrait.jpg.asset.json";
-import resumeAsset from "@/assets/Dharani_EP_Resume.pdf.asset.json";
+import resumeAsset from "@/assets/Dharani_E_P_-_Resume.pdf.asset.json";
 // Edit all personal content here.
 export const profile = {
   name: "Dharani E P",
