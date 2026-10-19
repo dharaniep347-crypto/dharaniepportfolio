@@ -32,6 +32,23 @@ export const skillCategories = [
 ] as const;
 export type SkillCategory = (typeof skillCategories)[number];
 
+export const skillDetails: Record<string, string> = {
+  "React.js": "Hooks, Context API, Protected Routes",
+  "Spring Boot": "REST APIs, JPA, JWT Authentication, Role-Based Access",
+  AWS: "EC2, S3, IAM basics",
+  Languages: "Python, JavaScript, SQL",
+  Databases: "MySQL, MongoDB",
+  Tools: "Git, GitHub",
+  "Git and GitHub": "Git, GitHub",
+};
+
+export const projectCategories = ["All", "AI and Full Stack", "AI and Data Science", "Web"] as const;
+export type ProjectCategoryFilter = (typeof projectCategories)[number];
+
+export function filterProjects<T extends { category: string }>(items: T[], category: ProjectCategoryFilter): T[] {
+  return category === "All" ? items : items.filter((p) => p.category === category);
+}
+
 export const skills: { name: string; level: number; category: SkillCategory }[] = [
   { name: "Python", level: 80, category: "Languages" },
   { name: "JavaScript", level: 85, category: "Languages" },
@@ -49,7 +66,7 @@ export const skills: { name: string; level: number; category: SkillCategory }[] 
 
 export type Project = {
   title: string;
-  category: "AI" | "Web";
+  category: "AI and Full Stack" | "AI and Data Science" | "Web";
   summary: string;
   description: string;
   tags: string[];
@@ -59,45 +76,65 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "TravelMind: AI-Powered Personalized Itinerary Planner",
-    category: "AI",
-    summary: "Plans personalized travel itineraries with AI.",
-    description:
-      "TravelMind plans personalized travel itineraries with AI, combining a full-stack web app with AI-generated recommendations.",
-    tags: ["AI", "Full Stack"],
-    demo: "",
-    source: "",
+    "title": "TravelMind: AI-Powered Personalized Itinerary Planner",
+    "category": "AI and Full Stack",
+    "summary": "Creates personalized day-wise travel itineraries from a traveller's interests, budget and trip duration.",
+    "description": "<h3>Purpose</h3><p>Create personalized travel itineraries based on a traveller&#x27;s interests, destination, budget and trip duration.</p><h3>Benefit</h3><p>Helps travellers plan trips more efficiently and find options aligned with their preferences.</p><h3>What I built</h3><ul><li>A full-stack planner with a React.js frontend and a Spring Boot REST API, where users enter destination, interests, budget and trip duration to generate a customised plan.</li><li>AI-based itinerary generation that turns traveller preferences into structured, day-wise schedules with attraction and activity suggestions.</li><li>Secure JWT-based authentication with protected routes, so each user can save, view and revisit their own itineraries.</li><li>A responsive Tailwind CSS interface with an organized day-by-day itinerary view, with user and trip data stored in MySQL using JPA.</li></ul>",
+    "tags": [
+      "React.js",
+      "Spring Boot",
+      "MySQL",
+      "JPA",
+      "JWT",
+      "Tailwind CSS",
+      "AI"
+    ],
+    "demo": "",
+    "source": ""
   },
   {
-    title: "AI Learning Management System",
-    category: "AI",
-    summary: "An AI-focused LMS that supports digital learning workflows.",
-    description:
-      "An AI-focused learning management system that supports digital learning workflows.",
-    tags: ["AI", "Full Stack"],
-    demo: "",
-    source: "",
+    "title": "AI Learning Management System",
+    "category": "AI and Full Stack",
+    "summary": "A learning platform with course materials, progress tracking and an AI study assistant.",
+    "description": "<h3>Purpose</h3><p>Support digital learning by bringing course materials and learner progress into one platform with AI-assisted support.</p><h3>Benefit</h3><p>Helps learners find relevant resources and organize their study plans.</p><h3>What I built</h3><ul><li>A learning platform where learners browse courses, access study materials and track their progress from a single dashboard.</li><li>Role-based access for learners and administrators using Spring Boot and JWT, controlling who can create courses, upload content and view progress.</li><li>An AI study assistant and personalized recommendations that suggest relevant resources based on a learner&#x27;s courses and activity.</li><li>Progress-tracking workflows in a React.js interface using Context API for state management, backed by a MySQL database for courses, users and learner records.</li></ul>",
+    "tags": [
+      "React.js",
+      "Context API",
+      "Spring Boot",
+      "JWT",
+      "MySQL",
+      "AI"
+    ],
+    "demo": "",
+    "source": ""
   },
   {
-    title: "My Portfolio",
-    category: "Web",
-    summary: "A 3D, streaming-style personal portfolio presenting my profile and projects.",
-    description:
-      "A 3D, streaming-style personal portfolio presenting my profile and projects.",
-    tags: ["React", "Three.js", "Tailwind CSS"],
-    demo: "",
-    source: "",
+    "title": "My Portfolio: Personal Portfolio Website",
+    "category": "Web",
+    "summary": "A responsive portfolio presenting my profile, skills and projects in one place.",
+    "description": "<h3>Purpose</h3><p>Present profile information, technical skills, projects and achievements in one place.</p><h3>Benefit</h3><p>Gives recruiters and collaborators a central place to review my work and contact me.</p><h3>What I built</h3><ul><li>A responsive personal portfolio with React.js and Tailwind CSS that presents profile, skills, projects and achievements in clearly organised sections.</li><li>Project summaries with links to source code and live demos so recruiters can review work quickly.</li><li>A consistent layout across mobile, tablet and desktop screen sizes, with contact details for easy outreach.</li><li>Version control with Git and GitHub, deployed and accessible through a shareable link.</li></ul>",
+    "tags": [
+      "React.js",
+      "Tailwind CSS",
+      "Git",
+      "GitHub"
+    ],
+    "demo": "",
+    "source": ""
   },
   {
-    title: "Smart Irrigation Prediction",
-    category: "AI",
-    summary: "An agriculture-focused prediction project for smart irrigation.",
-    description:
-      "An agriculture-focused prediction project for smart irrigation.",
-    tags: ["Python", "Data Science"],
-    demo: "",
-    source: "",
-  },
+    "title": "Smart Irrigation Prediction (Agriculture)",
+    "category": "AI and Data Science",
+    "summary": "A machine learning model that predicts irrigation need from soil and weather data.",
+    "description": "<h3>Purpose</h3><p>Support irrigation decisions using relevant agricultural, field and environmental data.</p><h3>Benefit</h3><p>Supports more efficient water use and data-informed irrigation planning.</p><h3>What I built</h3><ul><li>A machine learning model in Python that predicts irrigation need from inputs such as soil moisture, temperature, humidity and rainfall.</li><li>Cleaned and preprocessed the agricultural dataset, handling missing values and selecting the features that most influence water requirement.</li><li>Trained and evaluated classification models, comparing performance to choose the most reliable one for irrigation recommendations.</li><li>Presented predictions in a simple, easy-to-read format so farmers can make data-informed irrigation decisions and use water more efficiently.</li></ul>",
+    "tags": [
+      "Python",
+      "Machine Learning",
+      "Data Science"
+    ],
+    "demo": "",
+    "source": ""
+  }
 ];
 
 /** "Continue watching"-style journey cards. */

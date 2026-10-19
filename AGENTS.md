@@ -13,3 +13,4 @@
 - First signup becomes admin via an auth.users trigger; a second trigger rejects signups once an admin exists. Admin access is enforced by RLS with has_role().
 
 - Frontend is a streaming-service-style UI: all homepage components live in src/components/stream/ (state.tsx holds viewer-profile + My List localStorage state); content still comes from getSiteContent with src/data/portfolio.ts as fallback.
+- Fallback project descriptions are HTML, sanitized by the detail dialog just like database descriptions; shared category filtering and skill annotations live alongside fallback content so every public view uses the same definitions.

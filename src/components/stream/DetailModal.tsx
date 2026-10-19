@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
-import { X, Play, Plus, Check } from "lucide-react";
+import { X, Play, Plus, Check, Github } from "lucide-react";
 import DOMPurify from "dompurify";
+import { Button } from "@/components/ui/button";
 import type { SiteProject } from "@/lib/content";
 import { ProjectCover } from "./covers";
 import { useViewer } from "./state";
@@ -33,8 +34,9 @@ export default function DetailModal({
       if (e.key === "Tab" && root) {
         const focusables = Array.from(root.querySelectorAll<HTMLElement>("button, a[href], [tabindex]:not([tabindex='-1'])"));
         if (!focusables.length) return;
-        const first = focusables[0]!;
-        const last = focusables[focusables.length - 1]!;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (!first || !last) return;
         if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
         else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
       }
@@ -48,12 +50,9 @@ export default function DetailModal({
     };
   }, [onClose]);
 
-  const isProject = item.kind === "project";
-  const p = isProject ? item.project : null;
+  const p = item.kind === "project" ? item.project : null;
   const inList = p ? myList.includes(p.id) : false;
-  const others = isProject
-    ? content.projects.filter((x) => x.id !== p!.id).slice(0, 3)
-    : [];
+  const others = p ? content.projects.filter((x) => x.id !== p.id).slice(0, 3) : [];
 
   return (
     <div
@@ -61,9 +60,9 @@ export default function DetailModal({
       onClick={(e) => e.target === e.currentTarget && onClose()}
       role="dialog"
       aria-modal="true"
-      aria-label={isProject ? p!.title : "About"}
+      aria-label={p ? p.title : "About"}
     >
-      <div ref={ref} className="relative my-8 w-full max-w-[880px] rounded-md bg-[#11152e] shadow-2xl">
+      <div ref={ref} className="relative my-4 max-h-[calc(100dvh-4rem)] w-full min-w-0 max-w-[880px] overflow-y-auto overflow-x-hidden rounded-md bg-card shadow-2xl sm:my-8 sm:max-h-[calc(100dvh-6rem)]">
         <button
           onClick={onClose}
           aria-label="Close"
@@ -73,11 +72,11 @@ export default function DetailModal({
         </button>
 
         {/* Cover */}
-        {isProject ? (
-          p!.image ? (
-            <img src={p!.image} alt={`${p!.title} screenshot`} className="aspect-video w-full rounded-t-md object-cover" />
+        {p ? (
+          p?.image ? (
+            <img src={p?.image} alt={`${p?.title} screenshot`} className="aspect-video w-full rounded-t-md object-cover" />
           ) : (
-            <ProjectCover index={item.index} title={p!.title} className="aspect-video w-full rounded-t-md" iconClass="size-40" />
+            <ProjectCover index={(item.kind === "project" ? item.index : 0)} title={p?.title} className="aspect-video w-full rounded-t-md" iconClass="size-40" />
           )
         ) : (
           <div className="relative aspect-video w-full overflow-hidden rounded-t-md bg-[#07091a]">
@@ -89,22 +88,18 @@ export default function DetailModal({
         <div aria-hidden className="-mt-24 h-24 bg-gradient-to-t from-[#11152e] to-transparent" />
 
         <div className="px-6 pb-8 md:px-10">
-          <h2 className="font-wide text-3xl md:text-4xl">{isProject ? p!.title : content.profile.name}</h2>
+          <h2 className="font-wide break-words text-2xl sm:text-3xl md:text-4xl">{p ? p.title : content.profile.name}</h2>
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
-            {isProject && (p!.demo || p!.source) && (
-              <a
-                href={p!.demo || p!.source}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-center gap-2 rounded-md bg-[#f3f4fb] px-5 py-2 font-bold text-[#07091a] transition-colors hover:bg-[#f3f4fb]/80"
-              >
-                <Play className="size-5 fill-current" aria-hidden /> Open
-              </a>
+            {p?.demo && (
+              <Button asChild variant="secondary"><a href={p.demo} target="_blank" rel="noreferrer"><Play aria-hidden /> Live demo</a></Button>
             )}
-            {isProject && (
+            {p?.source && (
+              <Button asChild variant="outline"><a href={p.source} target="_blank" rel="noreferrer"><Github aria-hidden /> Source code</a></Button>
+            )}
+            {p && (
               <button
-                onClick={() => toggleMyList(p!.id)}
+                onClick={() => toggleMyList(p.id)}
                 aria-label={inList ? "Remove from My List" : "Add to My List"}
                 className="rounded-full border-2 border-[#9aa0c3]/50 p-2.5 text-[#f3f4fb] transition-colors hover:border-[#f3f4fb]"
               >
@@ -112,16 +107,16 @@ export default function DetailModal({
               </button>
             )}
             <span className="text-sm text-muted-foreground">
-              {isProject ? `${p!.category} · ${p!.tags.join(" · ")}` : content.profile.title}
+              {p ? `${p.category} · ${p?.tags.join(" · ")}` : content.profile.title}
             </span>
           </div>
 
-          <div className="mt-6 grid gap-8 md:grid-cols-[1fr_220px]">
+          <div className="mt-6 grid min-w-0 gap-8 md:grid-cols-[minmax(0,1fr)_220px]">
             <div>
-              {isProject ? (
+              {p ? (
                 <div
-                  className="space-y-2 text-sm leading-relaxed text-[#c6cbe8] [&_a]:text-[#2b3bff] [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5"
-                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(p!.description) }}
+                  className="space-y-2 text-sm leading-relaxed text-[#c6cbe8] [&_a]:text-[#2b3bff] [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-3 [&_h3]:pt-3 [&_h3]:font-bold"
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(p.description) }}
                 />
               ) : (
                 <>
@@ -133,10 +128,10 @@ export default function DetailModal({
               )}
             </div>
             <dl className="space-y-3 text-sm">
-              {isProject ? (
+              {p ? (
                 <>
-                  <div><dt className="inline font-bold text-muted-foreground">Tech: </dt><dd className="inline">{p!.tags.join(", ")}</dd></div>
-                  <div><dt className="inline font-bold text-muted-foreground">Category: </dt><dd className="inline">{p!.category}</dd></div>
+                  <div><dt className="inline font-bold text-muted-foreground">Tech: </dt><dd className="inline">{p?.tags.join(", ")}</dd></div>
+                  <div><dt className="inline font-bold text-muted-foreground">Category: </dt><dd className="inline">{p?.category}</dd></div>
                   <div><dt className="inline font-bold text-muted-foreground">Status: </dt><dd className="inline">Completed</dd></div>
                 </>
               ) : (

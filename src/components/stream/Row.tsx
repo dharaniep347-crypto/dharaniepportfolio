@@ -7,11 +7,13 @@ export default function Row({
   title,
   children,
   onExploreAll,
+  headerContent,
 }: {
   id?: string;
   title: string;
   children: ReactNode;
   onExploreAll?: () => void;
+  headerContent?: ReactNode;
 }) {
   const scroller = useRef<HTMLDivElement>(null);
   const [hover, setHover] = useState(false);
@@ -40,6 +42,7 @@ export default function Row({
           </button>
         )}
       </div>
+      {headerContent && <div className="mx-auto max-w-7xl px-5 pt-3">{headerContent}</div>}
       <div className="relative mx-auto max-w-7xl">
         <div ref={scroller} className="row-scroll px-5 py-4">
           {children}
