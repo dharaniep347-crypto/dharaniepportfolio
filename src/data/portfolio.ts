@@ -14,7 +14,7 @@ export const profile = {
   location: "Karur, Tamil Nadu, India",
   email: "dharaniep347@gmail.com",
   phone: "+91 9159048874",
-  linkedin: "https://www.linkedin.com/in/dharani-e-p-64a32b338",
+  linkedin: "https://www.linkedin.com/in/dharani-e-p-64a32b338/",
   github: "https://github.com/dharaniep347-crypto",
   education:
     "B.Tech in Artificial Intelligence and Data Science (third year), PGP College of Engineering and Technology",
