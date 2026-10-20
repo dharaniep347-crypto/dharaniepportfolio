@@ -17,4 +17,4 @@
 - About and project details have separate rendering branches in the shared detail dialog so portrait framing never inherits project-cover overlays.
 - Public portrait placements share Portrait and external anchors share ExternalLink; centralizing framing and URL handling prevents inconsistent crops and navigation behavior.
 - Define all colours and gradients in src/styles.css using the Tailwind v4 CSS theme; Three.js reads resolved sRGB scene variables through useSceneColours because materials do not understand CSS variables or OKLCH.
-- Use bg-page for full-page gradient surfaces and viewport-aligned masked page gradients for billboard fades so the scene blends without seams; reserve ink for preserved dark foreground text, never backgrounds.
+- Render the global blend once on fixed body::before with an isolated body stacking context; page wrappers stay transparent and surfaces use translucent tokens so scrolling never creates background seams. Reserve ink for preserved dark foreground text, never backgrounds.

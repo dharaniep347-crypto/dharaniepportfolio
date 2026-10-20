@@ -69,7 +69,7 @@ export default function Navbar({
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled || searchOpen ? "bg-chrome backdrop-blur" : "bg-gradient-to-b from-chrome/70 to-transparent"
+        scrolled || searchOpen ? "bg-navbar backdrop-blur-sm" : "bg-transparent"
       }`}
     >
       <nav aria-label="Main" className="mx-auto flex max-w-7xl items-center gap-6 px-5 py-3">

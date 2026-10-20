@@ -89,7 +89,7 @@ function Gate() {
     try { sessionStorage.setItem(INTRO_KEY, "1"); } catch { /* ignore */ }
   }, []);
 
-  if (!ready || !hydrated) return <div className="min-h-screen bg-page" />;
+  if (!ready || !hydrated) return <div className="min-h-screen" />;
   if (!introDone) return <Intro onDone={finishIntro} />;
   if (!profile) return <ProfileGate onPick={pickProfile} />;
   return <Home />;
@@ -119,7 +119,7 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-page">
+    <div className="min-h-screen">
       <Navbar content={content} onOpenProject={(p) => openProject(p, content.projects.indexOf(p))} />
       <main>
         <Billboard content={content} with3D={profile === "explorer"} onMoreInfo={openAbout} />
@@ -129,7 +129,7 @@ function Home() {
           <MyListRow content={content} onOpenProject={openProject} />
         </div>
       </main>
-      <footer className="border-t border-border bg-chrome py-10">
+      <footer className="border-t border-border bg-footer py-10">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 text-sm text-muted-foreground sm:grid-cols-4">
           <div>
             <p className="font-wide mb-3 text-base text-heading">DHARANI</p>
