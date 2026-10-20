@@ -23,7 +23,7 @@ export function RichText({ value, onChange }: { value: string; onChange: (html: 
   if (!editor) return <div className="min-h-48 rounded-md border-2" />;
   const btn = (label: string, active: boolean, run: () => void, Icon: typeof Bold) => (
     <button type="button" aria-label={label} aria-pressed={active} onClick={run}
-      className={`rounded p-1.5 ${active ? "bg-ink text-paper" : "hover:bg-muted"}`}>
+      className={`rounded p-1.5 ${active ? "bg-raised text-paper" : "hover:bg-muted"}`}>
       <Icon className="size-4" />
     </button>
   );

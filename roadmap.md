@@ -18,5 +18,5 @@
 - [ ] Verify signed-in admin tab colours visually — blocked because no admin account exists yet; shared theme and chart colours are updated.
 
 # Midnight navy backgrounds
-- [ ] Update background tokens, page/hero fades, muted text, borders, scrollbar and browser bar without changing layout or animation.
-- [ ] Check public sections, intro/profile screens, dialogs and footer at 360px and 1440px; preserve existing text colours and report contrast exceptions.
+- [x] Update background tokens, page/hero fades, muted text, borders, scrollbar and browser bar without changing layout or animation.
+- [x] Check public sections, intro/profile screens, dialogs and footer at 360px and 1440px; navy text contrast is at least 7.7:1 for muted text. Existing muted copy on the red contact card remains below 4.5:1 because red accents and text colours must stay unchanged.
