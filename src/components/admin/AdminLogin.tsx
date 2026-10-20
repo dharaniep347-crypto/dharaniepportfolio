@@ -50,7 +50,7 @@ export function AdminLogin() {
         {info && <p role="status" className="rounded bg-accent px-2 py-1 text-sm">{info}</p>}
         <Button type="submit" className="w-full" disabled={busy}>{mode === "signin" ? "Sign in" : "Create account"}</Button>
         {adminExists === false && (
-          <button type="button" className="w-full text-sm text-primary underline" onClick={() => setMode(mode === "signin" ? "signup" : "signin")}>
+          <button type="button" className="w-full text-sm text-heading decoration-primary underline" onClick={() => setMode(mode === "signin" ? "signup" : "signin")}>
             {mode === "signin" ? "No admin yet? Create the first account" : "Have an account? Sign in"}
           </button>
         )}
