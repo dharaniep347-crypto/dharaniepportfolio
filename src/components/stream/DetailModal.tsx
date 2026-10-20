@@ -60,16 +60,16 @@ export default function DetailModal({
   return (
     <div
       className={p
-        ? "fixed inset-0 z-[90] flex items-start justify-center overflow-y-auto bg-chrome/75 p-4 backdrop-blur-sm"
-        : "fixed inset-0 z-[90] flex items-center justify-center overflow-hidden bg-chrome/75 p-4 backdrop-blur-sm"}
+        ? "fixed inset-0 z-[90] flex items-start justify-center overflow-y-auto bg-backdrop p-4 backdrop-blur-sm"
+        : "fixed inset-0 z-[90] flex items-center justify-center overflow-hidden bg-backdrop p-4 backdrop-blur-sm"}
       onClick={(e) => e.target === e.currentTarget && onClose()}
       role="dialog"
       aria-modal="true"
       aria-label={p ? p.title : "About"}
     >
       <div ref={ref} className={p
-        ? "relative my-4 max-h-[calc(100dvh-4rem)] w-full min-w-0 max-w-[880px] overflow-y-auto overflow-x-hidden rounded-md bg-raised shadow-2xl sm:my-8 sm:max-h-[calc(100dvh-6rem)]"
-        : "relative mx-auto box-border flex max-h-[90dvh] w-[calc(100vw-2rem)] min-w-0 max-w-3xl flex-col overflow-hidden rounded-md bg-raised shadow-2xl"}>
+        ? "relative my-4 max-h-[calc(100dvh-4rem)] w-full min-w-0 max-w-[880px] overflow-y-auto overflow-x-hidden rounded-md border border-border bg-raised shadow-2xl sm:my-8 sm:max-h-[calc(100dvh-6rem)]"
+        : "relative mx-auto box-border flex max-h-[90dvh] w-[calc(100vw-2rem)] min-w-0 max-w-3xl flex-col overflow-hidden rounded-md border border-border bg-raised shadow-2xl"}>
         {p ? <button
           onClick={onClose}
           aria-label="Close"

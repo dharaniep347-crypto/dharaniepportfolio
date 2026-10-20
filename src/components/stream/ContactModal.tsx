@@ -65,13 +65,13 @@ export default function ContactModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-[90] flex items-start justify-center overflow-y-auto bg-chrome/75 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[90] flex items-start justify-center overflow-y-auto bg-backdrop p-4 backdrop-blur-sm"
       onClick={(e) => e.target === e.currentTarget && onClose()}
       role="dialog"
       aria-modal="true"
       aria-label="Send a message"
     >
-      <div ref={ref} className="relative my-8 w-full max-w-lg rounded-md bg-raised p-6 shadow-2xl md:p-8">
+      <div ref={ref} className="relative my-8 w-full max-w-lg rounded-md border border-border bg-raised p-6 shadow-2xl md:p-8">
         <button onClick={onClose} aria-label="Close" className="absolute right-4 top-4 rounded-full bg-background/80 p-2 text-heading hover:bg-background">
           <X className="size-5" aria-hidden />
         </button>

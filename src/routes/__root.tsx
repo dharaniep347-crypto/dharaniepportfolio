@@ -81,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "theme-color", content: "#0B1020" },
+      { name: "theme-color", content: "#0D0814" },
       { title: "Dharani E P | AI and Full Stack Developer" },
       { name: "description", content: "Portfolio of Dharani E P, AI and Full Stack Developer." },
       { name: "author", content: "Dharani E P" },

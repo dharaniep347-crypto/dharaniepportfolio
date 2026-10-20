@@ -103,7 +103,7 @@ export default function Navbar({
             <button
               onClick={() => (searchOpen ? (setSearchOpen(false), setQ("")) : setSearchOpen(true))}
               aria-label={searchOpen ? "Close search" : "Open search"}
-              className={`rounded-md p-2 text-foreground transition-colors hover:text-heading ${searchOpen ? "rounded-l-none border border-l-0 border-border bg-background" : ""}`}
+              className={`rounded-md p-2 text-foreground transition-colors hover:text-heading ${searchOpen ? "rounded-l-none border border-l-0 border-border bg-raised" : ""}`}
             >
               {searchOpen ? <X className="size-5" /> : <Search className="size-5" />}
             </button>
