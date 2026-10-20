@@ -5,4 +5,4 @@
 
 # About dialog
 - [x] Separate portrait layout from the project banner, with an always-visible close button and internal scrolling.
-- [ ] Verify face visibility, text separation and scroll locking at 360px, 768px and 1440px.
+- [x] Verify face visibility, text separation and scroll locking at 360px, 768px and 1440px.
