@@ -47,9 +47,9 @@ export function Overview() {
         <div className="h-56">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data?.days ?? []}>
-              <XAxis dataKey="day" tickLine={false} axisLine={false} />
-              <YAxis allowDecimals={false} width={28} tickLine={false} axisLine={false} />
-              <Tooltip cursor={{ fill: "var(--muted)" }} />
+              <XAxis dataKey="day" tick={{ fill: "var(--muted-foreground)" }} tickLine={false} axisLine={false} />
+              <YAxis tick={{ fill: "var(--muted-foreground)" }} allowDecimals={false} width={28} tickLine={false} axisLine={false} />
+              <Tooltip contentStyle={{ background: "var(--raised)", borderColor: "var(--border)", color: "var(--heading)" }} itemStyle={{ color: "var(--heading)" }} cursor={{ fill: "var(--muted)" }} />
               <Bar dataKey="messages" fill="var(--primary)" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>

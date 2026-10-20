@@ -16,3 +16,4 @@
 - Fallback project descriptions are HTML, sanitized by the detail dialog just like database descriptions; shared category filtering and skill annotations live alongside fallback content so every public view uses the same definitions.
 - About and project details have separate rendering branches in the shared detail dialog so portrait framing never inherits project-cover overlays.
 - Public portrait placements share Portrait and external anchors share ExternalLink; centralizing framing and URL handling prevents inconsistent crops and navigation behavior.
+- Define all colours and gradients in src/styles.css using the Tailwind v4 CSS theme; Three.js reads resolved sRGB scene variables through useSceneColours because materials do not understand CSS variables or OKLCH.
