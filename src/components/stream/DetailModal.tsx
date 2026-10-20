@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 import type { SiteProject } from "@/lib/content";
 import { ProjectCover } from "./covers";
 import { useViewer } from "./state";
+import Portrait from "./Portrait";
+import ExternalLink from "./ExternalLink";
+import { phoneHref } from "@/lib/external-url";
 
 export type ModalItem =
   | { kind: "project"; project: SiteProject; index: number }
@@ -66,7 +69,7 @@ export default function DetailModal({
     >
       <div ref={ref} className={p
         ? "relative my-4 max-h-[calc(100dvh-4rem)] w-full min-w-0 max-w-[880px] overflow-y-auto overflow-x-hidden rounded-md bg-card shadow-2xl sm:my-8 sm:max-h-[calc(100dvh-6rem)]"
-        : "relative flex max-h-[90dvh] w-full min-w-0 max-w-[880px] flex-col overflow-hidden rounded-md bg-card shadow-2xl"}>
+        : "relative mx-auto box-border flex max-h-[90dvh] w-[calc(100vw-2rem)] min-w-0 max-w-3xl flex-col overflow-hidden rounded-md bg-card shadow-2xl"}>
         {p ? <button
           onClick={onClose}
           aria-label="Close"
@@ -86,12 +89,12 @@ export default function DetailModal({
 
         {!p ? (
           <div className="min-h-0 overflow-y-auto overscroll-contain p-4 pt-16 md:p-8 md:pt-16">
-            <div className="grid min-w-0 grid-cols-1 items-start gap-6 md:grid-cols-[minmax(0,38fr)_minmax(0,62fr)] md:gap-8">
+            <div className="grid min-w-0 grid-cols-1 items-center gap-6 text-center md:grid-cols-[220px_minmax(0,1fr)] md:gap-8 md:text-left">
               {content.profile.portrait && (
-                <img
+                <Portrait
                   src={content.profile.portrait}
                   alt={`Portrait of ${content.profile.name}`}
-                  className="aspect-[4/5] max-h-[60vh] w-full rounded-md object-cover object-top md:max-h-none"
+                  className="mx-auto size-40 md:mx-0 md:size-[220px]"
                 />
               )}
               <div className="min-w-0 space-y-5">
@@ -99,17 +102,17 @@ export default function DetailModal({
                   <h2 className="font-wide break-words text-2xl sm:text-3xl md:text-4xl">{content.profile.name}</h2>
                   <p className="mt-3 text-sm text-muted-foreground">{content.profile.title}</p>
                 </div>
-                <div className="space-y-4 text-sm leading-relaxed text-foreground">
-                  {content.profile.about.map((para) => <p key={para}>{para}</p>)}
+                <div className="flex flex-wrap justify-center gap-3 md:justify-start">
+                  <Button asChild variant="secondary"><ExternalLink href={`mailto:${content.profile.email}`}><Mail aria-hidden /> Email</ExternalLink></Button>
+                  <Button asChild variant="outline"><ExternalLink href={phoneHref(content.profile.phone)}><Phone aria-hidden /> Call</ExternalLink></Button>
+                  {content.profile.linkedin && <Button asChild variant="outline"><ExternalLink href={content.profile.linkedin}><Linkedin aria-hidden /> LinkedIn</ExternalLink></Button>}
+                  {content.profile.github && <Button asChild variant="outline"><ExternalLink href={content.profile.github}><Github aria-hidden /> GitHub</ExternalLink></Button>}
                 </div>
-                <p className="text-sm leading-relaxed text-muted-foreground">{content.profile.education}</p>
-                <p className="text-sm text-muted-foreground">{content.profile.location}</p>
-                <div className="flex flex-wrap gap-3">
-                  <Button asChild variant="secondary"><a href={`mailto:${content.profile.email}`}><Mail aria-hidden /> Email</a></Button>
-                  <Button asChild variant="outline"><a href={`tel:${content.profile.phone}`}><Phone aria-hidden /> Call</a></Button>
-                  {content.profile.linkedin && <Button asChild variant="outline"><a href={content.profile.linkedin} target="_blank" rel="noreferrer"><Linkedin aria-hidden /> LinkedIn</a></Button>}
-                  {content.profile.github && <Button asChild variant="outline"><a href={content.profile.github} target="_blank" rel="noreferrer"><Github aria-hidden /> GitHub</a></Button>}
-                </div>
+              </div>
+              <div className="min-w-0 space-y-4 text-sm leading-relaxed text-foreground md:col-span-2">
+                {content.profile.about.map((para) => <p key={para}>{para}</p>)}
+                <p className="text-muted-foreground">{content.profile.education}</p>
+                <p className="text-muted-foreground">{content.profile.location}</p>
               </div>
             </div>
           </div>
@@ -135,10 +138,10 @@ export default function DetailModal({
 
           <div className="mt-4 flex flex-wrap items-center gap-3">
             {p?.demo && (
-              <Button asChild variant="secondary"><a href={p.demo} target="_blank" rel="noreferrer"><Play aria-hidden /> Live demo</a></Button>
+              <Button asChild variant="secondary"><ExternalLink href={p.demo}><Play aria-hidden /> Live demo</ExternalLink></Button>
             )}
             {p?.source && (
-              <Button asChild variant="outline"><a href={p.source} target="_blank" rel="noreferrer"><Github aria-hidden /> Source code</a></Button>
+              <Button asChild variant="outline"><ExternalLink href={p.source}><Github aria-hidden /> Source code</ExternalLink></Button>
             )}
             {p && (
               <button
