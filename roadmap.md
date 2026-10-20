@@ -26,5 +26,5 @@
 - [x] Scroll every section at 360px, 768px and 1440px and check blended background continuity and text contrast; muted text over sampled red glow areas is at least 8.43:1. Existing red-button contrast exception remains unchanged.
 
 # Midnight plum aurora
-- [ ] Apply plum background, grain, reduced-motion-safe drift, surface states and magenta scene rim light.
-- [ ] Verify whole page, screens and dialogs at 360px and 1440px, including contrast and smooth scrolling.
+- [x] Apply plum background, grain, reduced-motion-safe drift, surface states and magenta scene rim light.
+- [x] Verify whole page, intro/profile screens and About/project/contact dialogs at 360px and 1440px: no horizontal overflow or runtime errors, reduced motion disables drift, muted contrast at least 7.24:1 on conservative glow sample and 10.11:1 on dialogs; 17 regression tests pass. Preserved red-accent contrast exception remains unchanged.
