@@ -13,5 +13,6 @@
 - [x] Verify photos, dialog bounds, scrolling and social-link tabs at 360px, 768px and 1440px.
 
 # Black and red theme
-- [ ] Replace the global palette and all component/3D colours without changing layout, content or animation.
-- [ ] Check public pages, dialogs, intro and admin colours at 360px, 768px and 1440px.
+- [x] Replace the global palette and all component/3D colours without changing layout, content or animation.
+- [x] Check public pages and dialogs at 360px, 768px and 1440px; inspect intro, search, skills and admin sign-in colours.
+- [ ] Verify signed-in admin tab colours visually — blocked because no admin account exists yet; shared theme and chart colours are updated.
