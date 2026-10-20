@@ -151,7 +151,7 @@ export default function Navbar({
       </nav>
 
       {menuOpen && (
-        <ul className="border-t border-border bg-background px-5 py-3 text-sm font-medium md:hidden">
+        <ul className="border-t border-border bg-raised px-5 py-3 text-sm font-medium md:hidden">
           {links.map(([l, h]) => (
             <li key={h}>
               <a href={`#${h}`} aria-current={activeSection === h ? "location" : undefined} onClick={() => setMenuOpen(false)} className="nav-link block py-2.5 text-foreground hover:text-heading">
@@ -164,7 +164,7 @@ export default function Navbar({
 
       {/* Search results overlay */}
       {searchOpen && t && (
-        <div className="absolute inset-x-0 top-full max-h-[70vh] overflow-y-auto border-t border-border bg-chrome/98 px-5 py-6 backdrop-blur" role="region" aria-label="Search results">
+        <div className="absolute inset-x-0 top-full max-h-[70vh] overflow-y-auto border-t border-border bg-raised px-5 py-6 backdrop-blur" role="region" aria-label="Search results">
           <div className="mx-auto max-w-7xl">
             {projectHits.length + skillHits.length === 0 && (
               <p className="text-sm text-muted-foreground">No results for “{q}”.</p>

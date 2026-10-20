@@ -5,7 +5,7 @@ const icons = { briefcase: Briefcase, code: Code2, users: Users, compass: Compas
 
 export default function ProfileGate({ onPick }: { onPick: (p: ViewerProfile) => void }) {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-5">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-page px-5">
       <h1 className="font-wide mb-12 text-center text-4xl md:text-6xl">Who's watching?</h1>
       <ul className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-4">
         {viewerProfiles.map((p) => {

@@ -68,8 +68,8 @@ export default function DetailModal({
       aria-label={p ? p.title : "About"}
     >
       <div ref={ref} className={p
-        ? "relative my-4 max-h-[calc(100dvh-4rem)] w-full min-w-0 max-w-[880px] overflow-y-auto overflow-x-hidden rounded-md bg-card shadow-2xl sm:my-8 sm:max-h-[calc(100dvh-6rem)]"
-        : "relative mx-auto box-border flex max-h-[90dvh] w-[calc(100vw-2rem)] min-w-0 max-w-3xl flex-col overflow-hidden rounded-md bg-card shadow-2xl"}>
+        ? "relative my-4 max-h-[calc(100dvh-4rem)] w-full min-w-0 max-w-[880px] overflow-y-auto overflow-x-hidden rounded-md bg-raised shadow-2xl sm:my-8 sm:max-h-[calc(100dvh-6rem)]"
+        : "relative mx-auto box-border flex max-h-[90dvh] w-[calc(100vw-2rem)] min-w-0 max-w-3xl flex-col overflow-hidden rounded-md bg-raised shadow-2xl"}>
         {p ? <button
           onClick={onClose}
           aria-label="Close"
@@ -131,7 +131,7 @@ export default function DetailModal({
             )}
           </div>
         )}
-        <div aria-hidden className="-mt-24 h-24 bg-gradient-to-t from-card to-transparent" />
+        <div aria-hidden className="-mt-24 h-24 bg-gradient-to-t from-raised to-transparent" />
 
         <div className="px-6 pb-8 md:px-10">
           <h2 className="font-wide break-words text-2xl sm:text-3xl md:text-4xl">{p ? p.title : content.profile.name}</h2>

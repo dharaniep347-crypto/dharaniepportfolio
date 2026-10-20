@@ -15,7 +15,7 @@ export default function Intro({ onDone }: { onDone: () => void }) {
   }, [onDone]);
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-chrome" role="dialog" aria-label="Intro">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-page" role="dialog" aria-label="Intro">
       {/* spinning knot silhouette */}
       <motion.div
         aria-hidden

@@ -37,7 +37,7 @@ function Orbiter({ skill, index, total, animate }: { skill: Skill; index: number
       <meshStandardMaterial color={hover ? colours.white : index % 3 === 0 ? colours.grey : index % 3 === 1 ? colours.primary : colours.white} roughness={0.35} />
       {hover && (
         <Html center distanceFactor={8} style={{ pointerEvents: "none" }}>
-          <div className="-translate-y-8 whitespace-nowrap rounded-md bg-ink px-2 py-1 text-xs font-bold text-paper">
+          <div className="-translate-y-8 whitespace-nowrap rounded-md bg-raised px-2 py-1 text-xs font-bold text-paper">
             {skill.name} · {skill.level}%
           </div>
         </Html>
