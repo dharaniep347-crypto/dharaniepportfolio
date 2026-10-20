@@ -74,7 +74,7 @@ export default function Billboard({
         <div className="mt-7 flex flex-wrap items-center gap-3">
           <button
             onClick={scrollToProjects}
-            className="flex items-center gap-2 rounded-md bg-heading px-7 py-3 text-lg font-bold text-chrome transition-colors hover:bg-play-hover"
+            className="flex items-center gap-2 rounded-md bg-heading px-7 py-3 text-lg font-bold text-ink transition-colors hover:bg-play-hover"
           >
             <Play className="size-6 fill-current" aria-hidden /> Play projects
           </button>

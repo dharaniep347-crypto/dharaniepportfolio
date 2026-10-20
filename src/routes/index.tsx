@@ -89,7 +89,7 @@ function Gate() {
     try { sessionStorage.setItem(INTRO_KEY, "1"); } catch { /* ignore */ }
   }, []);
 
-  if (!ready || !hydrated) return <div className="min-h-screen bg-background" />;
+  if (!ready || !hydrated) return <div className="min-h-screen bg-page" />;
   if (!introDone) return <Intro onDone={finishIntro} />;
   if (!profile) return <ProfileGate onPick={pickProfile} />;
   return <Home />;
@@ -119,7 +119,7 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-page">
       <Navbar content={content} onOpenProject={(p) => openProject(p, content.projects.indexOf(p))} />
       <main>
         <Billboard content={content} with3D={profile === "explorer"} onMoreInfo={openAbout} />

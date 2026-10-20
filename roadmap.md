@@ -16,3 +16,7 @@
 - [x] Replace the global palette and all component/3D colours without changing layout, content or animation.
 - [x] Check public pages and dialogs at 360px, 768px and 1440px; inspect intro, search, skills and admin sign-in colours.
 - [ ] Verify signed-in admin tab colours visually — blocked because no admin account exists yet; shared theme and chart colours are updated.
+
+# Midnight navy backgrounds
+- [ ] Update background tokens, page/hero fades, muted text, borders, scrollbar and browser bar without changing layout or animation.
+- [ ] Check public sections, intro/profile screens, dialogs and footer at 360px and 1440px; preserve existing text colours and report contrast exceptions.
