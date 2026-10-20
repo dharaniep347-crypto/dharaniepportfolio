@@ -90,6 +90,7 @@ export default function SkillsScene({ skills }: { skills: Skill[] }) {
         <hemisphereLight args={[colours.white, colours.ground, 1.1]} />
         <directionalLight color={colours.white} position={[4, 6, 5]} intensity={1.5} />
         <pointLight position={[-3, -2, 3]} color={colours.primary} intensity={8} />
+        <pointLight position={[3, 1, -2]} color={colours.rim} intensity={2} />
         <Knot animate={animate} />
         {skills.map((s, i) => (
           <Orbiter key={s.name} skill={s} index={i} total={skills.length} animate={animate} />

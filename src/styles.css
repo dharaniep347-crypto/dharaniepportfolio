@@ -11,6 +11,7 @@
   --shadow-xl: 0 20px 25px color-mix(in srgb, var(--chrome) 50%, transparent);
   --shadow-2xl: 0 25px 50px color-mix(in srgb, var(--chrome) 60%, transparent);
   --shadow-portrait: 0 0 16px color-mix(in srgb, var(--primary) 35%, transparent);
+  --shadow-aurora: 0 0 18px var(--surface-glow);
 }
 
 @theme inline {
@@ -53,34 +54,40 @@
   --color-secondary-hover: var(--secondary-hover);
   --color-chip: var(--chip);
   --color-card-hover-border: var(--card-hover-border);
+  --color-card-border: var(--card-border);
+  --color-backdrop: var(--backdrop);
   --color-play-hover: var(--play-hover);
 
 }
 
 :root {
   --radius: 0.375rem;
-  /* Midnight navy backgrounds; existing foregrounds and red accents remain unchanged. */
-  --background: #0B1020;
-  --background-middle: #150E22;
+  /* Midnight plum aurora; foregrounds and red accents stay unchanged except muted copy. */
+  --background: #0D0814;
+  --background-middle: #170B22;
+  --background-bottom: #0A050F;
   --page-gradient:
-    radial-gradient(900px 600px at 15% 8%, rgba(229,9,20,0.18), transparent 60%),
-    radial-gradient(800px 600px at 92% 40%, rgba(229,9,20,0.13), transparent 60%),
-    radial-gradient(900px 700px at 20% 88%, rgba(229,9,20,0.15), transparent 60%),
-    linear-gradient(180deg, var(--background) 0%, var(--background-middle) 50%, var(--background) 100%);
-  --chrome: #060914;
-  --navbar: rgba(8,12,26,0.85);
-  --footer: rgba(6,9,20,0.9);
+    radial-gradient(900px 650px at 10% 5%, rgba(229,9,20,0.20), transparent 62%),
+    radial-gradient(800px 600px at 95% 45%, rgba(176,30,120,0.18), transparent 62%),
+    radial-gradient(900px 700px at 15% 95%, rgba(96,48,170,0.16), transparent 62%),
+    linear-gradient(180deg, var(--background) 0%, var(--background-middle) 50%, var(--background-bottom) 100%);
+  --film-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Cpath fill='%23fff' filter='url(%23grain)' d='M0 0h180v180H0z'/%3E%3C/svg%3E");
+  --surface-glow: rgba(229,9,20,0.18);
+  --chrome: #08040C;
+  --navbar: rgba(10,5,15,0.85);
+  --footer: #08040C;
+  --backdrop: rgba(8,4,12,0.78);
   --foreground: oklch(0.92190601 0.00000003 89.875563);
   --heading: oklch(0.99999999 0.00000004 89.875563);
-  --card: rgba(19,26,51,0.72);
-  --raised: rgba(26,34,66,0.92);
+  --card: rgba(26,14,40,0.72);
+  --raised: #22112F;
   --primary: oklch(0.58142098 0.23486279 27.986901);
   --primary-hover: oklch(0.60897057 0.24740336 28.233618);
   --primary-pressed: oklch(0.48229086 0.19377730 27.644102);
-  --muted-foreground: #AEB6D0;
+  --muted-foreground: #CDBFD6;
   --subtle: oklch(0.59987080 0.00000002 89.875563);
   --input: var(--raised);
-  --chip: var(--card);
+  --chip: rgba(255,255,255,0.07);
   --destructive: oklch(0.69897972 0.19228496 20.648620);
   --play-hover: oklch(0.92190601 0.00000003 89.875563);
   --ink: #000000;
@@ -98,12 +105,14 @@
   --accent-foreground: var(--heading);
   --destructive-foreground: var(--ink);
   --border: rgba(255,255,255,0.10);
-  --card-hover-border: oklch(1 0 0 / 30%);
+  --card-border: rgba(255,255,255,0.08);
+  --card-hover-border: rgba(229,9,20,0.55);
   --ring: var(--primary);
   --scene-primary: #e50914;
   --scene-white: #ffffff;
   --scene-grey: #3a3a3a;
-  --scene-ground: #1A2242;
+  --scene-ground: #22112F;
+  --scene-rim: #B01E78;
   --cover-1: linear-gradient(135deg, var(--primary), var(--chrome) 70%);
   --cover-2: linear-gradient(135deg, var(--primary-pressed), var(--chrome) 70%);
   --cover-3: linear-gradient(135deg, var(--raised), var(--chrome) 70%);
@@ -115,13 +124,13 @@
   --intro-glow: radial-gradient(circle, var(--primary) 0%, transparent 65%);
   --hero-left: linear-gradient(to right, var(--background), transparent);
   --hero-bottom: linear-gradient(to top, var(--background), transparent);
-  --scrollbar-thumb: #2A3358;
+  --scrollbar-thumb: #3B2650;
   --scrollbar-track: var(--background);
 }
 
 @layer base {
   * { border-color: var(--color-border); }
-  html { scroll-behavior: smooth; background-color: var(--background); }
+  html { scroll-behavior: smooth; background-color: var(--background); overflow-x: clip; }
   body {
     background-color: var(--color-background);
     position: relative;
@@ -133,13 +142,30 @@
     content: "";
     position: fixed;
     inset: 0;
+    margin: -40px;
     z-index: -1;
     pointer-events: none;
     background: var(--page-gradient);
+    animation: aurora-drift 40s ease-in-out infinite;
+    will-change: transform;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: var(--film-grain);
+    opacity: 0.04;
   }
   h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.03em; color: var(--heading); }
   :focus-visible { outline: 2px solid var(--heading); outline-offset: 2px; box-shadow: 0 0 0 4px var(--primary); }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+}
+
+@keyframes aurora-drift {
+  0%, 100% { transform: translate(-20px, -12px); }
+  50% { transform: translate(20px, 12px); }
 }
 
 @utility font-wide {
@@ -195,6 +221,7 @@
     transition-duration: 0.01ms !important;
   }
   .tilt-row { transform: none !important; }
+  body::before { animation: none !important; transform: none; will-change: auto; }
 }
 
 /* Colour-only shared states; existing dimensions and motion remain untouched. */
@@ -219,7 +246,8 @@
 }
 .row-scroll:has(> :hover) > :not(:hover) { opacity: 0.6; }
 .row-scroll > :hover .rank-number { -webkit-text-stroke-color: var(--primary); }
-.row-scroll > :hover { border-color: var(--card-hover-border); }
+.bg-card { border-color: var(--card-border); }
+.row-scroll > :hover, .bg-card:hover { border-color: var(--card-hover-border); box-shadow: var(--shadow-aurora); }
 .hero-left { background: var(--hero-left); opacity: 0.12; }
 .hero-bottom { background: var(--hero-bottom); opacity: 0.12; }
 .nav-link[aria-current=location] { color: var(--heading); box-shadow: inset 0 -2px var(--primary); }
