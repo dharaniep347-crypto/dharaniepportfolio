@@ -20,3 +20,7 @@
 # Midnight navy backgrounds
 - [x] Update background tokens, page/hero fades, muted text, borders, scrollbar and browser bar without changing layout or animation.
 - [x] Check public sections, intro/profile screens, dialogs and footer at 360px and 1440px; navy text contrast is at least 7.7:1 for muted text. Existing muted copy on the red contact card remains below 4.5:1 because red accents and text colours must stay unchanged.
+
+# Global navy/red blend
+- [ ] Apply one fixed background behind all screens and translucent surface/navigation tokens; preserve layout, text, accents and animations.
+- [ ] Scroll every section at 360px, 768px and 1440px and check blended background continuity and text contrast.
