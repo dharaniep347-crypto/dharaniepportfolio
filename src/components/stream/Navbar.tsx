@@ -3,6 +3,8 @@ import { Search, Menu, X, Download, Github, Linkedin, RefreshCw } from "lucide-r
 import type { SiteContent, SiteProject } from "@/lib/content";
 import { skillDetails } from "@/data/portfolio";
 import { useViewer, viewerProfiles } from "./state";
+import Portrait from "./Portrait";
+import ExternalLink from "./ExternalLink";
 
 const links = [
   ["Home", "top"],
@@ -105,10 +107,10 @@ export default function Navbar({
               onClick={() => setAvatarOpen((o) => !o)}
               aria-label="Profile menu"
               aria-expanded={avatarOpen}
-              className="block overflow-hidden rounded-full ring-1 ring-[#232a52] transition-shadow hover:ring-2 hover:ring-[#2b3bff]"
+              className="block rounded-full"
             >
               {content.profile.portrait ? (
-                <img src={content.profile.portrait} alt="" className="size-8 rounded-full object-cover" />
+                <Portrait src={content.profile.portrait} alt="" className="size-8" />
               ) : (
                 <span className="flex size-8 items-center justify-center rounded-full text-xs font-bold text-[#f3f4fb]" style={{ background: avatar?.gradient }}>
                   {avatar?.label[0] ?? "D"}
@@ -120,15 +122,15 @@ export default function Navbar({
                 <button onClick={() => { switchProfile(); setAvatarOpen(false); }} className="flex w-full items-center gap-2 px-4 py-2 hover:bg-[#11152e]" role="menuitem">
                   <RefreshCw className="size-4" aria-hidden /> Switch profile
                 </button>
-                <a href={content.profile.resume} download className="flex items-center gap-2 px-4 py-2 hover:bg-[#11152e]" role="menuitem">
+                <ExternalLink href={content.profile.resume} download className="flex items-center gap-2 px-4 py-2 hover:bg-[#11152e]" role="menuitem">
                   <Download className="size-4" aria-hidden /> Download resume
-                </a>
-                <a href={content.profile.github} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 hover:bg-[#11152e]" role="menuitem">
+                </ExternalLink>
+                <ExternalLink href={content.profile.github} className="flex items-center gap-2 px-4 py-2 hover:bg-[#11152e]" role="menuitem">
                   <Github className="size-4" aria-hidden /> GitHub
-                </a>
-                <a href={content.profile.linkedin} target="_blank" rel="noreferrer" className="flex items-center gap-2 px-4 py-2 hover:bg-[#11152e]" role="menuitem">
+                </ExternalLink>
+                <ExternalLink href={content.profile.linkedin} className="flex items-center gap-2 px-4 py-2 hover:bg-[#11152e]" role="menuitem">
                   <Linkedin className="size-4" aria-hidden /> LinkedIn
-                </a>
+                </ExternalLink>
               </div>
             )}
           </div>

@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Play, Plus, Check, ChevronDown, Mail, Phone, Linkedin, Github, Download, Send, Copy } from "lucide-react";
-import { toast } from "sonner";
 import type { SiteContent, SiteProject } from "@/lib/content";
 import { journey, skillDetails, projectCategories, filterProjects, type ProjectCategoryFilter } from "@/data/portfolio";
 import { Button } from "@/components/ui/button";
 import Row from "./Row";
 import { ProjectCover } from "./covers";
 import { useViewer, prefersReducedMotion } from "./state";
+import Portrait from "./Portrait";
+import ExternalLink from "./ExternalLink";
+import { phoneHref } from "@/lib/external-url";
 
 /* ---------- Featured projects (16:9 cards with hover expand) ---------- */
 
@@ -163,7 +165,7 @@ export function SummaryRow({ content, onMoreInfo }: { content: SiteContent; onMo
         className="flex w-80 shrink-0 items-center gap-4 rounded-md border border-[#232a52] bg-[#11152e] p-4 text-left transition-colors hover:border-[#2b3bff] sm:w-96"
       >
         {content.profile.portrait && (
-          <img src={content.profile.portrait} alt={`Portrait of ${content.profile.name}`} className="size-20 rounded-md object-cover object-top" />
+          <Portrait src={content.profile.portrait} alt={`Portrait of ${content.profile.name}`} className="size-20" />
         )}
         <span>
           <span className="font-display block text-lg font-extrabold">{content.profile.name}</span>
@@ -188,17 +190,9 @@ export function SummaryRow({ content, onMoreInfo }: { content: SiteContent; onMo
 /* ---------- Contact ---------- */
 
 export function ContactRow({ content, onMessage }: { content: SiteContent; onMessage: () => void }) {
-  const copy = async (text: string, label: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      toast.success(`${label} copied to clipboard`);
-    } catch {
-      toast.error("Couldn't copy — please copy it manually.");
-    }
-  };
   const cards = [
-    { label: "Email", value: content.profile.email, icon: Mail, action: () => copy(content.profile.email, "Email") },
-    { label: "Phone", value: content.profile.phone, icon: Phone, action: () => copy(content.profile.phone, "Phone number") },
+    { label: "Email", value: content.profile.email, icon: Mail, href: `mailto:${content.profile.email}` },
+    { label: "Phone", value: content.profile.phone, icon: Phone, href: phoneHref(content.profile.phone) },
     { label: "LinkedIn", value: "Connect with me", icon: Linkedin, href: content.profile.linkedin },
     { label: "GitHub", value: "See my code", icon: Github, href: content.profile.github },
     { label: "Resume", value: "Download PDF", icon: Download, href: content.profile.resume, download: true },
@@ -216,14 +210,10 @@ export function ContactRow({ content, onMessage }: { content: SiteContent; onMes
           </>
         );
         const cls = "relative block w-56 shrink-0 rounded-md border border-[#232a52] bg-[#11152e] p-4 text-left transition-colors hover:border-[#2b3bff]";
-        return c.href ? (
-          <a key={c.label} href={c.href} {...(c.download ? { download: true } : { target: "_blank", rel: "noreferrer" })} className={cls} aria-label={`${c.label}: ${c.value}`}>
+        return (
+          <ExternalLink key={c.label} href={c.href} download={c.download} className={cls} aria-label={`${c.label}: ${c.value}`}>
             {inner}
-          </a>
-        ) : (
-          <button key={c.label} onClick={c.action} className={cls} aria-label={`Copy ${c.label}`}>
-            {inner}
-          </button>
+          </ExternalLink>
         );
       })}
       <button

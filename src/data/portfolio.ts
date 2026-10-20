@@ -1,5 +1,6 @@
 import portraitAsset from "@/assets/dharani-portrait.jpg.asset.json";
 import resumeAsset from "@/assets/Dharani_E_P_-_Resume.pdf.asset.json";
+import { normalizeExternalUrl } from "@/lib/external-url";
 // Edit all personal content here.
 export const profile = {
   name: "Dharani E P",
@@ -14,13 +15,13 @@ export const profile = {
   location: "Karur, Tamil Nadu, India",
   email: "dharaniep347@gmail.com",
   phone: "+91 9159048874",
-  linkedin: "https://www.linkedin.com/in/dharani-e-p-64a32b338/",
-  github: "https://github.com/dharaniep347-crypto",
+  linkedin: normalizeExternalUrl("https://www.linkedin.com/in/dharani-e-p-64a32b338"),
+  github: normalizeExternalUrl("https://github.com/dharaniep347-crypto"),
   education:
     "B.Tech in Artificial Intelligence and Data Science (third year), PGP College of Engineering and Technology",
-  resume: resumeAsset.url,
+  resume: normalizeExternalUrl(resumeAsset.url),
   // Set to an image URL (e.g. imported from src/assets) to show your portrait.
-  portrait: portraitAsset.url as string,
+  portrait: normalizeExternalUrl(portraitAsset.url),
 };
 
 export const skillCategories = [

@@ -2,6 +2,7 @@ import { Component, lazy, Suspense, useEffect, useState, type ReactNode } from "
 import { ClientOnly } from "@tanstack/react-router";
 import { Play, Info, Download } from "lucide-react";
 import type { SiteContent } from "@/lib/content";
+import ExternalLink from "./ExternalLink";
 
 const HeroScene = lazy(() => import("@/components/HeroScene"));
 
@@ -83,14 +84,14 @@ export default function Billboard({
           >
             <Info className="size-6" aria-hidden /> More info
           </button>
-          <a
+          <ExternalLink
             href={content.profile.resume}
             download
             aria-label="Download resume"
             className="rounded-full border-2 border-[#9aa0c3]/50 p-3 text-[#f3f4fb] transition-colors hover:border-[#f3f4fb]"
           >
             <Download className="size-5" aria-hidden />
-          </a>
+          </ExternalLink>
         </div>
       </div>
     </section>
