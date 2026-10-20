@@ -63,7 +63,7 @@ export default function Billboard({
         </p>
         <ul className="mt-4 flex flex-wrap gap-2">
           {["Third-year B.Tech AI and Data Science", "Karur, India", "2026"].map((chip) => (
-            <li key={chip} className="rounded-full border border-border bg-chip px-3 py-1 text-xs font-semibold text-foreground">
+            <li key={chip} className="rounded-full border border-border bg-chip px-3 py-1 text-xs font-semibold text-heading">
               {chip}
             </li>
           ))}

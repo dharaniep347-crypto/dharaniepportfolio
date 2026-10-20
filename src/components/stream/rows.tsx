@@ -83,7 +83,7 @@ export function FeaturedRow({ content, onOpenProject }: { content: SiteContent; 
     <Row id="projects" title="Featured projects" headerContent={
       <div className="flex flex-wrap gap-2" role="group" aria-label="Project categories">
         {projectCategories.map((c) => (
-          <Button key={c} size="sm" variant={category === c ? "default" : "outline"} aria-pressed={category === c} onClick={() => setCategory(c)}>{c}</Button>
+          <Button key={c} size="sm" variant={category === c ? "default" : "outline"} className={category === c ? undefined : "bg-chip text-heading"} aria-pressed={category === c} onClick={() => setCategory(c)}>{c}</Button>
         ))}
       </div>
     }>
@@ -108,7 +108,7 @@ export function Top10Row({ content }: { content: SiteContent }) {
             <span className="font-display text-lg font-extrabold leading-tight">{s.name}</span>
             {skillDetails[s.name] && <span className="mt-1 text-[10px] leading-relaxed text-muted-foreground">{skillDetails[s.name]}</span>}
             <span className="mt-1 text-sm font-bold text-heading">{s.level}%</span>
-            <span className="mt-1 w-fit rounded-sm bg-chip px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{s.category}</span>
+            <span className="mt-1 w-fit rounded-sm bg-chip px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-heading">{s.category}</span>
           </div>
         </li>
       ))}
@@ -128,7 +128,7 @@ export function TechStackRow({ content }: { content: SiteContent }) {
           {skillDetails[c] && <p className="mt-1 text-xs text-muted-foreground">{skillDetails[c]}</p>}
           <ul className="mt-3 flex flex-wrap gap-1.5">
             {content.skills.filter((s) => s.category === c).map((s) => (
-              <li key={s.name} title={skillDetails[s.name]} className="rounded-full border border-border bg-chip px-2.5 py-1 text-xs font-semibold">{s.name}</li>
+              <li key={s.name} title={skillDetails[s.name]} className="rounded-full border border-border bg-chip px-2.5 py-1 text-xs font-semibold text-heading">{s.name}</li>
             ))}
           </ul>
         </div>
