@@ -12,11 +12,21 @@ import Billboard from "@/components/stream/Billboard";
 import DetailModal, { type ModalItem } from "@/components/stream/DetailModal";
 import ContactModal from "@/components/stream/ContactModal";
 import { FeaturedRow, Top10Row, TechStackRow, JourneyRow, SummaryRow, ContactRow, MyListRow } from "@/components/stream/rows";
+import ExternalLink from "@/components/stream/ExternalLink";
+import { normalizeExternalUrl } from "@/lib/external-url";
 
 const contentQuery = queryOptions({ queryKey: ["site-content"], queryFn: () => getSiteContent() });
 function useContent() {
   const { data } = useSuspenseQuery(contentQuery);
-  return data;
+  return {
+    ...data,
+    profile: {
+      ...data.profile,
+      linkedin: normalizeExternalUrl(data.profile.linkedin).replace(/\/$/, ""),
+      github: normalizeExternalUrl(data.profile.github).replace(/\/$/, ""),
+      resume: normalizeExternalUrl(data.profile.resume),
+    },
+  };
 }
 
 const title = `${staticProfile.name} | ${staticProfile.title}`;
@@ -132,12 +142,12 @@ function Home() {
             <li><a href="#contact" className="hover:text-[#f3f4fb]">Contact</a></li>
           </ul>
           <ul className="space-y-2">
-            <li><a href={content.profile.github} target="_blank" rel="noreferrer" className="hover:text-[#f3f4fb]">GitHub</a></li>
-            <li><a href={content.profile.linkedin} target="_blank" rel="noreferrer" className="hover:text-[#f3f4fb]">LinkedIn</a></li>
+            <li><ExternalLink href={content.profile.github} className="hover:text-[#f3f4fb]">GitHub</ExternalLink></li>
+            <li><ExternalLink href={content.profile.linkedin} className="hover:text-[#f3f4fb]">LinkedIn</ExternalLink></li>
           </ul>
           <ul className="space-y-2">
-            <li><a href={content.profile.resume} download className="hover:text-[#f3f4fb]">Resume</a></li>
-            <li><a href={`mailto:${content.profile.email}`} className="hover:text-[#f3f4fb]">{content.profile.email}</a></li>
+            <li><ExternalLink href={content.profile.resume} download className="hover:text-[#f3f4fb]">Resume</ExternalLink></li>
+            <li><ExternalLink href={`mailto:${content.profile.email}`} className="hover:text-[#f3f4fb]">{content.profile.email}</ExternalLink></li>
           </ul>
         </div>
       </footer>
