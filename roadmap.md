@@ -8,6 +8,6 @@
 - [x] Verify face visibility, text separation and scroll locking at 360px, 768px and 1440px.
 
 # Circular portrait and links
-- [ ] Apply shared circular portrait framing and compact About layout.
-- [ ] Normalize public contact URLs and make every external link open safely in a new tab.
-- [ ] Verify photos, dialog bounds, scrolling and social-link tabs at 360px, 768px and 1440px.
+- [x] Apply shared circular portrait framing and compact About layout.
+- [x] Normalize public contact URLs and make every external link open safely in a new tab.
+- [x] Verify photos, dialog bounds, scrolling and social-link tabs at 360px, 768px and 1440px.
