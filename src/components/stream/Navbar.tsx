@@ -61,17 +61,17 @@ export default function Navbar({
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
-        scrolled || searchOpen ? "bg-[#07091a]/95 backdrop-blur" : "bg-gradient-to-b from-black/70 to-transparent"
+        scrolled || searchOpen ? "bg-chrome backdrop-blur" : "bg-gradient-to-b from-chrome/70 to-transparent"
       }`}
     >
       <nav aria-label="Main" className="mx-auto flex max-w-7xl items-center gap-6 px-5 py-3">
-        <a href="#top" className="font-wide text-xl tracking-wide text-[#2b3bff]">
+        <a href="#top" className="font-wide text-xl tracking-wide text-primary">
           DHARANI
         </a>
-        <ul className="hidden items-center gap-5 text-sm font-medium text-[#c6cbe8] md:flex">
+        <ul className="hidden items-center gap-5 text-sm font-medium text-foreground md:flex">
           {links.map(([l, h]) => (
             <li key={h}>
-              <a href={`#${h}`} className="transition-colors hover:text-[#f3f4fb]">
+              <a href={`#${h}`} className="transition-colors hover:text-heading">
                 {l}
               </a>
             </li>
@@ -89,13 +89,13 @@ export default function Navbar({
                 onKeyDown={(e) => e.key === "Escape" && (setSearchOpen(false), setQ(""))}
                 placeholder="Search projects and skills"
                 aria-label="Search projects and skills"
-                className="w-32 rounded-l-md border border-r-0 border-[#232a52] bg-[#07091a] px-3 py-1.5 text-sm min-[400px]:w-48 sm:w-64"
+                className="w-32 rounded-l-md border border-r-0 border-border bg-background px-3 py-1.5 text-sm min-[400px]:w-48 sm:w-64"
               />
             )}
             <button
               onClick={() => (searchOpen ? (setSearchOpen(false), setQ("")) : setSearchOpen(true))}
               aria-label={searchOpen ? "Close search" : "Open search"}
-              className={`rounded-md p-2 text-[#c6cbe8] transition-colors hover:text-[#f3f4fb] ${searchOpen ? "rounded-l-none border border-l-0 border-[#232a52] bg-[#07091a]" : ""}`}
+              className={`rounded-md p-2 text-foreground transition-colors hover:text-heading ${searchOpen ? "rounded-l-none border border-l-0 border-border bg-background" : ""}`}
             >
               {searchOpen ? <X className="size-5" /> : <Search className="size-5" />}
             </button>
@@ -112,23 +112,23 @@ export default function Navbar({
               {content.profile.portrait ? (
                 <Portrait src={content.profile.portrait} alt="" className="size-8" />
               ) : (
-                <span className="flex size-8 items-center justify-center rounded-full text-xs font-bold text-[#f3f4fb]" style={{ background: avatar?.gradient }}>
+                <span className="flex size-8 items-center justify-center rounded-full text-xs font-bold text-heading" style={{ background: avatar?.gradient }}>
                   {avatar?.label[0] ?? "D"}
                 </span>
               )}
             </button>
             {avatarOpen && (
-              <div className="absolute right-0 top-11 w-52 rounded-md border border-[#232a52] bg-[#1a1f42] py-1 text-sm shadow-xl" role="menu">
-                <button onClick={() => { switchProfile(); setAvatarOpen(false); }} className="flex w-full items-center gap-2 px-4 py-2 hover:bg-[#11152e]" role="menuitem">
+              <div className="absolute right-0 top-11 w-52 rounded-md border border-border bg-raised py-1 text-sm shadow-xl" role="menu">
+                <button onClick={() => { switchProfile(); setAvatarOpen(false); }} className="flex w-full items-center gap-2 px-4 py-2 hover:bg-card" role="menuitem">
                   <RefreshCw className="size-4" aria-hidden /> Switch profile
                 </button>
-                <ExternalLink href={content.profile.resume} download className="flex items-center gap-2 px-4 py-2 hover:bg-[#11152e]" role="menuitem">
+                <ExternalLink href={content.profile.resume} download className="flex items-center gap-2 px-4 py-2 hover:bg-card" role="menuitem">
                   <Download className="size-4" aria-hidden /> Download resume
                 </ExternalLink>
-                <ExternalLink href={content.profile.github} className="flex items-center gap-2 px-4 py-2 hover:bg-[#11152e]" role="menuitem">
+                <ExternalLink href={content.profile.github} className="flex items-center gap-2 px-4 py-2 hover:bg-card" role="menuitem">
                   <Github className="size-4" aria-hidden /> GitHub
                 </ExternalLink>
-                <ExternalLink href={content.profile.linkedin} className="flex items-center gap-2 px-4 py-2 hover:bg-[#11152e]" role="menuitem">
+                <ExternalLink href={content.profile.linkedin} className="flex items-center gap-2 px-4 py-2 hover:bg-card" role="menuitem">
                   <Linkedin className="size-4" aria-hidden /> LinkedIn
                 </ExternalLink>
               </div>
@@ -136,17 +136,17 @@ export default function Navbar({
           </div>
 
           {/* Mobile menu */}
-          <button onClick={() => setMenuOpen((o) => !o)} aria-label="Toggle menu" aria-expanded={menuOpen} className="rounded-md p-2 text-[#c6cbe8] md:hidden">
+          <button onClick={() => setMenuOpen((o) => !o)} aria-label="Toggle menu" aria-expanded={menuOpen} className="rounded-md p-2 text-foreground md:hidden">
             {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
       </nav>
 
       {menuOpen && (
-        <ul className="border-t border-[#232a52] bg-[#07091a] px-5 py-3 text-sm font-medium md:hidden">
+        <ul className="border-t border-border bg-background px-5 py-3 text-sm font-medium md:hidden">
           {links.map(([l, h]) => (
             <li key={h}>
-              <a href={`#${h}`} onClick={() => setMenuOpen(false)} className="block py-2.5 text-[#c6cbe8] hover:text-[#f3f4fb]">
+              <a href={`#${h}`} onClick={() => setMenuOpen(false)} className="block py-2.5 text-foreground hover:text-heading">
                 {l}
               </a>
             </li>
@@ -156,7 +156,7 @@ export default function Navbar({
 
       {/* Search results overlay */}
       {searchOpen && t && (
-        <div className="absolute inset-x-0 top-full max-h-[70vh] overflow-y-auto border-t border-[#232a52] bg-[#07091a]/98 px-5 py-6 backdrop-blur" role="region" aria-label="Search results">
+        <div className="absolute inset-x-0 top-full max-h-[70vh] overflow-y-auto border-t border-border bg-chrome/98 px-5 py-6 backdrop-blur" role="region" aria-label="Search results">
           <div className="mx-auto max-w-7xl">
             {projectHits.length + skillHits.length === 0 && (
               <p className="text-sm text-muted-foreground">No results for “{q}”.</p>
@@ -169,7 +169,7 @@ export default function Navbar({
                     <li key={p.id}>
                       <button
                         onClick={() => { onOpenProject(p); setSearchOpen(false); setQ(""); }}
-                        className="w-full rounded-md border border-[#232a52] bg-[#11152e] px-4 py-3 text-left transition-colors hover:border-[#2b3bff]"
+                        className="w-full rounded-md border border-border bg-card px-4 py-3 text-left transition-colors hover:border-primary"
                       >
                         <span className="block font-bold">{p.title}</span>
                         <span className="block text-sm text-muted-foreground">{p.summary}</span>
@@ -184,8 +184,8 @@ export default function Navbar({
                 <h2 className="mb-3 text-xs font-bold uppercase tracking-widest text-muted-foreground">Skills</h2>
                 <ul className="flex flex-wrap gap-2">
                   {skillHits.map((s) => (
-                    <li key={s.name} className="rounded-full border border-[#232a52] bg-[#11152e] px-3 py-1.5 text-sm">
-                      {s.name} <span className="text-[#ffd23f]">{s.level}%</span>
+                    <li key={s.name} className="rounded-full border border-border bg-card px-3 py-1.5 text-sm">
+                      {s.name} <span className="text-heading">{s.level}%</span>
                       {skillDetails[s.name] && <span className="block text-xs text-muted-foreground">{skillDetails[s.name]}</span>}
                     </li>
                   ))}

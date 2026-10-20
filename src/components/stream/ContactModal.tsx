@@ -55,9 +55,9 @@ export default function ContactModal({ onClose }: { onClose: () => void }) {
     <div>
       <label htmlFor={`cm-${name}`} className="mb-1 block text-sm font-bold">{label}</label>
       {name === "message" ? (
-        <textarea id={`cm-${name}`} name={name} rows={5} aria-invalid={!!errors[name]} aria-describedby={`cm-${name}-err`} className="w-full rounded-md border border-[#232a52] bg-[#07091a] px-3 py-2 aria-[invalid=true]:border-destructive" />
+        <textarea id={`cm-${name}`} name={name} rows={5} aria-invalid={!!errors[name]} aria-describedby={`cm-${name}-err`} className="w-full rounded-md border border-border bg-background px-3 py-2 aria-[invalid=true]:border-destructive" />
       ) : (
-        <input id={`cm-${name}`} name={name} type={type} aria-invalid={!!errors[name]} aria-describedby={`cm-${name}-err`} className="w-full rounded-md border border-[#232a52] bg-[#07091a] px-3 py-2 aria-[invalid=true]:border-destructive" />
+        <input id={`cm-${name}`} name={name} type={type} aria-invalid={!!errors[name]} aria-describedby={`cm-${name}-err`} className="w-full rounded-md border border-border bg-background px-3 py-2 aria-[invalid=true]:border-destructive" />
       )}
       <p id={`cm-${name}-err`} className="mt-1 min-h-5 text-sm text-destructive">{errors[name]}</p>
     </div>
@@ -65,14 +65,14 @@ export default function ContactModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div
-      className="fixed inset-0 z-[90] flex items-start justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[90] flex items-start justify-center overflow-y-auto bg-chrome/75 p-4 backdrop-blur-sm"
       onClick={(e) => e.target === e.currentTarget && onClose()}
       role="dialog"
       aria-modal="true"
       aria-label="Send a message"
     >
-      <div ref={ref} className="relative my-8 w-full max-w-lg rounded-md bg-[#11152e] p-6 shadow-2xl md:p-8">
-        <button onClick={onClose} aria-label="Close" className="absolute right-4 top-4 rounded-full bg-[#07091a]/80 p-2 text-[#f3f4fb] hover:bg-[#07091a]">
+      <div ref={ref} className="relative my-8 w-full max-w-lg rounded-md bg-card p-6 shadow-2xl md:p-8">
+        <button onClick={onClose} aria-label="Close" className="absolute right-4 top-4 rounded-full bg-background/80 p-2 text-heading hover:bg-background">
           <X className="size-5" aria-hidden />
         </button>
         <h2 className="font-wide text-2xl">Send a message</h2>

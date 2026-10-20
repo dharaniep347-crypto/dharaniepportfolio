@@ -89,7 +89,7 @@ function Gate() {
     try { sessionStorage.setItem(INTRO_KEY, "1"); } catch { /* ignore */ }
   }, []);
 
-  if (!ready || !hydrated) return <div className="min-h-screen bg-[#07091a]" />;
+  if (!ready || !hydrated) return <div className="min-h-screen bg-background" />;
   if (!introDone) return <Intro onDone={finishIntro} />;
   if (!profile) return <ProfileGate onPick={pickProfile} />;
   return <Home />;
@@ -119,7 +119,7 @@ function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-[#07091a]">
+    <div className="min-h-screen bg-background">
       <Navbar content={content} onOpenProject={(p) => openProject(p, content.projects.indexOf(p))} />
       <main>
         <Billboard content={content} with3D={profile === "explorer"} onMoreInfo={openAbout} />
@@ -129,25 +129,25 @@ function Home() {
           <MyListRow content={content} onOpenProject={openProject} />
         </div>
       </main>
-      <footer className="border-t border-[#232a52] py-10">
+      <footer className="border-t border-border bg-chrome py-10">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 text-sm text-muted-foreground sm:grid-cols-4">
           <div>
-            <p className="font-wide mb-3 text-base text-[#2b3bff]">DHARANI</p>
+            <p className="font-wide mb-3 text-base text-heading">DHARANI</p>
             <p>© {new Date().getFullYear()} {content.profile.name}</p>
           </div>
           <ul className="space-y-2">
-            <li><a href="#top" className="hover:text-[#f3f4fb]">Home</a></li>
-            <li><a href="#projects" className="hover:text-[#f3f4fb]">Projects</a></li>
-            <li><a href="#skills" className="hover:text-[#f3f4fb]">Skills</a></li>
-            <li><a href="#contact" className="hover:text-[#f3f4fb]">Contact</a></li>
+            <li><a href="#top" className="hover:text-heading">Home</a></li>
+            <li><a href="#projects" className="hover:text-heading">Projects</a></li>
+            <li><a href="#skills" className="hover:text-heading">Skills</a></li>
+            <li><a href="#contact" className="hover:text-heading">Contact</a></li>
           </ul>
           <ul className="space-y-2">
-            <li><ExternalLink href={content.profile.github} className="hover:text-[#f3f4fb]">GitHub</ExternalLink></li>
-            <li><ExternalLink href={content.profile.linkedin} className="hover:text-[#f3f4fb]">LinkedIn</ExternalLink></li>
+            <li><ExternalLink href={content.profile.github} className="hover:text-heading">GitHub</ExternalLink></li>
+            <li><ExternalLink href={content.profile.linkedin} className="hover:text-heading">LinkedIn</ExternalLink></li>
           </ul>
           <ul className="space-y-2">
-            <li><ExternalLink href={content.profile.resume} download className="hover:text-[#f3f4fb]">Resume</ExternalLink></li>
-            <li><ExternalLink href={`mailto:${content.profile.email}`} className="hover:text-[#f3f4fb]">{content.profile.email}</ExternalLink></li>
+            <li><ExternalLink href={content.profile.resume} download className="hover:text-heading">Resume</ExternalLink></li>
+            <li><ExternalLink href={`mailto:${content.profile.email}`} className="hover:text-heading">{content.profile.email}</ExternalLink></li>
           </ul>
         </div>
       </footer>

@@ -3,10 +3,10 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 export type ViewerProfile = "recruiter" | "developer" | "collaborator" | "explorer";
 
 export const viewerProfiles: { id: ViewerProfile; label: string; gradient: string; icon: string }[] = [
-  { id: "recruiter", label: "Recruiter", gradient: "linear-gradient(135deg,#ffd23f,#b98a00)", icon: "briefcase" },
-  { id: "developer", label: "Developer", gradient: "linear-gradient(135deg,#2b3bff,#101a8f)", icon: "code" },
-  { id: "collaborator", label: "Collaborator", gradient: "linear-gradient(135deg,#2dd4bf,#0f766e)", icon: "users" },
-  { id: "explorer", label: "Explorer", gradient: "linear-gradient(135deg,#a855f7,#5b21b6)", icon: "compass" },
+  { id: "recruiter", label: "Recruiter", gradient: "var(--profile-1)", icon: "briefcase" },
+  { id: "developer", label: "Developer", gradient: "var(--profile-2)", icon: "code" },
+  { id: "collaborator", label: "Collaborator", gradient: "var(--profile-3)", icon: "users" },
+  { id: "explorer", label: "Explorer", gradient: "var(--profile-4)", icon: "compass" },
 ];
 
 /** Row order per viewer profile. */

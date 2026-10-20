@@ -60,8 +60,8 @@ export default function DetailModal({
   return (
     <div
       className={p
-        ? "fixed inset-0 z-[90] flex items-start justify-center overflow-y-auto bg-black/70 p-4 backdrop-blur-sm"
-        : "fixed inset-0 z-[90] flex items-center justify-center overflow-hidden bg-ink/70 p-4 backdrop-blur-sm"}
+        ? "fixed inset-0 z-[90] flex items-start justify-center overflow-y-auto bg-chrome/75 p-4 backdrop-blur-sm"
+        : "fixed inset-0 z-[90] flex items-center justify-center overflow-hidden bg-chrome/75 p-4 backdrop-blur-sm"}
       onClick={(e) => e.target === e.currentTarget && onClose()}
       role="dialog"
       aria-modal="true"
@@ -73,7 +73,7 @@ export default function DetailModal({
         {p ? <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute right-4 top-4 z-10 rounded-full bg-[#07091a]/80 p-2 text-[#f3f4fb] transition-colors hover:bg-[#07091a]"
+          className="absolute right-4 top-4 z-10 rounded-full bg-background/80 p-2 text-heading transition-colors hover:bg-background"
         >
           <X className="size-5" aria-hidden />
         </button>
@@ -125,13 +125,13 @@ export default function DetailModal({
             <ProjectCover index={(item.kind === "project" ? item.index : 0)} title={p?.title} className="aspect-video w-full rounded-t-md" iconClass="size-40" />
           )
         ) : (
-          <div className="relative aspect-video w-full overflow-hidden rounded-t-md bg-[#07091a]">
+          <div className="relative aspect-video w-full overflow-hidden rounded-t-md bg-background">
             {content.profile.portrait && (
               <img src={content.profile.portrait} alt={`Portrait of ${content.profile.name}`} className="h-full w-full object-cover object-top opacity-90" />
             )}
           </div>
         )}
-        <div aria-hidden className="-mt-24 h-24 bg-gradient-to-t from-[#11152e] to-transparent" />
+        <div aria-hidden className="-mt-24 h-24 bg-gradient-to-t from-card to-transparent" />
 
         <div className="px-6 pb-8 md:px-10">
           <h2 className="font-wide break-words text-2xl sm:text-3xl md:text-4xl">{p ? p.title : content.profile.name}</h2>
@@ -147,7 +147,7 @@ export default function DetailModal({
               <button
                 onClick={() => toggleMyList(p.id)}
                 aria-label={inList ? "Remove from My List" : "Add to My List"}
-                className="rounded-full border-2 border-[#9aa0c3]/50 p-2.5 text-[#f3f4fb] transition-colors hover:border-[#f3f4fb]"
+                className="rounded-full border-2 border-muted-foreground/50 p-2.5 text-heading transition-colors hover:border-heading"
               >
                 {inList ? <Check className="size-5" aria-hidden /> : <Plus className="size-5" aria-hidden />}
               </button>
@@ -161,13 +161,13 @@ export default function DetailModal({
             <div>
               {p ? (
                 <div
-                  className="space-y-2 text-sm leading-relaxed text-[#c6cbe8] [&_a]:text-[#2b3bff] [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-3 [&_h3]:pt-3 [&_h3]:font-bold"
+                  className="space-y-2 text-sm leading-relaxed text-foreground [&_a]:text-heading [&_a]:decoration-primary [&_a]:underline [&_ol]:list-decimal [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-3 [&_h3]:pt-3 [&_h3]:font-bold"
                   dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(p.description) }}
                 />
               ) : (
                 <>
                   {content.profile.about.map((para) => (
-                    <p key={para.slice(0, 20)} className="mb-4 text-sm leading-relaxed text-[#c6cbe8]">{para}</p>
+                    <p key={para.slice(0, 20)} className="mb-4 text-sm leading-relaxed text-foreground">{para}</p>
                   ))}
                   <p className="text-sm text-muted-foreground">{content.profile.education}</p>
                 </>
@@ -198,7 +198,7 @@ export default function DetailModal({
                   <button
                     key={o.id}
                     onClick={() => onOpenProject(o, content.projects.indexOf(o))}
-                    className="overflow-hidden rounded-md border border-[#232a52] bg-[#1a1f42] text-left transition-colors hover:border-[#2b3bff]"
+                    className="overflow-hidden rounded-md border border-border bg-raised text-left transition-colors hover:border-primary"
                   >
                     <ProjectCover index={content.projects.indexOf(o)} title={o.title} className="aspect-video w-full" iconClass="size-14" />
                     <span className="block p-3 text-xs text-muted-foreground">{o.summary}</span>

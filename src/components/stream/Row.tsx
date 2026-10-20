@@ -32,11 +32,11 @@ export default function Row({
       onMouseLeave={() => setHover(false)}
     >
       <div className="mx-auto flex max-w-7xl items-baseline justify-between px-5">
-        <h2 className="font-display text-lg font-extrabold text-[#e6e9fa] md:text-xl">{title}</h2>
+        <h2 className="font-display text-lg font-extrabold text-heading md:text-xl">{title}</h2>
         {onExploreAll && (
           <button
             onClick={onExploreAll}
-            className="text-xs font-semibold text-[#9aa0c3] opacity-0 transition-opacity group-hover/row:opacity-100 hover:text-[#f3f4fb]"
+            className="text-xs font-semibold text-muted-foreground opacity-0 transition-opacity group-hover/row:opacity-100 hover:text-heading"
           >
             Explore all →
           </button>
@@ -52,14 +52,14 @@ export default function Row({
             <button
               onClick={() => scrollBy(-1)}
               aria-label={`Scroll ${title} left`}
-              className="absolute left-0 top-0 bottom-4 hidden w-12 items-center justify-center rounded-r-md bg-black/50 text-[#f3f4fb] transition-opacity hover:bg-black/75 md:flex"
+              className="absolute left-0 top-0 bottom-4 hidden w-12 items-center justify-center rounded-r-md bg-chrome/50 text-heading transition-opacity hover:bg-chrome/75 md:flex"
             >
               <ChevronLeft className="size-8" aria-hidden />
             </button>
             <button
               onClick={() => scrollBy(1)}
               aria-label={`Scroll ${title} right`}
-              className="absolute right-0 top-0 bottom-4 hidden w-12 items-center justify-center rounded-l-md bg-black/50 text-[#f3f4fb] transition-opacity hover:bg-black/75 md:flex"
+              className="absolute right-0 top-0 bottom-4 hidden w-12 items-center justify-center rounded-l-md bg-chrome/50 text-heading transition-opacity hover:bg-chrome/75 md:flex"
             >
               <ChevronRight className="size-8" aria-hidden />
             </button>

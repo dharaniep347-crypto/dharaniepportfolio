@@ -15,18 +15,18 @@ export default function Intro({ onDone }: { onDone: () => void }) {
   }, [onDone]);
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black" role="dialog" aria-label="Intro">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-chrome" role="dialog" aria-label="Intro">
       {/* spinning knot silhouette */}
       <motion.div
         aria-hidden
         className="absolute h-72 w-72 rounded-full opacity-30"
-        style={{ background: "radial-gradient(circle, #2b3bff 0%, transparent 65%)" }}
+        style={{ background: "var(--intro-glow)" }}
         animate={{ rotate: 360, scale: [1, 1.15, 1] }}
         transition={{ duration: DURATION / 1000, ease: "easeInOut" }}
       />
       <div className="relative overflow-hidden">
         <motion.h1
-          className="font-wide px-6 text-center text-5xl text-[#f3f4fb] sm:text-7xl"
+          className="font-wide px-6 text-center text-5xl text-heading sm:text-7xl"
           initial={{ scale: 0.6, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
@@ -36,7 +36,7 @@ export default function Intro({ onDone }: { onDone: () => void }) {
         {/* cobalt light sweep */}
         <motion.div
           aria-hidden
-          className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-[#2b3bff]/60 to-transparent"
+          className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-primary/60 to-transparent"
           initial={{ x: "-150%" }}
           animate={{ x: "450%" }}
           transition={{ duration: 1.4, delay: 0.4, ease: "easeInOut" }}
@@ -45,7 +45,7 @@ export default function Intro({ onDone }: { onDone: () => void }) {
       {showSkip && (
         <button
           onClick={onDone}
-          className="absolute bottom-8 right-8 rounded-md border border-[#232a52] px-4 py-2 text-sm font-semibold text-[#9aa0c3] transition-colors hover:border-[#2b3bff] hover:text-[#f3f4fb]"
+          className="absolute bottom-8 right-8 rounded-md border border-border px-4 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:border-primary hover:text-heading"
         >
           Skip intro
         </button>
