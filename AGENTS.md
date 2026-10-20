@@ -9,6 +9,9 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 - Public site content comes from the database via getSiteContent (src/lib/content.functions.ts); src/data/portfolio.ts is only the fallback when the database is empty or unreachable.
+- GitHub Pages uses a separate Start SPA config and browser content adapter under existing database permissions; this preserves Lovable server functions while exporting only browser files in dist.
+- Local public URLs use withBasePath and the router uses Vite BASE_URL; this keeps root previews and repository-subpath deployments working without duplicate prefixes.
+- Export asset pointers into dist during Pages packaging and fail on missing downloads; Lovable-relative media otherwise do not exist on GitHub Pages.
 - Files live in the private "portfolio-files" bucket (public buckets are blocked); DB stores storage paths and the site resolves them to signed URLs. Paths starting with "/" or "http" are used as-is.
 - First signup becomes admin via an auth.users trigger; a second trigger rejects signups once an admin exists. Admin access is enforced by RLS with has_role().
 

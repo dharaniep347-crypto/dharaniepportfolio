@@ -3,6 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { withBasePath } from "@/lib/site-path";
 
 export function AdminLogin() {
   const [adminExists, setAdminExists] = useState<boolean | null>(null);
@@ -26,7 +27,7 @@ export function AdminLogin() {
     } else {
       if (password.length < 8) { setError("Use at least 8 characters."); setBusy(false); return; }
       const { data, error } = await supabase.auth.signUp({
-        email, password, options: { emailRedirectTo: `${window.location.origin}/admin` },
+        email, password, options: { emailRedirectTo: `${window.location.origin}${withBasePath("/admin")}` },
       });
       if (error) setError(error.message.includes("closed") || error.message.includes("Database") ? "Registration is closed." : error.message);
       else if (!data.session) setInfo("Check your email to confirm your account, then sign in.");
