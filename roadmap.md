@@ -24,3 +24,7 @@
 # Global navy/red blend
 - [x] Apply one fixed background behind all screens and translucent surface/navigation tokens; preserve layout, text, accents and animations.
 - [x] Scroll every section at 360px, 768px and 1440px and check blended background continuity and text contrast; muted text over sampled red glow areas is at least 8.43:1. Existing red-button contrast exception remains unchanged.
+
+# Midnight plum aurora
+- [ ] Apply plum background, grain, reduced-motion-safe drift, surface states and magenta scene rim light.
+- [ ] Verify whole page, screens and dialogs at 360px and 1440px, including contrast and smooth scrolling.
