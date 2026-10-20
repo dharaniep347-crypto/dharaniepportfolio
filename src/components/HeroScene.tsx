@@ -2,9 +2,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
-const COBALT = "#2b3bff";
-const INK = "#0e1230";
-const YELLOW = "#ffd23f";
+import { useSceneColours } from "@/lib/scene-colours";
 
 function Floater({
   pos,
@@ -32,6 +30,7 @@ function Floater({
 }
 
 function Scene({ animate }: { animate: boolean }) {
+  const colours = useSceneColours();
   const group = useRef<THREE.Group>(null);
   const knot = useRef<THREE.Mesh>(null);
   const orb = useRef<THREE.Mesh>(null);
@@ -65,45 +64,46 @@ function Scene({ animate }: { animate: boolean }) {
     }
   });
 
+  if (!colours) return null;
   return (
     <>
-      <hemisphereLight args={["#ffffff", "#c9cce0", 1.1]} />
-      <directionalLight position={[4, 6, 5]} intensity={1.6} />
-      <pointLight position={[-3, -2, 3]} color={YELLOW} intensity={20} />
+      <hemisphereLight args={[colours.white, colours.ground, 1.1]} />
+      <directionalLight color={colours.white} position={[4, 6, 5]} intensity={1.6} />
+      <pointLight position={[-3, -2, 3]} color={colours.primary} intensity={8} />
       <group ref={group}>
         <mesh ref={knot}>
           <torusKnotGeometry args={[1, 0.34, 240, 36, 2, 3]} />
-          <meshStandardMaterial color={COBALT} metalness={0.1} roughness={0.3} />
+          <meshStandardMaterial color={colours.primary} metalness={0.1} roughness={0.3} />
         </mesh>
         <group rotation={[1.1, 0.3, 0.2]}>
           <mesh>
             <torusGeometry args={[2.2, 0.015, 8, 160]} />
-            <meshBasicMaterial color={INK} />
+            <meshBasicMaterial color={colours.white} transparent opacity={0.6} />
           </mesh>
           <mesh ref={orb} position={[2.2, 0, 0]}>
             <sphereGeometry args={[0.12, 24, 24]} />
-            <meshStandardMaterial color={YELLOW} />
+            <meshStandardMaterial color={colours.white} />
           </mesh>
         </group>
         <Floater pos={[-2.4, 1.4, -0.5]} speed={0.9}>
           <octahedronGeometry args={[0.3]} />
-          <meshStandardMaterial color={YELLOW} />
+          <meshStandardMaterial color={colours.grey} />
         </Floater>
         <Floater pos={[2.5, 1.6, -1]} speed={0.7}>
           <boxGeometry args={[0.4, 0.4, 0.4]} />
-          <meshStandardMaterial color={COBALT} wireframe />
+          <meshStandardMaterial color={colours.primary} wireframe />
         </Floater>
         <Floater pos={[2.2, -1.7, 0.4]} speed={1.1}>
           <icosahedronGeometry args={[0.32]} />
-          <meshStandardMaterial color={INK} />
+          <meshStandardMaterial color={colours.grey} />
         </Floater>
         <Floater pos={[-2.1, -1.6, 0.6]} speed={0.8}>
           <boxGeometry args={[0.3, 0.3, 0.3]} />
-          <meshStandardMaterial color={INK} />
+          <meshStandardMaterial color={colours.grey} />
         </Floater>
         <Floater pos={[0.2, 2.5, -1.2]} speed={1}>
           <octahedronGeometry args={[0.28]} />
-          <meshStandardMaterial color={COBALT} wireframe />
+          <meshStandardMaterial color={colours.white} wireframe />
         </Floater>
       </group>
     </>

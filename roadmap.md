@@ -11,3 +11,8 @@
 - [x] Apply shared circular portrait framing and compact About layout.
 - [x] Normalize public contact URLs and make every external link open safely in a new tab.
 - [x] Verify photos, dialog bounds, scrolling and social-link tabs at 360px, 768px and 1440px.
+
+# Black and red theme
+- [x] Replace the global palette and all component/3D colours without changing layout, content or animation.
+- [x] Check public pages and dialogs at 360px, 768px and 1440px; inspect intro, search, skills and admin sign-in colours.
+- [ ] Verify signed-in admin tab colours visually — blocked because no admin account exists yet; shared theme and chart colours are updated.

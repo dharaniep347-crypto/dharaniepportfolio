@@ -45,7 +45,7 @@ function FeaturedCard({
       <button
         onClick={onOpen}
         onKeyDown={(e) => e.key === "Enter" && onOpen()}
-        className="block w-64 overflow-hidden rounded-md border border-transparent bg-[#11152e] text-left transition-colors hover:border-[#3a4270] sm:w-72"
+        className="block w-64 overflow-hidden rounded-md border border-transparent bg-card text-left transition-colors hover:border-card-hover-border sm:w-72"
         aria-label={`Open ${p.title} details`}
       >
         {p.image ? (
@@ -56,19 +56,19 @@ function FeaturedCard({
         <p className="px-3 py-2 text-xs leading-relaxed text-muted-foreground">{p.summary}</p>
       </button>
       {expanded && (
-        <div className="absolute inset-x-0 top-full rounded-b-md bg-[#1a1f42] p-3 shadow-2xl">
+        <div className="absolute inset-x-0 top-full rounded-b-md bg-raised p-3 shadow-2xl">
           <div className="flex items-center gap-2">
-            <button onClick={onOpen} aria-label={`Open ${p.title}`} className="rounded-full bg-[#f3f4fb] p-2 text-[#07091a] hover:bg-[#f3f4fb]/80">
+            <button onClick={onOpen} aria-label={`Open ${p.title}`} className="rounded-full bg-heading p-2 text-background hover:bg-heading/80">
               <Play className="size-4 fill-current" aria-hidden />
             </button>
-            <button onClick={() => toggleMyList(p.id)} aria-label={inList ? "Remove from My List" : "Add to My List"} className="rounded-full border border-[#9aa0c3]/50 p-2 text-[#f3f4fb] hover:border-[#f3f4fb]">
+            <button onClick={() => toggleMyList(p.id)} aria-label={inList ? "Remove from My List" : "Add to My List"} className="rounded-full border border-muted-foreground/50 p-2 text-heading hover:border-heading">
               {inList ? <Check className="size-4" aria-hidden /> : <Plus className="size-4" aria-hidden />}
             </button>
-            <button onClick={onOpen} aria-label="More info" className="ml-auto rounded-full border border-[#9aa0c3]/50 p-2 text-[#f3f4fb] hover:border-[#f3f4fb]">
+            <button onClick={onOpen} aria-label="More info" className="ml-auto rounded-full border border-muted-foreground/50 p-2 text-heading hover:border-heading">
               <ChevronDown className="size-4" aria-hidden />
             </button>
           </div>
-          <p className="mt-2 text-xs font-semibold text-[#ffd23f]">{p.category}</p>
+          <p className="mt-2 text-xs font-semibold text-heading">{p.category}</p>
           <p className="mt-1 text-xs text-muted-foreground">{p.tags.slice(0, 3).join(" · ")}</p>
         </div>
       )}
@@ -83,7 +83,7 @@ export function FeaturedRow({ content, onOpenProject }: { content: SiteContent; 
     <Row id="projects" title="Featured projects" headerContent={
       <div className="flex flex-wrap gap-2" role="group" aria-label="Project categories">
         {projectCategories.map((c) => (
-          <Button key={c} size="sm" variant={category === c ? "secondary" : "outline"} aria-pressed={category === c} onClick={() => setCategory(c)}>{c}</Button>
+          <Button key={c} size="sm" variant={category === c ? "default" : "outline"} aria-pressed={category === c} onClick={() => setCategory(c)}>{c}</Button>
         ))}
       </div>
     }>
@@ -104,11 +104,11 @@ export function Top10Row({ content }: { content: SiteContent }) {
       {top.map((s, i) => (
         <li key={s.name} className="flex shrink-0 items-center">
           <span aria-hidden className="rank-number -mr-6 text-[7rem] md:text-[9rem]">{i + 1}</span>
-          <div className="relative flex h-56 w-36 flex-col justify-end rounded-md border border-[#232a52] bg-gradient-to-b from-[#1a1f42] to-[#11152e] p-3 md:h-64 md:w-40">
+          <div className="relative flex h-56 w-36 flex-col justify-end rounded-md border border-border bg-gradient-to-b from-raised to-card p-3 md:h-64 md:w-40">
             <span className="font-display text-lg font-extrabold leading-tight">{s.name}</span>
             {skillDetails[s.name] && <span className="mt-1 text-[10px] leading-relaxed text-muted-foreground">{skillDetails[s.name]}</span>}
-            <span className="mt-1 text-sm font-bold text-[#ffd23f]">{s.level}%</span>
-            <span className="mt-1 w-fit rounded-sm bg-[#07091a] px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{s.category}</span>
+            <span className="mt-1 text-sm font-bold text-heading">{s.level}%</span>
+            <span className="mt-1 w-fit rounded-sm bg-chip px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{s.category}</span>
           </div>
         </li>
       ))}
@@ -123,12 +123,12 @@ export function TechStackRow({ content }: { content: SiteContent }) {
   return (
     <Row title="Tech stack">
       {cats.map((c) => (
-        <div key={c} className="w-64 shrink-0 rounded-md border border-[#232a52] bg-[#11152e] p-4">
-          <h3 className="font-display text-base font-extrabold text-[#ffd23f]">{c}</h3>
+        <div key={c} className="w-64 shrink-0 rounded-md border border-border bg-card p-4">
+          <h3 className="font-display text-base font-extrabold text-heading">{c}</h3>
           {skillDetails[c] && <p className="mt-1 text-xs text-muted-foreground">{skillDetails[c]}</p>}
           <ul className="mt-3 flex flex-wrap gap-1.5">
             {content.skills.filter((s) => s.category === c).map((s) => (
-              <li key={s.name} title={skillDetails[s.name]} className="rounded-full bg-[#1a1f42] px-2.5 py-1 text-xs font-semibold">{s.name}</li>
+              <li key={s.name} title={skillDetails[s.name]} className="rounded-full border border-border bg-chip px-2.5 py-1 text-xs font-semibold">{s.name}</li>
             ))}
           </ul>
         </div>
@@ -143,11 +143,11 @@ export function JourneyRow({ title = "Journey" }: { title?: string }) {
   return (
     <Row id="journey" title={title}>
       {journey.map((j) => (
-        <div key={j.title} className="relative w-72 shrink-0 overflow-hidden rounded-md border border-[#232a52] bg-[#11152e] p-4 pb-6 sm:w-80">
+        <div key={j.title} className="relative w-72 shrink-0 overflow-hidden rounded-md border border-border bg-card p-4 pb-6 sm:w-80">
           <h3 className="font-display text-base font-extrabold leading-snug">{j.title}</h3>
           <p className="mt-1 text-sm text-muted-foreground">{j.subtitle}</p>
-          <div className="absolute inset-x-0 bottom-0 h-1 bg-[#232a52]" role="progressbar" aria-valuenow={j.progress} aria-valuemin={0} aria-valuemax={100} aria-label={`${j.title} progress`}>
-            <div className="h-full bg-[#ffd23f]" style={{ width: `${j.progress}%` }} />
+          <div className="absolute inset-x-0 bottom-0 h-1 bg-input" role="progressbar" aria-valuenow={j.progress} aria-valuemin={0} aria-valuemax={100} aria-label={`${j.title} progress`}>
+            <div className="h-full bg-primary" style={{ width: `${j.progress}%` }} />
           </div>
         </div>
       ))}
@@ -162,7 +162,7 @@ export function SummaryRow({ content, onMoreInfo }: { content: SiteContent; onMo
     <Row title="Profile summary">
       <button
         onClick={onMoreInfo}
-        className="flex w-80 shrink-0 items-center gap-4 rounded-md border border-[#232a52] bg-[#11152e] p-4 text-left transition-colors hover:border-[#2b3bff] sm:w-96"
+        className="flex w-80 shrink-0 items-center gap-4 rounded-md border border-border bg-card p-4 text-left transition-colors hover:border-primary sm:w-96"
       >
         {content.profile.portrait && (
           <Portrait src={content.profile.portrait} alt={`Portrait of ${content.profile.name}`} className="size-20" />
@@ -170,14 +170,14 @@ export function SummaryRow({ content, onMoreInfo }: { content: SiteContent; onMo
         <span>
           <span className="font-display block text-lg font-extrabold">{content.profile.name}</span>
           <span className="block text-sm text-muted-foreground">{content.profile.bio}</span>
-          <span className="mt-1 block text-xs font-semibold text-[#2b3bff]">More info →</span>
+          <span className="mt-1 block text-xs font-semibold text-heading">More info →</span>
         </span>
       </button>
-      <div className="w-72 shrink-0 rounded-md border border-[#232a52] bg-[#11152e] p-4">
+      <div className="w-72 shrink-0 rounded-md border border-border bg-card p-4">
         <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Education</h3>
         <p className="mt-2 text-sm leading-relaxed">{content.profile.education}</p>
       </div>
-      <div className="w-72 shrink-0 rounded-md border border-[#232a52] bg-[#11152e] p-4">
+      <div className="w-72 shrink-0 rounded-md border border-border bg-card p-4">
         <h3 className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Based in</h3>
         <p className="mt-2 text-sm">{content.profile.location}</p>
         <h3 className="mt-4 text-xs font-bold uppercase tracking-widest text-muted-foreground">Open to</h3>
@@ -203,13 +203,13 @@ export function ContactRow({ content, onMessage }: { content: SiteContent; onMes
         const Icon = c.icon;
         const inner = (
           <>
-            <Icon className="size-6 text-[#ffd23f]" aria-hidden />
+            <Icon className="size-6 text-primary" aria-hidden />
             <span className="mt-3 font-display block text-base font-extrabold">{c.label}</span>
             <span className="mt-0.5 block break-all text-xs text-muted-foreground">{c.value}</span>
             <Copy className="absolute right-3 top-3 size-4 text-muted-foreground" aria-hidden />
           </>
         );
-        const cls = "relative block w-56 shrink-0 rounded-md border border-[#232a52] bg-[#11152e] p-4 text-left transition-colors hover:border-[#2b3bff]";
+        const cls = "relative block w-56 shrink-0 rounded-md border border-border bg-card p-4 text-left transition-colors hover:border-primary";
         return (
           <ExternalLink key={c.label} href={c.href} download={c.download} className={cls} aria-label={`${c.label}: ${c.value}`}>
             {inner}
@@ -218,9 +218,9 @@ export function ContactRow({ content, onMessage }: { content: SiteContent; onMes
       })}
       <button
         onClick={onMessage}
-        className="flex w-56 shrink-0 flex-col items-start rounded-md border border-[#2b3bff] bg-[#2b3bff]/15 p-4 text-left transition-colors hover:bg-[#2b3bff]/30"
+        className="flex w-56 shrink-0 flex-col items-start rounded-md border border-primary bg-primary p-4 text-left transition-colors hover:bg-primary-hover active:bg-primary-pressed"
       >
-        <Send className="size-6 text-[#f3f4fb]" aria-hidden />
+        <Send className="size-6 text-heading" aria-hidden />
         <span className="mt-3 font-display text-base font-extrabold">Send a message</span>
         <span className="mt-0.5 text-xs text-muted-foreground">Opens a contact form</span>
       </button>
@@ -240,7 +240,7 @@ export function MyListRow({ content, onOpenProject }: { content: SiteContent; on
         <button
           key={p.id}
           onClick={() => onOpenProject(p, content.projects.indexOf(p))}
-          className="block w-64 shrink-0 overflow-hidden rounded-md border border-transparent bg-[#11152e] text-left transition-colors hover:border-[#3a4270] sm:w-72"
+          className="block w-64 shrink-0 overflow-hidden rounded-md border border-transparent bg-card text-left transition-colors hover:border-card-hover-border sm:w-72"
         >
           <ProjectCover index={content.projects.indexOf(p)} title={p.title} className="aspect-video w-full" />
         </button>

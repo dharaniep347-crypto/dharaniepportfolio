@@ -18,12 +18,12 @@ export default function ProfileGate({ onPick }: { onPick: (p: ViewerProfile) => 
                 aria-label={`Continue as ${p.label}`}
               >
                 <span
-                  className="flex aspect-square w-full items-center justify-center rounded-md transition-transform duration-200 group-hover:scale-105 group-hover:ring-2 group-hover:ring-[#f3f4fb]"
+                  className="flex aspect-square w-full items-center justify-center rounded-md transition-transform duration-200 group-hover:scale-105 group-hover:ring-2 group-hover:ring-heading"
                   style={{ background: p.gradient }}
                 >
-                  <Icon className="size-12 text-[#f3f4fb] sm:size-16" aria-hidden />
+                  <Icon className="size-12 text-heading sm:size-16" aria-hidden />
                 </span>
-                <span className="text-sm font-semibold text-muted-foreground transition-colors group-hover:text-[#f3f4fb]">
+                <span className="text-sm font-semibold text-muted-foreground transition-colors group-hover:text-heading">
                   {p.label}
                 </span>
               </button>

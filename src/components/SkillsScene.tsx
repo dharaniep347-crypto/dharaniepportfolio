@@ -4,11 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import type { Skill } from "@/lib/content";
 
-const COBALT = "#2b3bff";
-const INK = "#0e1230";
-const YELLOW = "#ffd23f";
+import { useSceneColours } from "@/lib/scene-colours";
 
 function Orbiter({ skill, index, total, animate }: { skill: Skill; index: number; total: number; animate: boolean }) {
+  const colours = useSceneColours();
   const ref = useRef<THREE.Mesh>(null);
   const [hover, setHover] = useState(false);
   const radius = 2 + (index % 3) * 0.55;
@@ -26,6 +25,7 @@ function Orbiter({ skill, index, total, animate }: { skill: Skill; index: number
     if (animate && !hover) place(clock.elapsedTime);
   });
 
+  if (!colours) return null;
   return (
     <mesh
       ref={ref}
@@ -34,7 +34,7 @@ function Orbiter({ skill, index, total, animate }: { skill: Skill; index: number
       scale={hover ? 1.4 : 1}
     >
       <sphereGeometry args={[size, 24, 24]} />
-      <meshStandardMaterial color={hover ? YELLOW : index % 3 === 0 ? INK : index % 3 === 1 ? COBALT : YELLOW} roughness={0.35} />
+      <meshStandardMaterial color={hover ? colours.white : index % 3 === 0 ? colours.grey : index % 3 === 1 ? colours.primary : colours.white} roughness={0.35} />
       {hover && (
         <Html center distanceFactor={8} style={{ pointerEvents: "none" }}>
           <div className="-translate-y-8 whitespace-nowrap rounded-md bg-ink px-2 py-1 text-xs font-bold text-paper">
@@ -47,21 +47,24 @@ function Orbiter({ skill, index, total, animate }: { skill: Skill; index: number
 }
 
 function Knot({ animate }: { animate: boolean }) {
+  const colours = useSceneColours();
   const ref = useRef<THREE.Mesh>(null);
   useFrame((_, d) => {
     if (!animate || !ref.current) return;
     ref.current.rotation.x += Math.min(d, 0.05) * 0.25;
     ref.current.rotation.y += Math.min(d, 0.05) * 0.35;
   });
+  if (!colours) return null;
   return (
     <mesh ref={ref}>
       <torusKnotGeometry args={[0.7, 0.22, 160, 24, 2, 3]} />
-      <meshStandardMaterial color={COBALT} metalness={0.1} roughness={0.3} />
+      <meshStandardMaterial color={colours.primary} metalness={0.1} roughness={0.3} />
     </mesh>
   );
 }
 
 export default function SkillsScene({ skills }: { skills: Skill[] }) {
+  const colours = useSceneColours();
   const wrap = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   const [reduced, setReduced] = useState(false);
@@ -74,6 +77,7 @@ export default function SkillsScene({ skills }: { skills: Skill[] }) {
   }, []);
 
   const animate = !reduced;
+  if (!colours) return null;
   return (
     <div ref={wrap} className="h-full w-full" aria-hidden="true">
       <Canvas
@@ -83,9 +87,9 @@ export default function SkillsScene({ skills }: { skills: Skill[] }) {
         camera={{ position: [0, 1.2, 6.5], fov: 45 }}
         frameloop={animate && visible ? "always" : "demand"}
       >
-        <hemisphereLight args={["#ffffff", "#c9cce0", 1.1]} />
-        <directionalLight position={[4, 6, 5]} intensity={1.5} />
-        <pointLight position={[-3, -2, 3]} color={YELLOW} intensity={15} />
+        <hemisphereLight args={[colours.white, colours.ground, 1.1]} />
+        <directionalLight color={colours.white} position={[4, 6, 5]} intensity={1.5} />
+        <pointLight position={[-3, -2, 3]} color={colours.primary} intensity={8} />
         <Knot animate={animate} />
         {skills.map((s, i) => (
           <Orbiter key={s.name} skill={s} index={i} total={skills.length} animate={animate} />
