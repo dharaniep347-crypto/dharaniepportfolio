@@ -23,12 +23,20 @@ export default function Navbar({
 }) {
   const { profile, switchProfile } = useViewer();
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("top");
   const [searchOpen, setSearchOpen] = useState(false);
   const [q, setQ] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
   const [avatarOpen, setAvatarOpen] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const updateActive = () => setActiveSection(window.location.hash.slice(1) || "top");
+    updateActive();
+    window.addEventListener("hashchange", updateActive);
+    return () => window.removeEventListener("hashchange", updateActive);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -71,7 +79,7 @@ export default function Navbar({
         <ul className="hidden items-center gap-5 text-sm font-medium text-foreground md:flex">
           {links.map(([l, h]) => (
             <li key={h}>
-              <a href={`#${h}`} className="transition-colors hover:text-heading">
+              <a href={`#${h}`} aria-current={activeSection === h ? "location" : undefined} className="nav-link transition-colors hover:text-heading">
                 {l}
               </a>
             </li>
@@ -89,7 +97,7 @@ export default function Navbar({
                 onKeyDown={(e) => e.key === "Escape" && (setSearchOpen(false), setQ(""))}
                 placeholder="Search projects and skills"
                 aria-label="Search projects and skills"
-                className="w-32 rounded-l-md border border-r-0 border-border bg-background px-3 py-1.5 text-sm min-[400px]:w-48 sm:w-64"
+                className="w-32 rounded-l-md border border-r-0 border-border bg-input text-heading px-3 py-1.5 text-sm min-[400px]:w-48 sm:w-64"
               />
             )}
             <button
@@ -146,7 +154,7 @@ export default function Navbar({
         <ul className="border-t border-border bg-background px-5 py-3 text-sm font-medium md:hidden">
           {links.map(([l, h]) => (
             <li key={h}>
-              <a href={`#${h}`} onClick={() => setMenuOpen(false)} className="block py-2.5 text-foreground hover:text-heading">
+              <a href={`#${h}`} aria-current={activeSection === h ? "location" : undefined} onClick={() => setMenuOpen(false)} className="nav-link block py-2.5 text-foreground hover:text-heading">
                 {l}
               </a>
             </li>

@@ -55,9 +55,9 @@ export default function ContactModal({ onClose }: { onClose: () => void }) {
     <div>
       <label htmlFor={`cm-${name}`} className="mb-1 block text-sm font-bold">{label}</label>
       {name === "message" ? (
-        <textarea id={`cm-${name}`} name={name} rows={5} aria-invalid={!!errors[name]} aria-describedby={`cm-${name}-err`} className="w-full rounded-md border border-border bg-background px-3 py-2 aria-[invalid=true]:border-destructive" />
+        <textarea id={`cm-${name}`} name={name} rows={5} aria-invalid={!!errors[name]} aria-describedby={`cm-${name}-err`} className="w-full rounded-md border border-border bg-input text-heading px-3 py-2 aria-[invalid=true]:border-primary" />
       ) : (
-        <input id={`cm-${name}`} name={name} type={type} aria-invalid={!!errors[name]} aria-describedby={`cm-${name}-err`} className="w-full rounded-md border border-border bg-background px-3 py-2 aria-[invalid=true]:border-destructive" />
+        <input id={`cm-${name}`} name={name} type={type} aria-invalid={!!errors[name]} aria-describedby={`cm-${name}-err`} className="w-full rounded-md border border-border bg-input text-heading px-3 py-2 aria-[invalid=true]:border-primary" />
       )}
       <p id={`cm-${name}-err`} className="mt-1 min-h-5 text-sm text-destructive">{errors[name]}</p>
     </div>
