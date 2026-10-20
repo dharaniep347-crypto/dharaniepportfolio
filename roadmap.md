@@ -1,3 +1,8 @@
+# GitHub Pages deployment
+- [ ] Configure isolated static build, Bun workflow and repository paths while preserving the portfolio.
+- [ ] Test paths and existing flows; document GitHub settings and static-host limitations.
+- [ ] Run deployment on GitHub — blocked until repository variables and Pages settings are supplied by the owner.
+
 # Content update
 - [x] Update the four projects in database and fallback content.
 - [x] Show skill details and project category filters without changing the existing visual style.
