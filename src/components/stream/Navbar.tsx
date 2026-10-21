@@ -10,6 +10,8 @@ const links = [
   ["Home", "top"],
   ["Projects", "projects"],
   ["Skills", "skills"],
+  ["Education", "education"],
+  ["Certificates", "certificates"],
   ["Journey", "journey"],
   ["Contact", "contact"],
 ] as const;
@@ -76,7 +78,7 @@ export default function Navbar({
         <a href="#top" className="font-wide text-xl tracking-wide text-primary">
           DHARANI
         </a>
-        <ul className="hidden items-center gap-5 text-sm font-medium text-foreground md:flex">
+        <ul className="hidden items-center gap-4 text-sm font-medium text-foreground xl:flex">
           {links.map(([l, h]) => (
             <li key={h}>
               <a href={`#${h}`} aria-current={activeSection === h ? "location" : undefined} className="nav-link transition-colors hover:text-heading">
@@ -144,14 +146,14 @@ export default function Navbar({
           </div>
 
           {/* Mobile menu */}
-          <button onClick={() => setMenuOpen((o) => !o)} aria-label="Toggle menu" aria-expanded={menuOpen} className="rounded-md p-2 text-foreground md:hidden">
+          <button onClick={() => setMenuOpen((o) => !o)} aria-label="Toggle menu" aria-expanded={menuOpen} className="rounded-md p-2 text-foreground xl:hidden">
             {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
           </button>
         </div>
       </nav>
 
       {menuOpen && (
-        <ul className="border-t border-border bg-raised px-5 py-3 text-sm font-medium md:hidden">
+        <ul className="border-t border-border bg-raised px-5 py-3 text-sm font-medium xl:hidden">
           {links.map(([l, h]) => (
             <li key={h}>
               <a href={`#${h}`} aria-current={activeSection === h ? "location" : undefined} onClick={() => setMenuOpen(false)} className="nav-link block py-2.5 text-foreground hover:text-heading">
