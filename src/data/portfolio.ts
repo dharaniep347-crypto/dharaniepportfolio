@@ -156,3 +156,45 @@ export const journey = [
     progress: 50,
   },
 ];
+
+/** Academic content: null/empty values are intentionally unknown, never estimates. */
+export type EducationEntry = {
+  id: string; institution: string; qualification: string; years: string;
+  status: string; board: string; score: string; group: string;
+  expectedGraduation?: number; overallCgpa?: number | null;
+  semesters?: { semester: number; cgpa: number | null }[];
+};
+export const education: EducationEntry[] = [
+  {
+    id: "btech", institution: "PGP College of Engineering and Technology",
+    qualification: "B.Tech in Artificial Intelligence and Data Science",
+    years: "2023–2027", status: "Pursuing, third year", expectedGraduation: 2027,
+    board: "", score: "", group: "", overallCgpa: null,
+    semesters: [1, 2, 3, 4].map((semester) => ({ semester, cgpa: null })),
+  },
+  { id: "higher-secondary", institution: "", qualification: "Higher Secondary (12th)", years: "", status: "Details pending", board: "", score: "", group: "" },
+  { id: "secondary", institution: "", qualification: "Secondary (10th)", years: "", status: "Details pending", board: "", score: "", group: "" },
+];
+
+export function academicStats(entry: EducationEntry) {
+  const completed = (entry.semesters ?? []).filter((s): s is { semester: number; cgpa: number } => typeof s.cgpa === "number" && s.cgpa >= 0 && s.cgpa <= 10);
+  return { completed, overall: entry.overallCgpa ?? null, highest: completed.length ? Math.max(...completed.map((s) => s.cgpa)) : null, count: completed.length || null };
+}
+
+export const certificateCategories = ["All", "AI", "Web", "Cloud", "Other"] as const;
+export type CertificateCategory = (typeof certificateCategories)[number];
+export type Certificate = {
+  id: string; title: string; issuer: string; date: string;
+  category: Exclude<CertificateCategory, "All">; description: string;
+  image: string; file: string; credential: string;
+};
+export const certificates: Certificate[] = [
+  { id: "hackxtreme", title: "HackXtreme ’26 — 24-hour National Level Hackathon", issuer: "K. Ramakrishnan College of Engineering", date: "9–10 April 2026", category: "Other", description: "Participated in the 24-hour national-level hackathon organised by the departments of AI&DS, AI&ML, CSBS, CSE and IT in Trichy.", image: "/certificates/hackxtreme-26.jpg", file: "/certificates/hackxtreme-26.jpg", credential: "" },
+  { id: "texperia", title: "TEXPERIA 2026 — Webathon", issuer: "SNS College of Technology", date: "12–13 March 2026", category: "Web", description: "Certificate of appreciation for participation in the Webathon event at TEXPERIA 2026.", image: "/certificates/texperia-webathon.jpg", file: "/certificates/texperia-webathon.jpg", credential: "" },
+  { id: "nexora", title: "NEXORA 2K26 — Web Development", issuer: "PGP College of Engineering and Technology", date: "20 February 2026", category: "Web", description: "Participated in the Web Development event at NEXORA 2K26, a national-level technical symposium organised by the Department of Computer Science and Engineering.", image: "/certificates/nexora-web-development.jpg", file: "/certificates/nexora-web-development.jpg", credential: "" },
+  { id: "fusion", title: "FUSION X 2K25 — Code Debugging", issuer: "PGP College of Engineering and Technology", date: "30 April 2025", category: "Other", description: "Participated in Code Debugging at FUSION X 2K25, organised by the Department of Information Technology and Artificial Intelligence & Data Science.", image: "/certificates/fusion-code-debugging.jpg", file: "/certificates/fusion-code-debugging.jpg", credential: "" },
+  { id: "employability", title: "Employability Hackathon", issuer: "SM Groups · Naan Mudhalvan / TNSDC", date: "", category: "Other", description: "Certificate of participation in the Employability Hackathon conducted by SM Groups, a Naan Mudhalvan training partner, organised by Tamil Nadu Skill Development Corporation.", image: "/certificates/employability-hackathon.jpg", file: "/certificates/employability-hackathon.jpg", credential: "" },
+];
+export function filterCertificates(items: Certificate[], category: CertificateCategory) {
+  return category === "All" ? items : items.filter((item) => item.category === category);
+}
