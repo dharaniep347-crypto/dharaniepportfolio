@@ -1,7 +1,7 @@
 # GitHub Pages deployment
-- [ ] Configure isolated static build, Bun workflow and repository paths while preserving the portfolio.
-- [ ] Test paths and existing flows; document GitHub settings and static-host limitations.
-- [ ] Run deployment on GitHub — blocked until repository variables and Pages settings are supplied by the owner.
+- [x] Configure isolated static build, Bun workflow and repository paths while preserving the portfolio.
+- [x] Verify 29 tests, resolved Pages config, portrait/resume packaging, and existing public/About/admin sign-in screens; document GitHub settings and static-host limitations.
+- [ ] Run the Pages build/deployment on GitHub — blocked until repository variables and Pages settings are supplied by the owner; the full Pages build and signed-in admin flow are not verified here.
 
 # Content update
 - [x] Update the four projects in database and fallback content.

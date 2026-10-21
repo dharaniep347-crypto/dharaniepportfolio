@@ -31,3 +31,7 @@ bun run build:pages
 Provide only public `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` for Pages. Browser configuration is necessarily visible to visitors; it is not a private credential. Database permissions protect cloud access. Never place private values in `VITE_*`, workflow source or artifacts. The existing tracked `.env` contains public configuration only; do not add secrets to it. This configuration never publishes `.env` or server output.
 
 New admin image uploads use cloud storage and signed URLs as before. Future Lovable asset pointers must be available from `PAGES_ASSET_ORIGIN` during deployment. Deployment is configured here but not executed against GitHub: the owner must enable Pages, set variables and run the workflow.
+
+## Checks completed here
+
+All 29 tests pass, including repository-path routing and the Pages cloud adapter. Resolved Vite configuration confirms the requested base, `dist` browser output, separate server output, and static adapter. Packaging downloaded the real portrait and resume successfully. The existing preview's About dialog, portrait, resume links and admin sign-in screen still work without browser errors. The full Pages production build, hosted Pages site, authenticated admin actions and email redirect settings remain unverified until the workflow runs and an admin account is available.

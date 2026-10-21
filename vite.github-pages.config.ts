@@ -11,8 +11,10 @@ export default defineConfig({
     router: { basepath: base },
     spa: {
       enabled: true,
+      maskPath: base,
       prerender: { outputPath: "/index.html", autoSubfolderIndex: false },
     },
+    prerender: { autoStaticPathsDiscovery: false },
   },
   vite: {
     base,

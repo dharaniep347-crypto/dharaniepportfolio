@@ -1,5 +1,5 @@
 import { QueryClient } from "@tanstack/react-query";
-import { createRouter, rootRouteId } from "@tanstack/react-router";
+import { createMemoryHistory, createRouter, rootRouteId } from "@tanstack/react-router";
 import { describe, expect, it } from "vitest";
 
 import { routeTree } from "@/routeTree.gen";
@@ -16,11 +16,16 @@ describe("App routing", () => {
     expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
   });
   it("matches the portfolio at its GitHub Pages repository path", () => {
-    const router = createRouter({ routeTree, basepath: GITHUB_PAGES_BASE, context: { queryClient: new QueryClient() } });
-    expect(router.matchRoutes("/dharaniepportfolio/").at(-1)?.routeId).toBe("/");
+    const router = createRouter({ routeTree, basepath: GITHUB_PAGES_BASE,
+      history: createMemoryHistory({ initialEntries: ["/dharaniepportfolio/"] }),
+      context: { queryClient: new QueryClient() } });
+    expect(router.matchRoutes(router.latestLocation.pathname).at(-1)?.routeId).toBe("/");
+    expect(router.buildLocation({ to: "/" }).publicHref).toBe("/dharaniepportfolio/");
   });
   it("matches direct admin links under the repository path", () => {
-    const router = createRouter({ routeTree, basepath: GITHUB_PAGES_BASE, context: { queryClient: new QueryClient() } });
-    expect(router.matchRoutes("/dharaniepportfolio/admin").at(-1)?.routeId).toBe("/admin");
+    const router = createRouter({ routeTree, basepath: GITHUB_PAGES_BASE,
+      history: createMemoryHistory({ initialEntries: ["/dharaniepportfolio/admin"] }),
+      context: { queryClient: new QueryClient() } });
+    expect(router.matchRoutes(router.latestLocation.pathname).at(-1)?.routeId).toBe("/admin");
   });
 });
