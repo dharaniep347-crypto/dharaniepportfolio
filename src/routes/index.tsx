@@ -14,6 +14,8 @@ import ContactModal from "@/components/stream/ContactModal";
 import { FeaturedRow, Top10Row, TechStackRow, JourneyRow, SummaryRow, ContactRow, MyListRow } from "@/components/stream/rows";
 import ExternalLink from "@/components/stream/ExternalLink";
 import { normalizeExternalUrl } from "@/lib/external-url";
+import Education from "@/components/stream/Education";
+import Certificates from "@/components/stream/Certificates";
 
 const contentQuery = queryOptions({ queryKey: ["site-content"], queryFn: () => getSiteContent() });
 function useContent() {
@@ -108,7 +110,9 @@ function Home() {
   const rowFor = (id: string) => {
     switch (id) {
       case "summary": return <SummaryRow key={id} content={content} onMoreInfo={openAbout} />;
-      case "education": return <JourneyRow key={id} title="Journey" />;
+      case "education": return <Education key={id} />;
+      case "certificates": return <Certificates key={id} />;
+      case "journey": return <JourneyRow key={id} title="Journey" />;
       case "learning": return <JourneyRow key={id} title="Currently learning" />;
       case "top10": return <Top10Row key={id} content={content} />;
       case "projects": return <FeaturedRow key={id} content={content} onOpenProject={openProject} />;
@@ -139,6 +143,8 @@ function Home() {
             <li><a href="#top" className="hover:text-heading">Home</a></li>
             <li><a href="#projects" className="hover:text-heading">Projects</a></li>
             <li><a href="#skills" className="hover:text-heading">Skills</a></li>
+            <li><a href="#education" className="hover:text-heading">Education</a></li>
+            <li><a href="#certificates" className="hover:text-heading">Certificates</a></li>
             <li><a href="#contact" className="hover:text-heading">Contact</a></li>
           </ul>
           <ul className="space-y-2">

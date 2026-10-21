@@ -9,6 +9,7 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 - Public site content comes from the database via getSiteContent (src/lib/content.functions.ts); src/data/portfolio.ts is only the fallback when the database is empty or unreachable.
+- Education and certificate records are locally editable exports in src/data/portfolio.ts, rendered by focused stream components; certificate binaries live in public/certificates and use withBasePath so Pages downloads remain same-origin.
 - GitHub Pages uses a separate Start SPA config and browser content adapter under existing database permissions; this preserves Lovable server functions while exporting only browser files in dist.
 - Local public URLs use withBasePath and the router uses Vite BASE_URL; this keeps root previews and repository-subpath deployments working without duplicate prefixes.
 - Export asset pointers into dist during Pages packaging and fail on missing downloads; Lovable-relative media otherwise do not exist on GitHub Pages.

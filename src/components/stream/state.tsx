@@ -11,10 +11,10 @@ export const viewerProfiles: { id: ViewerProfile; label: string; gradient: strin
 
 /** Row order per viewer profile. */
 export const profileRows: Record<ViewerProfile, string[]> = {
-  recruiter: ["summary", "education", "top10", "projects", "contact"],
-  developer: ["projects", "top10", "techstack", "education", "contact"],
-  collaborator: ["projects", "learning", "contact", "top10"],
-  explorer: ["summary", "projects", "top10", "techstack", "education", "contact"],
+  recruiter: ["summary", "education", "journey", "top10", "projects", "certificates", "contact"],
+  developer: ["projects", "top10", "techstack", "education", "journey", "certificates", "contact"],
+  collaborator: ["projects", "learning", "education", "certificates", "contact", "top10"],
+  explorer: ["summary", "projects", "top10", "techstack", "education", "journey", "certificates", "contact"],
 };
 
 const PROFILE_KEY = "pf-viewer-profile";
