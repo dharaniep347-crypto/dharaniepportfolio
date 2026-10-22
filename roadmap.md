@@ -1,3 +1,10 @@
+# Requested CGPA, intro and row behaviour
+- [ ] Update confirmed CGPAs, current ring, semester chart and degree progress only within the B.Tech CGPA display.
+- [ ] Check existing five certificate images and report metadata and QR/ID warnings without duplicates.
+- [ ] Fit intro title/subtitle on requested widths, preserving glow and Skip intro.
+- [ ] Auto-advance only the 60%-visible row nearest viewport centre, preserving pause controls and rules.
+- [ ] Run rule tests and browser checks for intro, CGPA, Skills and Certificates movement.
+
 # Education and certificates
 - [x] Add locally editable education timeline, missing-result-safe CGPA chart and five uploaded certificates with category filters and accessible preview/download dialogs.
 - [x] Add navigation/footer links and both sections for every viewer profile while preserving existing Journey rows.
