@@ -8,10 +8,25 @@ describe("education", () => {
     expect(education[0]?.expectedGraduation).toBe(2027);
     expect(education[0]?.status).toBe("Pursuing, third year");
   });
-  it("does not invent missing grades", () => {
+  it("uses the confirmed overall 8.03 out of 10", () => {
     const entry = education[0];
     if (!entry) throw new Error("Missing degree");
-    expect(academicStats(entry)).toEqual({ completed: [], overall: null, highest: null, count: null });
+    expect(academicStats(entry).overall).toBe(8.03);
+  });
+  it("uses the exact four semester results", () => {
+    expect(education[0]?.semesters?.slice(0, 4).map((s) => s.cgpa)).toEqual([7.86, 7.86, 8.18, 8.08]);
+  });
+  it("has semester 5 in progress without a number", () => {
+    expect(education[0]?.semesters?.[4]).toEqual({ semester: 5, cgpa: null });
+  });
+  it("tracks semester five of eight", () => {
+    expect([education[0]?.currentSemester, education[0]?.totalSemesters]).toEqual([5, 8]);
+  });
+  it("identifies semester three as highest and four completed", () => {
+    const entry = education[0];
+    if (!entry) throw new Error("Missing degree");
+    const stats = academicStats(entry);
+    expect([stats.highest, stats.completed.find((s) => s.cgpa === stats.highest)?.semester, stats.count]).toEqual([8.18, 3, 4]);
   });
   it("uses the supplied overall CGPA rather than averaging semester values", () => {
     const entry = education[0];

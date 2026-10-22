@@ -57,6 +57,7 @@
   --color-card-border: var(--card-border);
   --color-backdrop: var(--backdrop);
   --color-play-hover: var(--play-hover);
+  --color-academic-bar: var(--academic-bar);
 
 }
 
@@ -86,6 +87,7 @@
   --primary-pressed: oklch(0.48229086 0.19377730 27.644102);
   --muted-foreground: #CDBFD6;
   --subtle: oklch(0.59987080 0.00000002 89.875563);
+  --academic-bar: #C9C9CE;
   --input: var(--raised);
   --chip: rgba(255,255,255,0.07);
   --destructive: oklch(0.69897972 0.19228496 20.648620);
@@ -257,3 +259,10 @@
 .cgpa-bar.cgpa-visible { transform: scaleY(1); }
 @media (prefers-reduced-motion: reduce) { .cgpa-bar { transform: none; transition: none; } }
 #education h2, #education h3, #certificates h3 { letter-spacing: 0; }
+.degree-progress { appearance: none; border: none; overflow: hidden; border-radius: 4px; background: var(--chip); color: var(--primary); }
+.degree-progress::-webkit-progress-bar { background: var(--chip); }
+.degree-progress::-webkit-progress-value { background: var(--primary); }
+.degree-progress::-moz-progress-bar { background: var(--primary); }
+.intro-title { font-size: clamp(1.4rem, 8.4vw, 6rem); white-space: nowrap; }
+.intro-subtitle { font-size: clamp(0.8rem, 3.6vw, 1.5rem); letter-spacing: 0.04em; white-space: nowrap; }
+@media (max-width: 359px) { .intro-subtitle { white-space: normal; } }
