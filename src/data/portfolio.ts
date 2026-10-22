@@ -162,6 +162,7 @@ export type EducationEntry = {
   id: string; institution: string; qualification: string; years: string;
   status: string; board: string; score: string; group: string;
   expectedGraduation?: number; overallCgpa?: number | null;
+  currentSemester?: number; totalSemesters?: number;
   semesters?: { semester: number; cgpa: number | null }[];
 };
 export const education: EducationEntry[] = [
@@ -169,8 +170,9 @@ export const education: EducationEntry[] = [
     id: "btech", institution: "PGP College of Engineering and Technology",
     qualification: "B.Tech in Artificial Intelligence and Data Science",
     years: "2023–2027", status: "Pursuing, third year", expectedGraduation: 2027,
-    board: "", score: "", group: "", overallCgpa: null,
-    semesters: [1, 2, 3, 4].map((semester) => ({ semester, cgpa: null })),
+    board: "", score: "", group: "", overallCgpa: 8.03,
+    currentSemester: 5, totalSemesters: 8,
+    semesters: [{ semester: 1, cgpa: 7.86 }, { semester: 2, cgpa: 7.86 }, { semester: 3, cgpa: 8.18 }, { semester: 4, cgpa: 8.08 }, { semester: 5, cgpa: null }],
   },
   { id: "higher-secondary", institution: "", qualification: "Higher Secondary (12th)", years: "", status: "Details pending", board: "", score: "", group: "" },
   { id: "secondary", institution: "", qualification: "Secondary (10th)", years: "", status: "Details pending", board: "", score: "", group: "" },
@@ -191,7 +193,7 @@ export type Certificate = {
 export const certificates: Certificate[] = [
   { id: "hackxtreme", title: "HackXtreme ’26 — 24-hour National Level Hackathon", issuer: "K. Ramakrishnan College of Engineering", date: "9–10 April 2026", category: "Other", description: "Participated in the 24-hour national-level hackathon organised by the departments of AI&DS, AI&ML, CSBS, CSE and IT in Trichy.", image: "/certificates/hackxtreme-26.jpg", file: "/certificates/hackxtreme-26.jpg", credential: "" },
   { id: "texperia", title: "TEXPERIA 2026 — Webathon", issuer: "SNS College of Technology", date: "12–13 March 2026", category: "Web", description: "Certificate of appreciation for participation in the Webathon event at TEXPERIA 2026.", image: "/certificates/texperia-webathon.jpg", file: "/certificates/texperia-webathon.jpg", credential: "" },
-  { id: "nexora", title: "NEXORA 2K26 — Web Development", issuer: "PGP College of Engineering and Technology", date: "20 February 2026", category: "Web", description: "Participated in the Web Development event at NEXORA 2K26, a national-level technical symposium organised by the Department of Computer Science and Engineering.", image: "/certificates/nexora-web-development.jpg", file: "/certificates/nexora-web-development.jpg", credential: "" },
+  { id: "nexora", title: "NEXORA 2K26 — Web Development", issuer: "PGP College of Engineering and Technology", date: "", category: "Web", description: "Participated in the Web Development event at NEXORA 2K26, a national-level technical symposium organised by the Department of Computer Science and Engineering. The certificate states 20 February; the year awaits confirmation.", image: "/certificates/nexora-web-development.jpg", file: "/certificates/nexora-web-development.jpg", credential: "" },
   { id: "fusion", title: "FUSION X 2K25 — Code Debugging", issuer: "PGP College of Engineering and Technology", date: "30 April 2025", category: "Other", description: "Participated in Code Debugging at FUSION X 2K25, organised by the Department of Information Technology and Artificial Intelligence & Data Science.", image: "/certificates/fusion-code-debugging.jpg", file: "/certificates/fusion-code-debugging.jpg", credential: "" },
   { id: "employability", title: "Employability Hackathon", issuer: "SM Groups · Naan Mudhalvan / TNSDC", date: "", category: "Other", description: "Certificate of participation in the Employability Hackathon conducted by SM Groups, a Naan Mudhalvan training partner, organised by Tamil Nadu Skill Development Corporation.", image: "/certificates/employability-hackathon.jpg", file: "/certificates/employability-hackathon.jpg", credential: "" },
 ];

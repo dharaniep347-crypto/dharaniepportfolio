@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { prefersReducedMotion } from "./state";
+import { Button } from "@/components/ui/button";
 
 const DURATION = 2500;
 
@@ -24,9 +25,10 @@ export default function Intro({ onDone }: { onDone: () => void }) {
         animate={{ rotate: 360, scale: [1, 1.15, 1] }}
         transition={{ duration: DURATION / 1000, ease: "easeInOut" }}
       />
-      <div className="relative overflow-hidden">
+      <div className="relative w-full px-4 text-center">
+        <div className="relative overflow-hidden">
         <motion.h1
-          className="font-wide px-6 text-center text-5xl text-heading sm:text-7xl"
+          className="intro-title font-wide text-center text-heading"
           initial={{ scale: 0.6, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.9, ease: [0.2, 0.8, 0.2, 1] }}
@@ -41,14 +43,20 @@ export default function Intro({ onDone }: { onDone: () => void }) {
           animate={{ x: "450%" }}
           transition={{ duration: 1.4, delay: 0.4, ease: "easeInOut" }}
         />
+        </div>
+        <motion.p className="intro-subtitle mt-3 text-center font-medium text-muted-foreground"
+          initial={prefersReducedMotion() ? false : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: prefersReducedMotion() ? 0 : 0.5 }}>
+          AI Powered Full Stack Developer
+        </motion.p>
       </div>
       {showSkip && (
-        <button
+        <Button variant="ghost"
           onClick={onDone}
           className="absolute bottom-8 right-8 rounded-md border border-border px-4 py-2 text-sm font-semibold text-muted-foreground transition-colors hover:border-primary hover:text-heading"
         >
           Skip intro
-        </button>
+        </Button>
       )}
     </div>
   );
