@@ -1,8 +1,7 @@
-# GitHub Pages deployment
 # Education and certificates
 - [x] Add locally editable education timeline, missing-result-safe CGPA chart and five uploaded certificates with category filters and accessible preview/download dialogs.
 - [x] Add navigation/footer links and both sections for every viewer profile while preserving existing Journey rows.
-- [ ] Verify tests, downloads, keyboard controls and layout at 360px, 768px and 1440px.
+- [x] Verify 37 tests and both sections at 360px, 768px and 1440px; filters, full certificate image, focus trap, Esc and JPEG download work without overflow or runtime errors.
 
 # GitHub Pages deployment
 - [x] Configure isolated static build, Bun workflow and repository paths while preserving the portfolio.
