@@ -1,7 +1,7 @@
 # Skill logos and faster row playback
-- [ ] Add official decorative skill logos across public skill listings without other design changes.
-- [ ] Remove dots, move pause/play to row titles, and use one-second advances with 500ms scrolling.
-- [ ] Verify logos, exclusive row movement and pause rules at 360px and 1440px.
+- [x] Add official decorative skill logos across public skill listings without other design changes.
+- [x] Remove dots, move pause/play to row titles, and use one-second advances with 500ms scrolling.
+- [x] Verify 53 passing tests plus logos, no dots, pause/play and exclusive Skills/Certificates movement at 360px and 1440px without overflow or page errors.
 
 # Requested CGPA, intro and row behaviour
 - [x] Update confirmed CGPAs, current ring, semester chart and degree progress only within the B.Tech CGPA display.
