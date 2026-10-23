@@ -200,6 +200,7 @@
   gap: 0.75rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.25rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
   &::-webkit-scrollbar { display: none; }

@@ -25,6 +25,7 @@ export default function Row({
   const [interacting, setInteracting] = useState(false);
   const [paused, setPaused] = useState(false);
   const [card, setCard] = useState(0);
+  const targetIndex = useRef(0);
   const started = useRef(false);
   const environment = useRowAdvance(section, key);
   const count = Children.toArray(children).length;
@@ -32,11 +33,15 @@ export default function Row({
     const el = scroller.current;
     const target = el?.children[index];
     if (!el || !(target instanceof HTMLElement)) return;
-    el.scrollTo({ left: target.offsetLeft - (el.children[0] instanceof HTMLElement ? el.children[0].offsetLeft : 0), behavior: smooth && !environment.reduced ? "smooth" : "instant" });
+    const first = el.children[0];
+    if (!(first instanceof HTMLElement)) return;
+    el.scrollTo({ left: target.getBoundingClientRect().left - first.getBoundingClientRect().left, behavior: smooth && !environment.reduced ? "smooth" : "instant" });
+    targetIndex.current = index;
     setCard(index);
   };
   useEffect(() => {
     started.current = false;
+    targetIndex.current = 0;
     if (environment.active) { scroller.current?.scrollTo({ left: 0, behavior: "instant" }); setCard(0); }
   }, [environment.active, count]);
   const advancing = count > 1 && canAutoAdvance({ ...environment, hover, focus, interacting, paused });
@@ -50,8 +55,7 @@ export default function Row({
         const children = [...el.children].filter((child): child is HTMLElement => child instanceof HTMLElement);
         const first = children[0];
         if (first) {
-          const nearest = children.reduce((best, child, i) => Math.abs(child.offsetLeft - first.offsetLeft - el.scrollLeft) < Math.abs((children[best]?.offsetLeft ?? 0) - first.offsetLeft - el.scrollLeft) ? i : best, 0);
-          const next = (nearest + 1) % children.length;
+          const next = (targetIndex.current + 1) % children.length;
           moveTo(next);
         }
       }
@@ -104,7 +108,7 @@ export default function Row({
           const first = el.children[0];
           if (!(first instanceof HTMLElement)) return;
           let closest = 0; let distance = Infinity;
-          [...el.children].forEach((child, i) => { if (child instanceof HTMLElement) { const d = Math.abs(child.offsetLeft - first.offsetLeft - el.scrollLeft); if (d < distance) { closest = i; distance = d; } } });
+          [...el.children].forEach((child, i) => { if (child instanceof HTMLElement) { const d = Math.abs(child.getBoundingClientRect().left - first.getBoundingClientRect().left - el.scrollLeft); if (d < distance) { closest = i; distance = d; } } });
           setCard(closest);
         }}>
           {children}
@@ -114,14 +118,14 @@ export default function Row({
             <Button variant="ghost"
               onClick={() => scrollBy(-1)}
               aria-label={`Scroll ${title} left`}
-              className="absolute left-0 top-0 bottom-4 hidden w-12 items-center justify-center rounded-r-md bg-chrome/50 text-heading transition-opacity hover:bg-chrome/75 md:flex"
+              className="absolute left-0 top-0 bottom-4 hidden h-auto w-12 items-center justify-center rounded-r-md bg-chrome/50 text-heading transition-opacity hover:bg-chrome/75 md:flex"
             >
               <ChevronLeft className="size-8" aria-hidden />
             </Button>
             <Button variant="ghost"
               onClick={() => scrollBy(1)}
               aria-label={`Scroll ${title} right`}
-              className="absolute right-0 top-0 bottom-4 hidden w-12 items-center justify-center rounded-l-md bg-chrome/50 text-heading transition-opacity hover:bg-chrome/75 md:flex"
+              className="absolute right-0 top-0 bottom-4 hidden h-auto w-12 items-center justify-center rounded-l-md bg-chrome/50 text-heading transition-opacity hover:bg-chrome/75 md:flex"
             >
               <ChevronRight className="size-8" aria-hidden />
             </Button>
