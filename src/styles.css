@@ -251,6 +251,27 @@
 .row-scroll > :hover .rank-number { -webkit-text-stroke-color: var(--primary); }
 .bg-card { border-color: var(--card-border); }
 .row-scroll > :hover, .bg-card:hover { border-color: var(--card-hover-border); box-shadow: var(--shadow-aurora); }
+.row-scroll.row-animating { scroll-snap-type: none; scroll-behavior: auto; }
+.skill-logo { display: inline-flex; align-items: center; justify-content: center; gap: 3px; flex-shrink: 0; }
+.skill-logo-inline svg { width: 18px; height: 18px; }
+.skill-logo-tile { width: 44px; height: 44px; border-radius: 6px; background: var(--chip); border: 1px solid var(--border); transition: box-shadow 180ms ease; }
+.skill-logo-tile svg { width: 26px; height: 26px; }
+.skill-logo-tile:has(svg + svg) svg { width: 18px; height: 26px; }
+.skill-logo-tile:hover, .row-scroll > :hover .skill-logo-tile { box-shadow: 0 0 14px color-mix(in srgb, var(--skill-brand, var(--heading)) 30%, transparent); }
+.skill-logo:has(.skill-brand-javascript) { --skill-brand: #F7DF1E; }
+.skill-logo:has(.skill-brand-react) { --skill-brand: #61DAFB; }
+.skill-logo:has(.skill-brand-python) { --skill-brand: #FFD43B; }
+.skill-logo:has(.skill-brand-tailwind) { --skill-brand: #38BDF8; }
+.skill-logo:has(.skill-brand-node) { --skill-brand: #5FA04E; }
+.skill-logo:has(.skill-brand-express), .skill-logo:has(.skill-brand-github) { --skill-brand: #FFFFFF; }
+.skill-logo:has(.skill-brand-mysql) { --skill-brand: #00A7D1; }
+.skill-logo:has(.skill-brand-mongo) { --skill-brand: #47A248; }
+.skill-logo:has(.skill-brand-spring) { --skill-brand: #6DB33F; }
+.skill-logo:has(.skill-brand-git) { --skill-brand: #F05032; }
+.skill-logo:has(.skill-brand-aws) { --skill-brand: #FF9900; }
+.skill-logo:has(.skill-brand-sql) { --skill-brand: #A78BFA; }
+.skill-logo svg { color: var(--skill-brand, var(--heading)); }
+.skill-logo .skill-brand-github { color: var(--heading); }
 .hero-left { background: var(--hero-left); opacity: 0.12; }
 .hero-bottom { background: var(--hero-bottom); opacity: 0.12; }
 .nav-link[aria-current=location] { color: var(--heading); box-shadow: inset 0 -2px var(--primary); }

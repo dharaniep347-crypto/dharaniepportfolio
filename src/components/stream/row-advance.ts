@@ -1,6 +1,7 @@
 import { useEffect, useState, useSyncExternalStore, type RefObject } from "react";
 
-export const AUTO_ADVANCE_MS = 3000;
+export const AUTO_ADVANCE_MS = 1000;
+export const SCROLL_DURATION_MS = 500;
 export const ROW_START_DELAY_MS = 1000;
 export const ROW_VISIBILITY_THRESHOLD = 0.6;
 export type RowCandidate = { id: string; ratio: number; centre: number };

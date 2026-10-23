@@ -9,6 +9,7 @@ import { useViewer, prefersReducedMotion } from "./state";
 import Portrait from "./Portrait";
 import ExternalLink from "./ExternalLink";
 import { phoneHref } from "@/lib/external-url";
+import SkillLogo from "./SkillLogo";
 
 /* ---------- Featured projects (16:9 cards with hover expand) ---------- */
 
@@ -105,6 +106,7 @@ export function Top10Row({ content }: { content: SiteContent }) {
         <li key={s.name} className="flex shrink-0 items-center">
           <span aria-hidden className="rank-number -mr-6 text-[7rem] md:text-[9rem]">{i + 1}</span>
           <div className="relative flex h-56 w-36 flex-col justify-end rounded-md border border-border bg-gradient-to-b from-raised to-card p-3 md:h-64 md:w-40">
+            <div className="absolute left-3 top-3"><SkillLogo name={s.name} tile /></div>
             <span className="font-display text-lg font-extrabold leading-tight">{s.name}</span>
             {skillDetails[s.name] && <span className="mt-1 text-[10px] leading-relaxed text-muted-foreground">{skillDetails[s.name]}</span>}
             <span className="mt-1 text-sm font-bold text-heading">{s.level}%</span>
@@ -128,7 +130,7 @@ export function TechStackRow({ content }: { content: SiteContent }) {
           {skillDetails[c] && <p className="mt-1 text-xs text-muted-foreground">{skillDetails[c]}</p>}
           <ul className="mt-3 flex flex-wrap gap-1.5">
             {content.skills.filter((s) => s.category === c).map((s) => (
-              <li key={s.name} title={skillDetails[s.name]} className="rounded-full border border-border bg-chip px-2.5 py-1 text-xs font-semibold text-heading">{s.name}</li>
+              <li key={s.name} title={skillDetails[s.name]} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-chip px-2.5 py-1 text-xs font-semibold text-heading"><SkillLogo name={s.name} />{s.name}</li>
             ))}
           </ul>
         </div>

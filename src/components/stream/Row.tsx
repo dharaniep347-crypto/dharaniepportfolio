@@ -1,7 +1,7 @@
 import { Children, useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AUTO_ADVANCE_MS, ROW_START_DELAY_MS, canAutoAdvance, useRowAdvance } from "./row-advance";
+import { AUTO_ADVANCE_MS, ROW_START_DELAY_MS, SCROLL_DURATION_MS, canAutoAdvance, useRowAdvance } from "./row-advance";
 
 /** Horizontally scrolling row with snap, hover arrows and an "Explore all" link. */
 export default function Row({
@@ -24,29 +24,52 @@ export default function Row({
   const [focus, setFocus] = useState(false);
   const [interacting, setInteracting] = useState(false);
   const [paused, setPaused] = useState(false);
-  const [card, setCard] = useState(0);
+  const animation = useRef(0);
   const targetIndex = useRef(0);
   const started = useRef(false);
   const environment = useRowAdvance(section, key);
   const count = Children.toArray(children).length;
+  const stopScroll = () => {
+    cancelAnimationFrame(animation.current);
+    animation.current = 0;
+    scroller.current?.classList.remove("row-animating");
+  };
+  const animateTo = (left: number, smooth = true) => {
+    const el = scroller.current;
+    if (!el) return;
+    stopScroll();
+    const destination = Math.max(0, Math.min(left, el.scrollWidth - el.clientWidth));
+    if (!smooth || environment.reduced) { el.scrollTo({ left: destination, behavior: "instant" }); return; }
+    const from = el.scrollLeft;
+    const start = performance.now();
+    el.classList.add("row-animating");
+    const step = (now: number) => {
+      const progress = Math.min(1, (now - start) / SCROLL_DURATION_MS);
+      const eased = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+      el.scrollTo({ left: from + (destination - from) * eased, behavior: "instant" });
+      if (progress < 1) animation.current = requestAnimationFrame(step);
+      else { animation.current = 0; el.classList.remove("row-animating"); }
+    };
+    animation.current = requestAnimationFrame(step);
+  };
   const moveTo = (index: number, smooth = true) => {
     const el = scroller.current;
     const target = el?.children[index];
     if (!el || !(target instanceof HTMLElement)) return;
     const first = el.children[0];
     if (!(first instanceof HTMLElement)) return;
-    el.scrollTo({ left: target.getBoundingClientRect().left - first.getBoundingClientRect().left, behavior: smooth && !environment.reduced ? "smooth" : "instant" });
+    animateTo(target.getBoundingClientRect().left - first.getBoundingClientRect().left, smooth);
     targetIndex.current = index;
-    setCard(index);
   };
   useEffect(() => {
     started.current = false;
     targetIndex.current = 0;
-    if (environment.active) { scroller.current?.scrollTo({ left: 0, behavior: "instant" }); setCard(0); }
+    stopScroll();
+    if (environment.active) scroller.current?.scrollTo({ left: 0, behavior: "instant" });
   }, [environment.active, count]);
   const advancing = count > 1 && canAutoAdvance({ ...environment, hover, focus, interacting, paused });
   useEffect(() => {
-    if (!advancing) return;
+    if (!advancing) { stopScroll(); return; }
     let timer: ReturnType<typeof setTimeout>;
     const advance = () => {
       started.current = true;
@@ -62,7 +85,7 @@ export default function Row({
       timer = setTimeout(advance, AUTO_ADVANCE_MS);
     };
     timer = setTimeout(advance, started.current ? AUTO_ADVANCE_MS : ROW_START_DELAY_MS);
-    return () => clearTimeout(timer);
+    return () => { clearTimeout(timer); stopScroll(); };
   }, [advancing, count]);
   useEffect(() => {
     const end = () => setInteracting(false);
@@ -72,7 +95,7 @@ export default function Row({
 
   const scrollBy = (dir: 1 | -1) => {
     const el = scroller.current;
-    if (el) el.scrollBy({ left: dir * el.clientWidth, behavior: "smooth" });
+    if (el) animateTo(el.scrollLeft + dir * el.clientWidth);
   };
 
   return (
@@ -89,8 +112,9 @@ export default function Row({
       onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setFocus(false); }}
       onPointerDown={() => setInteracting(true)}
     >
-      <div className="mx-auto flex max-w-7xl items-baseline justify-between px-5">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-5">
         <h2 className="font-display text-lg font-extrabold text-heading md:text-xl">{title}</h2>
+        <div className="ml-auto flex shrink-0 items-center gap-2">
         {onExploreAll && (
           <Button variant="ghost"
             onClick={onExploreAll}
@@ -99,6 +123,8 @@ export default function Row({
             Explore all →
           </Button>
         )}
+        {count > 1 && <Button size="icon" variant="ghost" className="size-8" aria-label={`${paused ? "Play" : "Pause"} ${title} auto-advance`} title={paused ? "Play" : "Pause"} onClick={() => setPaused((prev) => !prev)}>{paused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}</Button>}
+        </div>
       </div>
       {headerContent && <div className="mx-auto max-w-7xl px-5 pt-3">{headerContent}</div>}
       <div className="relative mx-auto max-w-7xl">
@@ -109,7 +135,7 @@ export default function Row({
           if (!(first instanceof HTMLElement)) return;
           let closest = 0; let distance = Infinity;
           [...el.children].forEach((child, i) => { if (child instanceof HTMLElement) { const d = Math.abs(child.getBoundingClientRect().left - first.getBoundingClientRect().left - el.scrollLeft); if (d < distance) { closest = i; distance = d; } } });
-          setCard(closest);
+          if (!animation.current) targetIndex.current = closest;
         }}>
           {children}
         </div>
@@ -132,10 +158,6 @@ export default function Row({
           </>
         )}
       </div>
-      {count > 1 && <div className="mx-auto flex max-w-7xl items-center justify-center gap-3 px-5" role="group" aria-label={`${title} playback`}>
-        <Button size="icon" variant="ghost" aria-label={`${paused ? "Play" : "Pause"} ${title} auto-advance`} title={paused ? "Play" : "Pause"} onClick={() => setPaused((prev) => !prev)}>{paused ? <Play aria-hidden="true" /> : <Pause aria-hidden="true" />}</Button>
-        <div className="flex flex-wrap justify-center gap-1">{Array.from({ length: count }, (_, i) => <Button key={i} variant="ghost" size="icon" className="size-6" aria-label={`${title} card ${i + 1}`} aria-current={card === i ? "true" : undefined} onClick={() => moveTo(i)}><span className={`size-1.5 rounded-full ${card === i ? "bg-heading" : "bg-subtle"}`} /></Button>)}</div>
-      </div>}
     </section>
   );
 }

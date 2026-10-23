@@ -5,6 +5,7 @@ import * as THREE from "three";
 import type { Skill } from "@/lib/content";
 
 import { useSceneColours } from "@/lib/scene-colours";
+import SkillLogo from "@/components/stream/SkillLogo";
 
 function Orbiter({ skill, index, total, animate }: { skill: Skill; index: number; total: number; animate: boolean }) {
   const colours = useSceneColours();
@@ -38,7 +39,7 @@ function Orbiter({ skill, index, total, animate }: { skill: Skill; index: number
       {hover && (
         <Html center distanceFactor={8} style={{ pointerEvents: "none" }}>
           <div className="-translate-y-8 whitespace-nowrap rounded-md bg-raised px-2 py-1 text-xs font-bold text-paper">
-            {skill.name} · {skill.level}%
+            <span className="inline-flex items-center gap-1.5"><SkillLogo name={skill.name} />{skill.name} · {skill.level}%</span>
           </div>
         </Html>
       )}
