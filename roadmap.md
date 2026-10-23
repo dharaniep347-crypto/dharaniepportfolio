@@ -1,9 +1,9 @@
 # Requested CGPA, intro and row behaviour
-- [ ] Update confirmed CGPAs, current ring, semester chart and degree progress only within the B.Tech CGPA display.
-- [ ] Check existing five certificate images and report metadata and QR/ID warnings without duplicates.
-- [ ] Fit intro title/subtitle on requested widths, preserving glow and Skip intro.
-- [ ] Auto-advance only the 60%-visible row nearest viewport centre, preserving pause controls and rules.
-- [ ] Run rule tests and browser checks for intro, CGPA, Skills and Certificates movement.
+- [x] Update confirmed CGPAs, current ring, semester chart and degree progress only within the B.Tech CGPA display.
+- [x] Check existing five certificate images and report metadata and QR/ID warnings without duplicates; Employability date and NEXORA year await confirmation.
+- [x] Fit intro title/subtitle at 320, 360, 390, 430, 768 and 1440px, preserving glow and visible Skip intro.
+- [x] Auto-advance only the 60%-visible row nearest viewport centre, preserving pause controls and rules.
+- [x] Verify 52 tests, exclusive Skills/Certificates movement, first-card re-entry, dialog pause and 360px CGPA layout without overflow or runtime errors.
 
 # Education and certificates
 - [x] Add locally editable education timeline, missing-result-safe CGPA chart and five uploaded certificates with category filters and accessible preview/download dialogs.
