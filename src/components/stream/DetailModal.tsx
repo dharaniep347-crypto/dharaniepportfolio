@@ -8,6 +8,7 @@ import { useViewer } from "./state";
 import Portrait from "./Portrait";
 import ExternalLink from "./ExternalLink";
 import { phoneHref } from "@/lib/external-url";
+import SkillLogo from "./SkillLogo";
 
 export type ModalItem =
   | { kind: "project"; project: SiteProject; index: number }
@@ -153,7 +154,7 @@ export default function DetailModal({
               </button>
             )}
             <span className="text-sm text-muted-foreground">
-              {p ? `${p.category} · ${p?.tags.join(" · ")}` : content.profile.title}
+              {p ? <span className="flex flex-wrap items-center gap-2">{p.category} · {p.tags.map((tag) => <span key={tag} className="inline-flex items-center gap-1"><SkillLogo name={tag} />{tag}</span>)}</span> : content.profile.title}
             </span>
           </div>
 
@@ -176,7 +177,7 @@ export default function DetailModal({
             <dl className="space-y-3 text-sm">
               {p ? (
                 <>
-                  <div><dt className="inline font-bold text-muted-foreground">Tech: </dt><dd className="inline">{p?.tags.join(", ")}</dd></div>
+                  <div><dt className="inline font-bold text-muted-foreground">Tech: </dt><dd className="inline-flex flex-wrap gap-2">{p.tags.map((tag) => <span key={tag} className="inline-flex items-center gap-1"><SkillLogo name={tag} />{tag}</span>)}</dd></div>
                   <div><dt className="inline font-bold text-muted-foreground">Category: </dt><dd className="inline">{p?.category}</dd></div>
                   <div><dt className="inline font-bold text-muted-foreground">Status: </dt><dd className="inline">Completed</dd></div>
                 </>

@@ -5,6 +5,7 @@ import { skillDetails } from "@/data/portfolio";
 import { useViewer, viewerProfiles } from "./state";
 import Portrait from "./Portrait";
 import ExternalLink from "./ExternalLink";
+import SkillLogo from "./SkillLogo";
 
 const links = [
   ["Home", "top"],
@@ -195,7 +196,7 @@ export default function Navbar({
                 <ul className="flex flex-wrap gap-2">
                   {skillHits.map((s) => (
                     <li key={s.name} className="rounded-full border border-border bg-card px-3 py-1.5 text-sm">
-                      {s.name} <span className="text-heading">{s.level}%</span>
+                      <span className="inline-flex items-center gap-1.5"><SkillLogo name={s.name} />{s.name} <span className="text-heading">{s.level}%</span></span>
                       {skillDetails[s.name] && <span className="block text-xs text-muted-foreground">{skillDetails[s.name]}</span>}
                     </li>
                   ))}

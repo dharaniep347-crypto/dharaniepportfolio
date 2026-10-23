@@ -1,3 +1,8 @@
+# Skill logos and faster row playback
+- [ ] Add official decorative skill logos across public skill listings without other design changes.
+- [ ] Remove dots, move pause/play to row titles, and use one-second advances with 500ms scrolling.
+- [ ] Verify logos, exclusive row movement and pause rules at 360px and 1440px.
+
 # Requested CGPA, intro and row behaviour
 - [x] Update confirmed CGPAs, current ring, semester chart and degree progress only within the B.Tech CGPA display.
 - [x] Check existing five certificate images and report metadata and QR/ID warnings without duplicates; Employability date and NEXORA year await confirmation.
