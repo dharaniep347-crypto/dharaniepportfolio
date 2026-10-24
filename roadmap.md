@@ -1,3 +1,8 @@
+# Education dates and school results
+- [x] Correct degree dates everywhere and add only the supplied school results as typed data.
+- [x] Show school badges and subject-mark dialogs with requested highlights, without private identifiers.
+- [x] Verify 23 regression tests plus cards, both school dialogs, B.Tech dialog, About and hero dates at 360px and 1440px without horizontal overflow or page errors; preserve the full-size CGPA ring.
+
 # Skill logos and faster row playback
 - [x] Add official decorative skill logos across public skill listings without other design changes.
 - [x] Remove dots, move pause/play to row titles, and use one-second advances with 500ms scrolling.

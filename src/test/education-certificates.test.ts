@@ -3,9 +3,9 @@ import { academicStats, education, certificates, filterCertificates } from "@/da
 import { profileRows } from "@/components/stream/state";
 
 describe("education", () => {
-  it("keeps the confirmed 2023–2027 degree and graduation", () => {
-    expect(education[0]?.years).toBe("2023–2027");
-    expect(education[0]?.expectedGraduation).toBe(2027);
+  it("keeps the corrected 2024 – 2028 degree and graduation", () => {
+    expect(education[0]?.years).toBe("2024 – 2028");
+    expect(education[0]?.expectedGraduation).toBe(2028);
     expect(education[0]?.status).toBe("Pursuing, third year");
   });
   it("uses the confirmed overall 8.03 out of 10", () => {
@@ -41,6 +41,29 @@ describe("education", () => {
       expect(rows).toContain("education");
       expect(rows).toContain("certificates");
     }
+  });
+  it("keeps the supplied Higher Secondary record", () => {
+    expect(education.find((e) => e.id === "higher-secondary")).toMatchObject({
+      institution: "Govt Hr Sec School, Kaniyalampatti, Karur", years: "March 2024",
+      board: "State Board of School Examinations, Tamil Nadu", score: "461 / 600 (76.8%)",
+      group: "General Education (Physics, Chemistry, Biology, Maths)", medium: "Tamil", status: "Passed",
+      subjects: [{ subject: "Tamil", marks: 97 }, { subject: "English", marks: 75 }, { subject: "Physics", marks: 65 }, { subject: "Chemistry", marks: 85 }, { subject: "Biology", marks: 73 }, { subject: "Mathematics", marks: 66 }],
+    });
+  });
+  it("keeps the supplied Secondary record", () => {
+    expect(education.find((e) => e.id === "secondary")).toMatchObject({
+      institution: "Government High School, Thennilai, Kadavur", years: "May 2022",
+      board: "State Board of School Examinations, Tamil Nadu", score: "398 / 500 (79.6%)", medium: "Tamil", status: "Passed",
+      subjects: [{ subject: "Tamil", marks: 86 }, { subject: "English", marks: 77 }, { subject: "Mathematics", marks: 70 }, { subject: "Science", marks: 75 }, { subject: "Social Science", marks: 90 }],
+    });
+  });
+  it("uses the explicitly requested highlighted subjects", () => {
+    expect(education.find((e) => e.id === "higher-secondary")?.topSubject).toBe("Chemistry");
+    expect(education.find((e) => e.id === "secondary")?.topSubject).toBe("Social Science");
+  });
+  it("stores only allowlisted public academic fields", () => {
+    const allowed = new Set(["id", "institution", "qualification", "years", "status", "board", "score", "group", "expectedGraduation", "overallCgpa", "currentSemester", "totalSemesters", "semesters", "medium", "subjects", "topSubject", "marksBasis"]);
+    for (const entry of education) expect(Object.keys(entry).filter((key) => !allowed.has(key))).toEqual([]);
   });
 });
 describe("certificates", () => {

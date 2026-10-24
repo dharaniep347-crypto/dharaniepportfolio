@@ -18,7 +18,7 @@ export const profile = {
   linkedin: normalizeExternalUrl("https://www.linkedin.com/in/dharani-e-p-64a32b338"),
   github: normalizeExternalUrl("https://github.com/dharaniep347-crypto"),
   education:
-    "B.Tech in Artificial Intelligence and Data Science (third year), PGP College of Engineering and Technology",
+    "B.Tech in Artificial Intelligence and Data Science (2024 – 2028, third year), PGP College of Engineering and Technology",
   resume: normalizeExternalUrl(resumeAsset.url),
   // Set to an image URL (e.g. imported from src/assets) to show your portrait.
   portrait: normalizeExternalUrl(portraitAsset.url),
@@ -142,7 +142,7 @@ export const projects: Project[] = [
 export const journey = [
   {
     title: "B.Tech in Artificial Intelligence and Data Science",
-    subtitle: "PGP College of Engineering and Technology · Year 3 of 4",
+    subtitle: "PGP College of Engineering and Technology · 2024 – 2028 · Year 3 of 4",
     progress: 75,
   },
   {
@@ -164,18 +164,33 @@ export type EducationEntry = {
   expectedGraduation?: number; overallCgpa?: number | null;
   currentSemester?: number; totalSemesters?: number;
   semesters?: { semester: number; cgpa: number | null }[];
+  medium?: string; subjects?: { subject: string; marks: number }[];
+  topSubject?: string; marksBasis?: string;
 };
 export const education: EducationEntry[] = [
   {
     id: "btech", institution: "PGP College of Engineering and Technology",
     qualification: "B.Tech in Artificial Intelligence and Data Science",
-    years: "2023–2027", status: "Pursuing, third year", expectedGraduation: 2027,
+    years: "2024 – 2028", status: "Pursuing, third year", expectedGraduation: 2028,
     board: "", score: "", group: "", overallCgpa: 8.03,
     currentSemester: 5, totalSemesters: 8,
     semesters: [{ semester: 1, cgpa: 7.86 }, { semester: 2, cgpa: 7.86 }, { semester: 3, cgpa: 8.18 }, { semester: 4, cgpa: 8.08 }, { semester: 5, cgpa: null }],
   },
-  { id: "higher-secondary", institution: "", qualification: "Higher Secondary (12th)", years: "", status: "Details pending", board: "", score: "", group: "" },
-  { id: "secondary", institution: "", qualification: "Secondary (10th)", years: "", status: "Details pending", board: "", score: "", group: "" },
+  {
+    id: "higher-secondary", institution: "Govt Hr Sec School, Kaniyalampatti, Karur",
+    qualification: "Higher Secondary (12th)", years: "March 2024", status: "Passed",
+    board: "State Board of School Examinations, Tamil Nadu", score: "461 / 600 (76.8%)",
+    group: "General Education (Physics, Chemistry, Biology, Maths)", medium: "Tamil",
+    marksBasis: "Out of 100 · theory + practical + internal", topSubject: "Chemistry",
+    subjects: [{ subject: "Tamil", marks: 97 }, { subject: "English", marks: 75 }, { subject: "Physics", marks: 65 }, { subject: "Chemistry", marks: 85 }, { subject: "Biology", marks: 73 }, { subject: "Mathematics", marks: 66 }],
+  },
+  {
+    id: "secondary", institution: "Government High School, Thennilai, Kadavur",
+    qualification: "Secondary (10th)", years: "May 2022", status: "Passed",
+    board: "State Board of School Examinations, Tamil Nadu", score: "398 / 500 (79.6%)",
+    group: "", medium: "Tamil", marksBasis: "Out of 100", topSubject: "Social Science",
+    subjects: [{ subject: "Tamil", marks: 86 }, { subject: "English", marks: 77 }, { subject: "Mathematics", marks: 70 }, { subject: "Science", marks: 75 }, { subject: "Social Science", marks: 90 }],
+  },
 ];
 
 export function academicStats(entry: EducationEntry) {
