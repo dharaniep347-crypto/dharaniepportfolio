@@ -21,7 +21,7 @@ function CgpaTracker({ entry }: { entry: EducationEntry }) {
   return (
     <div ref={ref} className="mt-6 border-t border-border pt-5">
       <div className="mb-6 flex flex-wrap items-center gap-5">
-        <div className="relative size-28 shrink-0" role="img" aria-label={`Current CGPA ${stats.overall?.toFixed(2) ?? "unavailable"} out of 10`}>
+        <div className="relative size-28 shrink-0 [&>svg]:size-full" role="img" aria-label={`Current CGPA ${stats.overall?.toFixed(2) ?? "unavailable"} out of 10`}>
           <svg viewBox="0 0 100 100" className="size-full -rotate-90" aria-hidden="true">
             <circle cx="50" cy="50" r="44" fill="none" stroke="var(--border)" strokeWidth="6" />
             <circle cx="50" cy="50" r="44" fill="none" stroke="var(--primary)" strokeWidth="6" strokeLinecap="round" pathLength="100" strokeDasharray={`${(stats.overall ?? 0) * 10} 100`} />
@@ -78,7 +78,7 @@ export default function Education() {
         {education.map((entry) => (
           <li key={entry.id} className="relative min-w-0">
             <span aria-hidden="true" className="absolute -left-[27px] top-7 size-3 rounded-full bg-primary sm:-left-[35px]" />
-            <Button asChild variant="ghost" className="block h-auto w-full min-w-0 whitespace-normal rounded-md border border-border bg-card p-4 text-left font-normal hover:bg-card sm:p-6" onClick={() => setSelected(entry)}>
+            <Button asChild variant="ghost" className="block h-auto w-full min-w-0 whitespace-normal rounded-md border border-border bg-card p-4 text-left font-normal hover:bg-card sm:p-6 [&_svg]:size-6" onClick={() => setSelected(entry)}>
             <button type="button" aria-label={`Open ${entry.qualification} education details`}>
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
                 <div className="min-w-0">

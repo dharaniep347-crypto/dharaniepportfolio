@@ -2,6 +2,7 @@ import { Component, lazy, Suspense, useEffect, useState, type ReactNode } from "
 import { ClientOnly } from "@tanstack/react-router";
 import { Play, Info, Download } from "lucide-react";
 import type { SiteContent } from "@/lib/content";
+import { education } from "@/data/portfolio";
 import ExternalLink from "./ExternalLink";
 
 const HeroScene = lazy(() => import("@/components/HeroScene"));
@@ -62,7 +63,7 @@ export default function Billboard({
           {content.profile.title}
         </p>
         <ul className="mt-4 flex flex-wrap gap-2">
-          {["Third-year B.Tech AI and Data Science", "Karur, India", "2026"].map((chip) => (
+          {["Third-year B.Tech AI and Data Science", "Karur, India", education[0]?.years ?? ""].filter(Boolean).map((chip) => (
             <li key={chip} className="rounded-full border border-border bg-chip px-3 py-1 text-xs font-semibold text-heading">
               {chip}
             </li>

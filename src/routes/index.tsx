@@ -24,6 +24,7 @@ function useContent() {
     ...data,
     profile: {
       ...data.profile,
+      education: staticProfile.education,
       linkedin: normalizeExternalUrl(data.profile.linkedin).replace(/\/$/, ""),
       github: normalizeExternalUrl(data.profile.github).replace(/\/$/, ""),
       resume: normalizeExternalUrl(data.profile.resume),

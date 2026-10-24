@@ -11,6 +11,7 @@
 - Public site content comes from the database via getSiteContent (src/lib/content.functions.ts); src/data/portfolio.ts is only the fallback when the database is empty or unreachable.
 - Education and certificate records are locally editable exports in src/data/portfolio.ts, rendered by focused stream components; certificate binaries live in public/certificates and use withBasePath so Pages downloads remain same-origin.
 - Education dialogs reuse the shared Dialog and progress styles; school subjects and explicitly selected highlights come from typed education records, not computed highest marks, to preserve supplied editorial choices.
+- Public profile education and hero degree dates use the local academic content so database profile prose cannot override confirmed education records; other profile fields remain database-backed.
 - Shared Row auto-advance uses a single viewport-centre selection registry and per-row visibility observers; only the qualifying active row owns a running timer, so offscreen strips cannot move behind dialogs or user interactions.
 - Shared Row uses cancellable requestAnimationFrame scrolling with snap temporarily disabled, keeping each move within the shared duration without native smooth-scroll timing differences.
 - Public skill listings reuse SkillLogo with brand colour tokens in global CSS so logos stay consistent across cards, chips, search and dialogs.
