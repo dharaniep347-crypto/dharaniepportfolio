@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { GraduationCap } from "lucide-react";
 import { education, academicStats, type EducationEntry } from "@/data/portfolio";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 function CgpaTracker({ entry }: { entry: EducationEntry }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -68,32 +70,66 @@ function CgpaTracker({ entry }: { entry: EducationEntry }) {
 }
 
 export default function Education() {
+  const [selected, setSelected] = useState<EducationEntry | null>(null);
   return (
-    <section id="education" aria-labelledby="education-title" className="mx-auto max-w-7xl scroll-mt-24 px-5">
+    <><section id="education" aria-labelledby="education-title" className="mx-auto max-w-7xl scroll-mt-24 px-5">
       <h2 id="education-title" className="font-display text-lg font-extrabold text-heading md:text-xl">Education</h2>
       <ol className="relative mt-5 space-y-5 border-l border-border pl-5 sm:pl-7">
         {education.map((entry) => (
           <li key={entry.id} className="relative min-w-0">
             <span aria-hidden="true" className="absolute -left-[27px] top-7 size-3 rounded-full bg-primary sm:-left-[35px]" />
-            <article className="rounded-md border border-border bg-card p-4 sm:p-6">
+            <Button asChild variant="ghost" className="block h-auto w-full min-w-0 whitespace-normal rounded-md border border-border bg-card p-4 text-left font-normal hover:bg-card sm:p-6" onClick={() => setSelected(entry)}>
+            <button type="button" aria-label={`Open ${entry.qualification} education details`}>
               <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
                 <div className="min-w-0">
                   <h3 className="break-words font-display text-base font-extrabold leading-snug sm:text-lg">{entry.qualification}</h3>
-                  <p className="mt-2 text-sm text-muted-foreground">{entry.institution || "School details pending"}</p>
+                  {entry.semesters && <p className="mt-2 text-sm text-muted-foreground">{entry.institution}</p>}
                 </div>
                 <GraduationCap className="size-6 shrink-0 text-primary" aria-hidden="true" />
               </div>
-              <div className="mt-3 flex flex-wrap items-center gap-3 text-xs">
-                <span className="text-muted-foreground">{entry.years || "Year not provided"}</span>
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+                {!entry.semesters && <span className="min-w-0 rounded-sm bg-chip px-2 py-1 text-heading">{entry.institution}</span>}
+                <span className="rounded-sm bg-chip px-2 py-1 text-heading">{entry.years}</span>
+                {entry.board && <span className="min-w-0 rounded-sm bg-chip px-2 py-1 text-heading">Board: {entry.board}</span>}
+                {entry.score && <span className="rounded-sm bg-chip px-2 py-1 text-heading">Score: {entry.score}</span>}
                 <span className="rounded-sm bg-chip px-2 py-1 text-heading">Status: {entry.status}</span>
               </div>
               {entry.expectedGraduation && <p className="mt-3 text-sm text-muted-foreground">Expected graduation: {entry.expectedGraduation}</p>}
-              {!entry.semesters && <dl className="mt-3 flex flex-wrap gap-x-6 gap-y-2 text-xs text-muted-foreground"><div><dt className="inline">Board: </dt><dd className="inline">{entry.board || "Not provided"}</dd></div><div><dt className="inline">Score: </dt><dd className="inline">{entry.score || "Not provided"}</dd></div>{entry.group && <div><dt className="inline">Group: </dt><dd className="inline">{entry.group}</dd></div>}</dl>}
+              {!entry.semesters && <div className="mt-3 space-y-2 text-xs text-muted-foreground">{entry.group && <p>Group: {entry.group}</p>}{entry.medium && <p>Medium: {entry.medium}</p>}</div>}
               {entry.semesters && <CgpaTracker entry={entry} />}
-            </article>
+            </button>
+            </Button>
           </li>
         ))}
       </ol>
     </section>
+    <Dialog open={selected !== null} onOpenChange={(open) => { if (!open) setSelected(null); }}>
+      {selected && <DialogContent className="flex max-h-[90dvh] w-[calc(100vw-2rem)] max-w-3xl flex-col gap-0 overflow-hidden rounded-md border-border p-0 [&>button]:right-3 [&>button]:top-3 [&>button]:z-20 [&>button]:flex [&>button]:size-11 [&>button]:items-center [&>button]:justify-center [&>button]:bg-raised [&>button]:text-heading [&>button]:opacity-100">
+        <div className="min-w-0 overflow-y-auto overscroll-contain p-5 pt-16 sm:p-8 sm:pt-16">
+          <DialogTitle className="break-words font-display text-xl font-extrabold leading-snug tracking-normal">{selected.qualification}</DialogTitle>
+          <DialogDescription className="mt-3 break-words">{selected.institution} · {selected.years}</DialogDescription>
+          <div className="mt-4 flex flex-wrap gap-2 text-xs text-heading">
+            {[selected.board, selected.score, selected.status, selected.medium ? `${selected.medium} medium` : ""].filter(Boolean).map((value) => <span key={value} className="min-w-0 rounded-sm bg-chip px-2 py-1">{value}</span>)}
+          </div>
+          {selected.group && <p className="mt-4 text-sm text-muted-foreground">Group: {selected.group}</p>}
+          {selected.expectedGraduation && <p className="mt-4 text-sm text-muted-foreground">Expected graduation: {selected.expectedGraduation}</p>}
+          {selected.semesters && <CgpaTracker entry={selected} />}
+          {selected.subjects && <div className="mt-6">
+            <h4 className="font-display font-bold text-heading">Subject-wise marks</h4>
+            <p className="mt-1 text-xs text-muted-foreground">{selected.marksBasis}</p>
+            <ul className="mt-5 space-y-5">
+              {selected.subjects.map(({ subject, marks }) => <li key={subject} className="min-w-0">
+                <div className="mb-2 flex flex-wrap items-center gap-2 text-sm text-heading">
+                  <span>{subject}</span>
+                  {subject === selected.topSubject && <span className="rounded-sm bg-chip px-2 py-1 text-[10px] font-semibold text-primary">Top score</span>}
+                  <span className="ml-auto shrink-0 font-semibold">{marks} / 100</span>
+                </div>
+                <progress className="degree-progress block h-1 w-full" aria-label={`${subject} marks out of 100`} value={marks} max={100} />
+              </li>)}
+            </ul>
+          </div>}
+        </div>
+      </DialogContent>}
+    </Dialog></>
   );
 }
