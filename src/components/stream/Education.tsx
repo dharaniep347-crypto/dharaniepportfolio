@@ -28,21 +28,30 @@ function CgpaTracker({ entry }: { entry: EducationEntry }) {
         </div>
         <div className="min-w-0 flex-1"><p className="text-xs text-muted-foreground">Degree progress</p><p className="mt-1 text-sm font-semibold text-heading">Semester {entry.currentSemester} of {entry.totalSemesters}</p><progress aria-label="Degree progress" value={entry.currentSemester} max={entry.totalSemesters} className="degree-progress mt-3 h-2 w-full" /></div>
       </div>
-      <h4 className="font-display font-bold text-heading">Semester CGPA</h4>
+      <h4 className="font-display font-bold text-heading">Semester CGPA <span className="text-xs font-normal text-muted-foreground">· out of 10</span></h4>
       <div className="mt-4 grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
         <div className="min-w-0">
-          <div className="flex h-44 items-end gap-1 border-b border-border sm:gap-2" aria-hidden="true">
-            {(entry.semesters ?? []).map((s) => (
-              <div key={s.semester} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-2">
-                <div className="relative flex h-32 w-full max-w-8 items-end sm:max-w-10">
-                  {s.cgpa === null ? <div className="relative h-full w-full rounded-t-sm border border-dashed border-muted-foreground"><span className="absolute -top-7 left-1/2 -translate-x-1/2 text-center text-[9px] leading-tight text-muted-foreground sm:text-[10px]">In progress</span></div> : <div data-semester={s.semester} className={`cgpa-bar relative w-full origin-bottom rounded-t-sm ${s.semester === highestSemester ? "bg-primary" : "bg-academic-bar"} ${visible ? "cgpa-visible" : ""}`} style={{ height: `${Math.max(0, Math.min(10, s.cgpa)) * 10}%` }}><span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-semibold text-heading sm:text-xs">{s.cgpa.toFixed(2)}</span></div>}
-                </div>
-                <span className="whitespace-nowrap pb-2 text-[10px] text-muted-foreground sm:text-xs">Sem {s.semester}</span>
+          <div className="flex gap-2" aria-hidden="true">
+            <div className="relative h-32 w-5 shrink-0">
+              {[10, 8, 6, 4, 2, 0].map((v) => <span key={v} className="absolute right-0 translate-y-1/2 text-[9px] leading-none text-muted-foreground" style={{ bottom: `${v * 10}%` }}>{v}</span>)}
+            </div>
+            <div className="relative flex min-w-0 flex-1 gap-1 sm:gap-2">
+              <div className="pointer-events-none absolute inset-x-0 top-0 h-32">
+                {[10, 8, 6, 4, 2].map((v) => <div key={v} className="absolute inset-x-0 border-t border-dashed border-border" style={{ bottom: `${v * 10}%` }} />)}
+                <div className="absolute inset-x-0 bottom-0 border-b border-border" />
               </div>
-            ))}
+              {(entry.semesters ?? []).map((s) => (
+                <div key={s.semester} className="flex min-w-0 flex-1 flex-col items-center">
+                  <div className="relative flex h-32 w-full max-w-8 items-end sm:max-w-10">
+                    {s.cgpa === null ? <div className="flex h-full w-full items-center justify-center rounded-t-sm border border-dashed border-border"><span className="text-[9px] leading-tight text-muted-foreground sm:text-[10px]">In progress</span></div> : <div data-semester={s.semester} className={`cgpa-bar relative w-full origin-bottom rounded-t-sm ${s.semester === highestSemester ? "bg-primary" : "bg-academic-bar"} ${visible ? "cgpa-visible" : ""}`} style={{ height: `${Math.max(0, Math.min(10, s.cgpa)) * 10}%` }}><span className="absolute -top-6 left-1/2 -translate-x-1/2 text-[10px] font-semibold text-heading sm:text-xs">{s.cgpa.toFixed(2)}</span></div>}
+                  </div>
+                  <span className="mt-2 whitespace-nowrap pb-2 text-[10px] text-muted-foreground sm:text-xs">Sem {s.semester}</span>
+                </div>
+              ))}
+            </div>
           </div>
           <p className="sr-only">
-            Semester CGPA: {stats.completed.map((s) => s.cgpa.toFixed(2)).join(", ")}. Overall CGPA {stats.overall?.toFixed(2)} out of 10.
+            Semester CGPA out of 10: {stats.completed.map((s) => `Semester ${s.semester}, ${s.cgpa.toFixed(2)} out of 10`).join("; ")}. Overall CGPA {stats.overall?.toFixed(2)} out of 10.
           </p>
         </div>
         <dl className="grid grid-cols-1 items-start gap-2 sm:grid-cols-3 lg:grid-cols-1">

@@ -50,3 +50,7 @@
 # Midnight plum aurora
 - [x] Apply plum background, grain, reduced-motion-safe drift, surface states and magenta scene rim light.
 - [x] Verify whole page, intro/profile screens and About/project/contact dialogs at 360px and 1440px: no horizontal overflow or runtime errors, reduced motion disables drift, muted contrast at least 7.24:1 on conservative glow sample and 10.11:1 on dialogs; 17 regression tests pass. Preserved red-accent contrast exception remains unchanged.
+
+# Semester CGPA out of 10
+- [x] Keep only the highest semester (Sem 3) red and draw every bar against a visible 0-10 scale with numbered gridlines, so each result reads as its CGPA out of 10.
+- [x] Verify bar heights (78.6, 78.6, 81.8, 80.8%), the 0/2/4/6/8/10 axis, the empty Sem 5 in-progress track and 12 education tests at 360px, 608px and 1440px without overflow or page errors.
