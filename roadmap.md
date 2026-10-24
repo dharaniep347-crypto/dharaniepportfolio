@@ -1,3 +1,8 @@
+# Education dates and school results
+- [ ] Correct degree dates everywhere and add only the supplied school results as typed data.
+- [ ] Show school badges and subject-mark dialogs with requested highlights, without private identifiers.
+- [ ] Verify academic data tests and card/dialog fit at 360px and 1440px.
+
 # Skill logos and faster row playback
 - [x] Add official decorative skill logos across public skill listings without other design changes.
 - [x] Remove dots, move pause/play to row titles, and use one-second advances with 500ms scrolling.
